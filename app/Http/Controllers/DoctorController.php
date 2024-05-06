@@ -7,8 +7,10 @@ use App\Http\Requests\DoctorUpdateRequest;
 use App\Http\Resources\DoctorCollection;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class DoctorController extends Controller
 {
@@ -19,7 +21,6 @@ class DoctorController extends Controller
     public function index(Request $request)
     {
         $doctors = Doctor::all();
-        // var_dump($doctors);
 
         return view('doctors.index', ['doctors' => $doctors]);
 
@@ -104,39 +105,110 @@ class DoctorController extends Controller
 
     //     return back()->with('success', 'Doctors added successfully from JSON.');
     // }
+    // public function storeJson(Request $request)
+    // {
+    //     $json = File::get($request->file('json_file'));
+    //     $data = json_decode($json, true);
+
+    //     foreach ($data as $key => $item) {
+    //         $doctor = Doctor::updateOrCreate(
+    //             ['doctor_id' => $item['doctor_id']],
+    //             [
+    //                 'doctor_name' => $item['nama_doctor'],
+    //                 'poli' => $item['poli'] ,  // Gunakan nilai default atau biarkan null
+    //                 'specialist' => $item['specialist'],  // Gunakan nilai default atau biarkan null
+    //             ]
+    //         );
+
+    //         $this->processSchedules($doctor, $item['schedule']);
+    //     }
+
+    //     return back()->with('success', 'Doctors and schedules added successfully from JSON.');
+    // }
+
+    // private function processSchedules($doctor, $schedules)
+    // {
+    //     if (is_array($schedules)) {
+    //         foreach ($schedules as $schedule) {
+    //             if (is_array($schedule)) {
+    //                 var_dump($doctor->schedules());
+    //                 // $doctor->schedules()->updateOrCreate([
+    //                 //     'weekday' => $schedule['weekday'],
+    //                 //     'start_hour' => $schedule['start_hour'],
+    //                 //     'start_minute' => $schedule['start_minute'],
+    //                 //     'end_hour' => $schedule['end_hour'],
+    //                 //     'end_minute' => $schedule['end_minute'],
+    //                 // ]);
+    //             }
+    //         }
+    //     }
+    // }
+
+//     public function storeJson(Request $request)
+// {
+//     DB::beginTransaction();
+//     try {
+//         $json = File::get($request->file('json_file'));
+//         $data = json_decode($json, true);
+
+//         foreach ($data as $key => $item) {
+//             $doctor = Doctor::updateOrCreate(
+//                 ['doctor_id' => $item['doctor_id']],
+//                 [
+//                     'doctor_name' => $item['nama_doctor'],
+//                     'poli' => $item['poli'] ?? 'Default Poli',
+//                     'specialist' => $item['specialist'] ?? 'General',
+//                 ]
+//             );
+
+//             if (!empty($item['schedule']) && is_array($item['schedule'])) {
+//                 foreach ($item['schedule'] as $schedule) {
+//                     if ($schedule) {
+//                         $doctor->schedules()->updateOrCreate([
+//                             'weekday' => $schedule['weekday'],
+//                             'start_hour' => $schedule['start_hour'],
+//                             'start_minute' => $schedule['start_minute'],
+//                             'end_hour' => $schedule['end_hour'],
+//                             'end_minute' => $schedule['end_minute'],
+//                         ]);
+//                     }
+//                 }
+//             }
+//         }
+
+//         DB::commit();
+//         return back()->with('success', 'Doctors and schedules added successfully from JSON.');
+//     } catch (\Exception $e) {
+//         DB::rollback();
+//         return back()->with('error', 'Error processing JSON: ' . $e->getMessage());
+//     }
+// }
+
     public function storeJson(Request $request)
     {
         $json = File::get($request->file('json_file'));
-        $data = json_decode($json, true);
-
-        foreach ($data as $key => $item) {
-            $doctor = Doctor::updateOrCreate(
-                ['doctor_id' => $item['doctor_id']],
-                [
-                    'doctor_name' => $item['nama_doctor'],
-                    'poli' => $item['poli'] ,  // Gunakan nilai default atau biarkan null
-                    'specialist' => $item['specialist'],  // Gunakan nilai default atau biarkan null
-                ]
-            );
-
-            $this->processSchedules($doctor, $item['schedule']);
-        }
-
-        return back()->with('success', 'Doctors and schedules added successfully from JSON.');
-    }
-
-    private function processSchedules($doctor, $schedules)
-    {
-        if (is_array($schedules)) {
-            foreach ($schedules as $schedule) {
-                if (is_array($schedule)) {
-                    $doctor->schedules()->updateOrCreate([
-                        'weekday' => $schedule['weekday'],
-                        'start_hour' => $schedule['start_hour'],
-                        'start_minute' => $schedule['start_minute'],
-                        'end_hour' => $schedule['end_hour'],
-                        'end_minute' => $schedule['end_minute'],
-                    ]);
+        $jsonData = json_decode($json, true);
+        foreach ($jsonData as $key => $doctorData) {
+            // Create Doctor record
+            $doctor = new Doctor();
+            $doctor->doctor_id = $doctorData['doctor_id'];
+            $doctor->doctor_name = $doctorData['nama_doctor'];
+            $doctor->poli = $doctorData['poli'];
+            $doctor->specialist = $doctorData['specialist'];
+            $doctor->save();
+            
+    
+            // Create Schedule records
+            foreach ($doctorData['schedule'] as $scheduleData) {
+                if ($scheduleData !== null) {
+                    $schedule = new Schedule();
+                    $schedule->doctor_id = $doctor->id; // Assuming id is auto-incremented
+                    $schedule->weekday = $scheduleData['weekday'];
+                    $schedule->start_hour = $scheduleData['start_hour'];
+                    $schedule->start_minute = $scheduleData['start_minute'];
+                    $schedule->end_hour = $scheduleData['end_hour'];
+                    $schedule->end_minute = $scheduleData['end_minute'];
+                    $schedule->save();
                 }
             }
         }

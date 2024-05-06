@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Doctor extends Model
+class Doctor extends Eloquent
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+    protected $collection = 'doctors';
+    
 
     /**
      * The attributes that are mass assignable.
@@ -15,10 +18,7 @@ class Doctor extends Model
      * @var array
      */
     protected $fillable = [
-        'doctor_id',
-        'doctor_name',
-        'poli',
-        'specialist',
+        'doctor_id', 'doctor_personal', 'doctor_contact', 'doctor_job'
     ];
 
     /**
@@ -30,8 +30,8 @@ class Doctor extends Model
         'id' => 'integer',
     ];
 
-    public function schedules()
-    {
-        return $this->hasMany(Schedule::class, 'doctor_id');
-    }
+    // public function schedules()
+    // {
+    //     return $this->hasMany(Schedule::class, 'doctor_id');
+    // }
 }

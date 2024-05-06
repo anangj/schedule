@@ -27,7 +27,7 @@
                                 Nama
                               </th>
                               <th scope="col" class=" table-th ">
-                                Poliklinik
+                                Email
                               </th>
                               
                               <th scope="col" class=" table-th ">
@@ -38,8 +38,8 @@
                         <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                             @foreach($doctors as $item)
                             <tr>
-                              <td class="table-td">{{ $item['doctor_name'] }}</td>
-                              <td class="table-td ">{{ $item['poli'] }}</td>
+                              <td class="table-td">{{ $item['doctor_personal.doctor_name'] }}</td>
+                              <td class="table-td ">{{ $item['doctor_contact.email'] }}</td>
                               <td class="table-td ">
                                 <div class="flex space-x-3 rtl:space-x-reverse">
                                   <button class="action-btn" type="button">
