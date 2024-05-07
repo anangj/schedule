@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Doctor
     Route::resource('doctors', DoctorController::class);
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
+    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+    Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.show');
 
     // Nurse
     Route::resource('nurses', NurseController::class);

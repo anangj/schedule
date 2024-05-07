@@ -43,7 +43,7 @@
                 <a href="javascript:void(0)" class="navItem">
                     <span class="flex items-center">
                         <iconify-icon class=" nav-icon" icon="maki:doctor"></iconify-icon>
-                        <span>{{ __('Dcotor') }}</span>
+                        <span>{{ __('Doctor') }}</span>
                     </span>
                     <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
                 </a>

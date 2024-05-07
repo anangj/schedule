@@ -11,6 +11,7 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use MongoDB\BSON\ObjectId;
 
 class DoctorController extends Controller
 {
@@ -20,6 +21,8 @@ class DoctorController extends Controller
      */
     public function index(Request $request)
     {
+        // $doctors = Doctor::where('doctor_id', 'I12345')->get();
+        // var_dump($doctors);
         $doctors = Doctor::all();
 
         return view('doctors.index', ['doctors' => $doctors]);
@@ -27,15 +30,34 @@ class DoctorController extends Controller
         // return new DoctorCollection($doctors);
     }
 
+    public function create()
+    {
+        return view('doctors.create');
+    }
+
     /**
-     * @param \App\Http\Requests\DoctorControllerStoreRequest $request
+     * @param \App\Http\Requests\DoctorStoreRequest $request
      * @return \App\Http\Resources\DoctorResource
      */
-    public function store(DoctorStoreRequest $request)
+    public function store(Request $request)
     {
-        $doctor = Doctor::create($request->validated());
+        $doctor = new Doctor();
 
-        return new DoctorResource($doctor);
+        $doctor->doctor_id = $request['doctor_id'];
+
+        $doctor->doctor_personal = [
+            'doctor_name' => $request['namaDokter'],
+            'id_card' => $request['idCard'],
+            'doctor_title' => $request['titleDokter'],
+            'speciality_name' => $request['specialities'],
+            'medical_education' => $request['medicalEducation'],
+            'medical_degree' => $request['medicalDegree'],
+            'ceritification' => [
+                'certification_name' => $request['certification']
+            ]
+        ];
+
+        var_dump($doctor->doctor_personal);
     }
 
     /**
@@ -43,9 +65,12 @@ class DoctorController extends Controller
      * @param \App\Models\Doctor $doctor
      * @return \App\Http\Resources\DoctorResource
      */
-    public function show(Request $request, Doctor $doctor)
+    public function show($id)
     {
-        return new DoctorResource($doctor);
+        $doctorsData = Doctor::find($id);
+        $doctors = $doctorsData;
+        // var_dump($doctors);
+        return view('doctors.show', compact('doctors'));
     }
 
     /**
@@ -144,73 +169,110 @@ class DoctorController extends Controller
     //     }
     // }
 
-//     public function storeJson(Request $request)
-// {
-//     DB::beginTransaction();
-//     try {
-//         $json = File::get($request->file('json_file'));
-//         $data = json_decode($json, true);
+    //     public function storeJson(Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $json = File::get($request->file('json_file'));
+    //         $data = json_decode($json, true);
 
-//         foreach ($data as $key => $item) {
-//             $doctor = Doctor::updateOrCreate(
-//                 ['doctor_id' => $item['doctor_id']],
-//                 [
-//                     'doctor_name' => $item['nama_doctor'],
-//                     'poli' => $item['poli'] ?? 'Default Poli',
-//                     'specialist' => $item['specialist'] ?? 'General',
-//                 ]
-//             );
+    //         foreach ($data as $key => $item) {
+    //             $doctor = Doctor::updateOrCreate(
+    //                 ['doctor_id' => $item['doctor_id']],
+    //                 [
+    //                     'doctor_name' => $item['nama_doctor'],
+    //                     'poli' => $item['poli'] ?? 'Default Poli',
+    //                     'specialist' => $item['specialist'] ?? 'General',
+    //                 ]
+    //             );
 
-//             if (!empty($item['schedule']) && is_array($item['schedule'])) {
-//                 foreach ($item['schedule'] as $schedule) {
-//                     if ($schedule) {
-//                         $doctor->schedules()->updateOrCreate([
-//                             'weekday' => $schedule['weekday'],
-//                             'start_hour' => $schedule['start_hour'],
-//                             'start_minute' => $schedule['start_minute'],
-//                             'end_hour' => $schedule['end_hour'],
-//                             'end_minute' => $schedule['end_minute'],
-//                         ]);
-//                     }
-//                 }
-//             }
-//         }
+    //             if (!empty($item['schedule']) && is_array($item['schedule'])) {
+    //                 foreach ($item['schedule'] as $schedule) {
+    //                     if ($schedule) {
+    //                         $doctor->schedules()->updateOrCreate([
+    //                             'weekday' => $schedule['weekday'],
+    //                             'start_hour' => $schedule['start_hour'],
+    //                             'start_minute' => $schedule['start_minute'],
+    //                             'end_hour' => $schedule['end_hour'],
+    //                             'end_minute' => $schedule['end_minute'],
+    //                         ]);
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-//         DB::commit();
-//         return back()->with('success', 'Doctors and schedules added successfully from JSON.');
-//     } catch (\Exception $e) {
-//         DB::rollback();
-//         return back()->with('error', 'Error processing JSON: ' . $e->getMessage());
-//     }
-// }
+    //         DB::commit();
+    //         return back()->with('success', 'Doctors and schedules added successfully from JSON.');
+    //     } catch (\Exception $e) {
+    //         DB::rollback();
+    //         return back()->with('error', 'Error processing JSON: ' . $e->getMessage());
+    //     }
+    // }
 
     public function storeJson(Request $request)
     {
         $json = File::get($request->file('json_file'));
         $jsonData = json_decode($json, true);
+        // var_dump($jsonData);
         foreach ($jsonData as $key => $doctorData) {
-            // Create Doctor record
             $doctor = new Doctor();
             $doctor->doctor_id = $doctorData['doctor_id'];
-            $doctor->doctor_name = $doctorData['nama_doctor'];
-            $doctor->poli = $doctorData['poli'];
-            $doctor->specialist = $doctorData['specialist'];
+            $doctor->doctor_personal = [
+                'doctor_name' => $doctorData['nama_doctor'],
+                'specialities' => [
+                    'speciality_name' => $doctorData['specialist']
+                ]
+            ];
+
+
+            $doctor->doctor_job = [
+                'poli' => $doctorData['poli'],
+                'hospital' => array_map(function ($hospital) use ($doctorData) {
+                    return [
+                        'hospital_id' => $hospital['hospital_id'],
+                        'hospital_name' => $hospital['hospital_name'],
+                        'schedules' => array_map(function ($schedule) {
+                            return [
+                                'day' => $schedule['weekday'] ?? null,
+                                'start_hour' => $schedule['start_hour'] ?? null,
+                                'start_minute' => $schedule['start_minute'] ?? null,
+                                'end_hour' => $schedule['end_hour'] ?? null,
+                                'end_minute' => $schedule['end_minute'] ?? null
+                            ];
+                        }, $doctorData['schedule'] ?? []),
+                    ];
+                }, $doctorData['hospitals']),
+            ];
+
+
+
             $doctor->save();
-            
-    
-            // Create Schedule records
-            foreach ($doctorData['schedule'] as $scheduleData) {
-                if ($scheduleData !== null) {
-                    $schedule = new Schedule();
-                    $schedule->doctor_id = $doctor->id; // Assuming id is auto-incremented
-                    $schedule->weekday = $scheduleData['weekday'];
-                    $schedule->start_hour = $scheduleData['start_hour'];
-                    $schedule->start_minute = $scheduleData['start_minute'];
-                    $schedule->end_hour = $scheduleData['end_hour'];
-                    $schedule->end_minute = $scheduleData['end_minute'];
-                    $schedule->save();
-                }
-            }
         }
+        // return redirect()->route('doctors.index');
+
+        // foreach ($jsonData as $key => $doctorData) {
+        //     // Create Doctor record
+        //     $doctor = new Doctor();
+        //     $doctor->doctor_id = $doctorData['doctor_id'];
+        //     $doctor->doctor_name = $doctorData['nama_doctor'];
+        //     $doctor->poli = $doctorData['poli'];
+        //     $doctor->specialist = $doctorData['specialist'];
+        //     $doctor->save();
+
+
+        //     // Create Schedule records
+        //     foreach ($doctorData['schedule'] as $scheduleData) {
+        //         if ($scheduleData !== null) {
+        //             $schedule = new Schedule();
+        //             $schedule->doctor_id = $doctor->id; // Assuming id is auto-incremented
+        //             $schedule->weekday = $scheduleData['weekday'];
+        //             $schedule->start_hour = $scheduleData['start_hour'];
+        //             $schedule->start_minute = $scheduleData['start_minute'];
+        //             $schedule->end_hour = $scheduleData['end_hour'];
+        //             $schedule->end_minute = $scheduleData['end_minute'];
+        //             $schedule->save();
+        //         }
+        //     }
+        // }
     }
 }

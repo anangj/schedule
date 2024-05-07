@@ -24,10 +24,26 @@ class DoctorStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'doctor_id' => ['required', 'string'],
-            'doctor_name' => ['required', 'string'],
-            'poli' => ['required', 'string'],
-            'specialist' => ['string'],
+            'id_card' => ['required', 'string'],
+            // 'doctor_id' => ['required', 'string'],
+            // 'doctor_name' => ['required', 'string'],
+            // 'doctor_title' => ['required', 'string'],
+            // 'speciality_name' => ['required', 'string'],
+            // 'medical_education' => ['required', 'string'],
+            // 'medical_degree' => ['required', 'string'],
+            // 'medical_license' => ['required', 'string'],
+            // 'poli' => ['required', 'string'],
+            // 'specialist' => ['string'],
+            // 'phone' => ['required', 'string'],
+            // 'durationPerPatient' => ['required', 'string'],
+            // 'room' => ['required', 'string'],
+            // 'attend' => ['required', 'string'],
+            // 'department' => ['required', 'string'],
+            // 'salary' => ['required', 'string'],
+            // 'doctorType' => ['required', 'string'],
+            // 'transportFee' => ['required', 'string'],
+            // 'endTime' => ['required', 'string'],
+
         ];
     }
 }

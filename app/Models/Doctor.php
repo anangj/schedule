@@ -18,7 +18,7 @@ class Doctor extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'doctor_id', 'doctor_personal', 'doctor_contact', 'doctor_job'
+        'doctor_id', 'doctor_personal', 'doctor_contact', 'doctor_job', 'hospital', 'schedule'
     ];
 
     /**

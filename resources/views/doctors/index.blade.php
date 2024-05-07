@@ -12,7 +12,7 @@
               <header class=" card-header noborder">
                 {{-- <h4 class="card-title">List Doctor
                 </h4> --}}
-                <Button>Tambah Dokter</Button>
+                <a href="{{ route('doctors.create') }}" class="btn inline-flex justify-center btn-primary rounded-[25px]">Tambah Dokter</a>
               </header>
               <div class="card-body px-6 pb-6">
                 <div class="overflow-x-auto -mx-6 dashcode-data-table">
@@ -27,7 +27,7 @@
                                 Nama
                               </th>
                               <th scope="col" class=" table-th ">
-                                Email
+                                Poli
                               </th>
                               
                               <th scope="col" class=" table-th ">
@@ -39,11 +39,13 @@
                             @foreach($doctors as $item)
                             <tr>
                               <td class="table-td">{{ $item['doctor_personal.doctor_name'] }}</td>
-                              <td class="table-td ">{{ $item['doctor_contact.email'] }}</td>
+                              <td class="table-td ">{{ $item['doctor_job.poli'] }}</td>
                               <td class="table-td ">
                                 <div class="flex space-x-3 rtl:space-x-reverse">
                                   <button class="action-btn" type="button">
-                                    <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                    <a href="{{ route('doctors.show', $item['id']) }}" class="action-btn">
+                                      <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                    </a>
                                   </button>
                                   <button class="action-btn" type="button">
                                     <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
@@ -57,12 +59,6 @@
                             @endforeach
                         </tbody>
                       </table>
-
-                      <form action="{{ route('doctors.storeJson') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="json_file" required>
-                        <button type="submit">Upload JSON</button>
-                    </form>
                     </div>
                   </div>
                 </div>
