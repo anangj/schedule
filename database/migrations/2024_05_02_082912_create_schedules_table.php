@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->string('doctor_id')->nullable();
-            $table->string('nurse_id')->nullable();
+            $table->foreignId('doctor_id')->nullable()->constrained('doctors')->onDelete('cascade');
+            $table->foreignId('nurse_id')->nullable()->constrained('nurses')->onDelete('cascade');
             $table->string('weekday')->nullable();
             $table->integer('start_hour')->nullable();
             $table->integer('start_minute')->nullable();
@@ -24,9 +24,6 @@ return new class extends Migration
             $table->integer('end_minute')->nullable();
             $table->enum('shift', ['Pagi', 'Siang', 'Malam'])->nullable();
             $table->timestamps();
-
-            $table->foreign('doctor_id')->references('doctor_id')->on('doctors')->onDelete('cascade');
-            $table->foreign('nurse_id')->references('nurse_id')->on('nurses')->onDelete('cascade');
         });
     }
 

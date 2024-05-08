@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('doctors', function (Blueprint $table) {
-            $table->string('doctor_id')->primary();
+            $table->id();
+            $table->string('doctor_id');
             $table->string('doctor_name');
             $table->string('poli')->nullable();
             $table->string('specialist')->nullable();
