@@ -23,7 +23,7 @@ class Doctor extends Model
     //     'doctor_id', 'doctor_personal', 'doctor_contact', 'doctor_job', 'hospital', 'schedule'
     // ];
 
-    protected $fillable = ['doctor_id', 'doctor_name', 'poli', 'specialist'];
+    protected $fillable = ['employee_id', 'employee_name', 'shift', 'date'];
 
     /**
      * The attributes that should be cast to native types.
@@ -36,6 +36,6 @@ class Doctor extends Model
 
     public function schedules()
     {
-        return $this->hasMany(Schedule::class, 'doctor_id');
+        return $this->hasMany(DoctorSchedule::class, 'doctor_id');
     }
 }

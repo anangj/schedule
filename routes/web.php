@@ -17,8 +17,12 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DatabaseBackupController;
 use App\Http\Controllers\GeneralSettingController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DoctorSpecialistController;
 use App\Http\Controllers\NurseController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\PlasmaController;
+use App\Http\Controllers\PlasmaSpecialistController;
 
 require __DIR__ . '/auth.php';
 
@@ -50,15 +54,35 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Doctor
     Route::resource('doctors', DoctorController::class);
+    Route::post('/doctors/upload-excel', [DoctorController::class, 'storeExcel'])->name('doctors.uploadExcel');
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
     Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.show');
 
+    // Doctor Specialist
+    Route::resource('doctorSpecialist', DoctorSpecialistController::class);
+    Route::post('doctorSpecialist/upload-excel', [DoctorSpecialistController::class, 'storeExcel'])->name('doctorSpecialist.uploadExcel');
+
     // Nurse
     Route::resource('nurses', NurseController::class);
+    Route::post('/nurses/upload-excel', [NurseController::class, 'storeExcel'])->name('nurses.uploadExcel');
 
     // Schedule
     Route::resource('schedules', ScheduleController::class);
-    Route::get('plasma', [ScheduleController::class, 'plasmaView'])->name('plasma');
+    // Route::get('plasmaSpecialist', [ScheduleController::class, 'plasmaView'])->name('plasmaSpecialist');
     Route::get('/schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
+    Route::post('/schedules/upload-excel', [ScheduleController::class, 'storeExcel'])->name('schedules.uploadExcel');
+
+
+    // Driver
+    Route::resource('drivers', DriverController::class);
+    Route::post('/drivers/upload-excel', [DriverController::class, 'storeExcel'])->name('drivers.uploadExcel');
+
+
+    // Plasma
+    Route::get('plasma', [PlasmaController::class, 'index'])->name('plasma');
+
+
+    // Plasma Specialist
+    Route::get('plasmaSpecialist', [PlasmaSpecialistController::class, 'index'])->name('plasmaSpecialist');
 });

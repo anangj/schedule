@@ -2,72 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NurseStoreRequest;
-use App\Http\Requests\NurseUpdateRequest;
-use App\Http\Resources\NurseCollection;
-use App\Http\Resources\NurseResource;
-use App\Models\Nurse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Models\DoctorSpecialist;
 
-class NurseController extends Controller
+
+class DoctorSpecialistController extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Http\Resources\NurseCollection
-     */
-    public function index(Request $request)
-    {
-        $nurses = Nurse::all();
-
-        return view('nurses.index', ['nurses' => $nurses]);
-
-        // return new NurseCollection($nurses);
-    }
-
-    /**
-     * @param \App\Http\Requests\NurseControllerStoreRequest $request
-     * @return \App\Http\Resources\NurseResource
-     */
-    public function store(NurseStoreRequest $request)
-    {
-        $nurse = Nurse::create($request->validated());
-
-        return new NurseResource($nurse);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Nurse $nurse
-     * @return \App\Http\Resources\NurseResource
-     */
-    public function show(Request $request, Nurse $nurse)
-    {
-        return new NurseResource($nurse);
-    }
-
-    /**
-     * @param \App\Http\Requests\NurseControllerUpdateRequest $request
-     * @param \App\Models\Nurse $nurse
-     * @return \App\Http\Resources\NurseResource
-     */
-    public function update(NurseUpdateRequest $request, Nurse $nurse)
-    {
-        $nurse->update($request->validated());
-
-        return new NurseResource($nurse);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Nurse $nurse
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Nurse $nurse)
+    public function index()
     {
-        $nurse->delete();
+        $date = Carbon::now()->subMonth()->format('Y-m-d');
+        $doctors = DB::select("select * from doctor_specialists");
+        // var_dump($doctors);
+        return view('doctor-specialist.index', compact('doctors'));
+    }
 
-        return response()->noContent();
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 
     public function storeExcel(Request $request)
@@ -83,6 +103,7 @@ class NurseController extends Controller
 
         // Mendapatkan header
         $headers = $rows[0][$headerRowNumber];
+        // var_dump($headers);
 
         // Melakukan iterasi melalui baris data
         for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
@@ -100,18 +121,15 @@ class NurseController extends Controller
                 $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
 
                 // Memproses data Anda di sini
-                $nurse = new Nurse();
-                $nurse->employee_id = $employeeId;
-                $nurse->employee_name = $employeeName;
-                $nurse->date = $date;
-                $nurse->shift = $attendance;
-                // var_dump($nurse);
-                $nurse->save();
+                $specialist = new DoctorSpecialist();
+                $specialist->employee_id = $employeeId;
+                $specialist->employee_name = $employeeName;
+                $specialist->shift = $attendance;
+                $specialist->date = $date;
+                $specialist->save();
             }
         }
-
-        // return redirect()
-        return redirect()->route('nurses.index');
+        return redirect()->route('doctorSpecialist.index');
     }
 
     private function getHeaderRowNumber($rows)

@@ -6,7 +6,7 @@
 
         <div class=" space-y-5">
             <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-body p-6">
                         <div class="space-y-6">
                             <div class="flex space-x-3 items-center rtl:space-x-reverse">
@@ -29,7 +29,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card">
                     <div class="card-body p-6">
                         <div class="space-y-6">
@@ -72,7 +72,7 @@
                             <a href="{{ route('roles.index') }}"
                                 class="inline-flex items-center space-x-3 rtl:space-x-reverse text-sm capitalize font-medium text-slate-600
                                     dark:text-slate-300">
-                                <span>Chnage Settings</span>
+                                <span>Change Settings</span>
                                 <iconify-icon icon="heroicons:arrow-right"></iconify-icon>
                             </a>
                         </div>

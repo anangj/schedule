@@ -10,13 +10,14 @@
 
             <div class="card">
                 <header class=" card-header noborder">
-                    <h4 class="card-title">{{__('List Nurse')}}
+                    <h4 class="card-title">{{__('List Driver')}}
                     </h4>
 
-                    <form action="{{ route('nurses.uploadExcel') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('drivers.uploadExcel') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="excel_file" accept=".xlsx, .xls" required>
-                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">{{__('Upload Schedule')}}</button>
+                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">Upload
+                            Schedule</button>
                     </form>
                 </header>
                 <div class="card-body px-6 pb-6">
@@ -32,35 +33,39 @@
                                             <th scope="col" class=" table-th ">
                                                 Nama
                                             </th>
-
                                             <th scope="col" class=" table-th ">
                                                 Tanggal
                                             </th>
                                             <th scope="col" class=" table-th ">
                                                 Shift
                                             </th>
+
+                                            {{-- <th scope="col" class=" table-th ">
+                                                Action
+                                            </th> --}}
                                         </tr>
                                     </thead>
                                     <tbody
                                         class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
-                                        @foreach ($nurses as $item)
+                                        @foreach ($drivers as $item)
                                             <tr>
-                                                <td class="table-td">{{ $item['employee_name'] }}</td>
-                                                <td>{{ $item['date'] }}</td>
-                                                <td>{{ $item['shift'] }}</td>
-                                                {{-- <td class="table-td ">
-                                                    <div class="flex space-x-3 rtl:space-x-reverse">
-                                                        <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:eye"></iconify-icon>
-                                                        </button>
-                                                        <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
-                                                        </button>
-                                                        <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:trash"></iconify-icon>
-                                                        </button>
-                                                    </div>
-                                                </td> --}}
+                                                <td class="table-td">{{ $item->employee_name }}</td>
+                                                <td class="table-td">{{ $item->date }}</td>
+                                                <td class="table-td">{{ $item->shift }}</td>
+
+                                                {{-- <td class="table-td "> --}}
+                                                    {{-- <div class="flex space-x-3 rtl:space-x-reverse">
+                                  <button class="action-btn" type="button">
+                                    <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                  </button>
+                                  <button class="action-btn" type="button">
+                                    <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
+                                  </button>
+                                  <button class="action-btn" type="button">
+                                    <iconify-icon icon="heroicons:trash"></iconify-icon>
+                                  </button>
+                                </div> --}}
+                                                {{-- </td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -72,8 +77,6 @@
             </div>
         </div>
     </div>
-
-
     @push('scripts')
         <script type="module">
             // data table validation
@@ -84,7 +87,7 @@
                 info: false,
                 searching: true,
                 lengthChange: true,
-                lengthMenu: [10, 25, 50, 100],
+                lengthMenu: [10, 25, 50, 100, 200],
                 language: {
                     lengthMenu: "Show _MENU_ entries",
                     paginate: {

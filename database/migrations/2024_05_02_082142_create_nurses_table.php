@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('nurses', function (Blueprint $table) {
             $table->id();
-            $table->string('nurse_id');
-            $table->string('nurse_name');
+            $table->string('employee_id');
+            $table->string('employee_name');
+            $table->date('date');
+            $table->string('shift')->nullable();
             $table->timestamps();
         });
     }

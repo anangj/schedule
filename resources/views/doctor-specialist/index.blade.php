@@ -10,13 +10,14 @@
 
             <div class="card">
                 <header class=" card-header noborder">
-                    <h4 class="card-title">{{__('List Nurse')}}
+                    <h4 class="card-title">{{__('List Doctor')}}
                     </h4>
-
-                    <form action="{{ route('nurses.uploadExcel') }}" method="POST" enctype="multipart/form-data">
+                    {{-- <a href="{{ route('doctors.create') }}" class="btn inline-flex justify-center btn-primary rounded-[25px]">Tambah Dokter</a> --}}
+                    <form action="{{ route('doctorSpecialist.uploadExcel') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="excel_file" accept=".xlsx, .xls" required>
-                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">{{__('Upload Schedule')}}</button>
+                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">Upload
+                            Schedule</button>
                     </form>
                 </header>
                 <div class="card-body px-6 pb-6">
@@ -32,26 +33,30 @@
                                             <th scope="col" class=" table-th ">
                                                 Nama
                                             </th>
-
                                             <th scope="col" class=" table-th ">
                                                 Tanggal
                                             </th>
                                             <th scope="col" class=" table-th ">
-                                                Shift
-                                            </th>
+                                              Shift
+                                          </th>
+
+                                            
                                         </tr>
                                     </thead>
                                     <tbody
                                         class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
-                                        @foreach ($nurses as $item)
+                                        @foreach ($doctors as $item)
                                             <tr>
-                                                <td class="table-td">{{ $item['employee_name'] }}</td>
-                                                <td>{{ $item['date'] }}</td>
-                                                <td>{{ $item['shift'] }}</td>
+                                                <td class="table-td">{{ $item->employee_name }}</td>
+                                                <td class="table-td ">{{ $item->date }}</td>
+                                                <td class="table-td">{{ $item->shift }}</td>
                                                 {{-- <td class="table-td ">
                                                     <div class="flex space-x-3 rtl:space-x-reverse">
                                                         <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                                            <a href="{{ route('doctors.show', $item['id']) }}"
+                                                                class="action-btn">
+                                                                <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                                            </a>
                                                         </button>
                                                         <button class="action-btn" type="button">
                                                             <iconify-icon icon="heroicons:pencil-square"></iconify-icon>

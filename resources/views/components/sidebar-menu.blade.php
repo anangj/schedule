@@ -30,14 +30,14 @@
                 </a>
             </li>
             <!-- Database -->
-            <li>
+            {{-- <li>
                 <a href="{{ route('database-backups.index') }}" class="navItem {{ (request()->is('database-backups*')) ? 'active' : '' }}">
                     <span class="flex items-center">
                         <iconify-icon class=" nav-icon" icon="iconoir:database-backup"></iconify-icon>
                         <span>{{ __('Database Backup') }}</span>
                     </span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="{{ (\Request::route()->getName() == 'doctors*') ? 'active' : '' }}">
                 <a href="javascript:void(0)" class="navItem">
@@ -49,51 +49,22 @@
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
-                        <a href="{{ route('doctors.index') }}" class="{{ (\Request::route()->getName() == 'doctors.index') ? 'active' : '' }}">{{ __('List Doctor') }}</a>
+                        <a href="{{ route('doctors.index') }}" class="{{ (\Request::route()->getName() == 'doctors.index') ? 'active' : '' }}">{{ __('Doctor IGD') }}</a>
                     </li>
-                    {{-- <li>
-                        <a href="{{ route('forms.input') }}" class="{{ (\Request::route()->getName() == 'forms.input') ? 'active' : '' }}">{{ __('Input') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.input-group') }}" class="{{ (\Request::route()->getName() == 'forms.input-group') ? 'active' : '' }}">{{ __('Input group') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.input-layout') }}" class="{{ (\Request::route()->getName() == 'forms.input-layout') ? 'active' : '' }}">{{ __('Input layout') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.input-validation') }}" class="{{ (\Request::route()->getName() == 'forms.input-validation') ? 'active' : '' }}">{{ __('Form validation') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.input-wizard') }}" class="{{ (\Request::route()->getName() == 'forms.input-wizard') ? 'active' : '' }}">{{ __('Wizard') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.input-mask') }}" class="{{ (\Request::route()->getName() == 'forms.input-mask') ? 'active' : '' }}">{{ __('Input mask') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.file-input') }}" class="{{ (\Request::route()->getName() == 'forms.file-input') ? 'active' : '' }}">{{ __('File input') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.repeater') }}" class="{{ (\Request::route()->getName() == 'forms.repeater') ? 'active' : '' }}">{{ __('From repeater') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.textarea') }}" class="{{ (\Request::route()->getName() == 'forms.textarea') ? 'active' : '' }}">{{ __('Textarea') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.checkbox') }}" class="{{ (\Request::route()->getName() == 'forms.checkbox') ? 'active' : '' }}">{{ __('Checkbox') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.radio') }}" class="{{ (\Request::route()->getName() == 'forms.radio') ? 'active' : '' }}">{{ __('Radio button') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.switch') }}" class="{{ (\Request::route()->getName() == 'forms.switch') ? 'active' : '' }}">{{ __('Switch') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.select') }}" class="{{ (\Request::route()->getName() == 'forms.select') ? 'active' : '' }}">{{ __('Select') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('forms.date-time-picker') }}" class="{{ (\Request::route()->getName() == 'forms.date-time-picker') ? 'active' : '' }}">{{ __('Date time picker') }}</a>
-                    </li> --}}
                 </ul>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="{{ route('doctorSpecialist.index') }}" class="{{ (\Request::route()->getName() == 'doctorSpecialist.index') ? 'active' : '' }}">{{ __('Doctor Specialist') }}</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ route('drivers.index') }}" class="navItem {{ (request()->is('drivers*')) ? 'active' : '' }}">
+                    <span class="flex items-center">
+                        <iconify-icon class=" nav-icon" icon="ph:ambulance"></iconify-icon>
+                        <span>{{ __('Driver') }}</span>
+                    </span>
+                </a>
             </li>
             
             {{-- <li>
@@ -126,11 +97,14 @@
                         <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Schedule Plasma') }}</a>
                     </li>
                     <li>
+                        <a href="{{ route('plasmaSpecialist') }}" class="{{ (\Request::route()->getName() == 'plasmaSpecialist') ? 'active' : '' }}">{{ __('Schedule Plasma Specialist') }}</a>
+                    </li>
+                    {{-- <li>
                         <a href="{{ route('schedules.index') }}" class="{{ (\Request::route()->getName() == 'schedules.index') ? 'active' : '' }}">{{ __('List Schedule') }}</a>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="{{ route('schedules.create') }}" class="{{ (\Request::route()->getName() == 'schedules.create') ? 'active' : '' }}">{{ __('Create Schedule') }}</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
             <!-- Settings -->

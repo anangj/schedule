@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('doctor_specialists', function (Blueprint $table) {
             $table->id();
-            $table->date('employee_id');
+            $table->string('employee_id');
             $table->string('employee_name');
-            $table->string('date');
-            $table->string('shift');
-            $table->timestamps();  
+            $table->date('date');
+            $table->string('shift')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('doctor_specialists');
     }
 };

@@ -1,44 +1,27 @@
 <x-schedule>
     <div class="card">
-        <h1 class="text-center pt-10">PETUGAS KAMI HARI INI</h1>
-        <div class="date-schedule">{{ $today }} - {{ $shift }}</div>
-        <div class="card mt-12">
-            <div class="card-body ">
+        <h1 class="text-center pt-14">PETUGAS KAMI HARI INI</h1>
+        <div class="date-schedule">{{$today}} - {{$shift}}</div>
+        <div class="card mt-24">
+            <div class="card-body px-6 pb-6">
                 <div class="overflow-x-auto -mx-6 dashcode-data-table">
                   <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden ">
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 50%">DOKTER</th>
-                                    <th style="width: 50%">PERAWAT</th>
+                                    <th>DOKTER SPECIALIST (ON CALL)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i = 0; $i < count($schedules); $i++)
+                                @for ($i = 0; $i < 3; $i++)
                                 <tr>
-                                    <td style="width: 50%">{{ $drivers[$i]->employee_name }}</td>
-                                    <td style="width: 50%">{{ $schedules[$i]->employee_name }}</td>
+                                    <td>{{ $pagi['dokter'][$i]['spesialis'] ?? 'Tidak tersedia' }} - {{ $pagi['dokter'][$i]['nama'] ?? 'Tidak tersedia' }}</td>
                                 </tr>
                                 @endfor
                             </tbody>
                         </table>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 50%">DRIVER</th>
-                                    <th style="width: 50%">NURSE ON DUTY</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for ($i = 0; $i < count($drivers); $i++)
-                                <tr>
-                                    <td style="width: 50%">{{ $drivers[$i]->employee_name }}</td>
-                                    <td style="width: 50%">{{ $drivers[$i]->employee_name }}</td>
-                                </tr>
-                                @endfor
-                            </tbody>
-                        </table>
+                        
                         {{-- <table>
                             <thead>
                                 <tr>

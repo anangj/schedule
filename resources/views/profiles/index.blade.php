@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!-- end profile box -->
-            <div class="profile-info-500 md:flex md:text-start text-center flex-1 max-w-[516px] md:space-y-0 space-y-4">
+            {{-- <div class="profile-info-500 md:flex md:text-start text-center flex-1 max-w-[516px] md:space-y-0 space-y-4">
                 <div class="flex-1">
                     <div class="text-base text-slate-900 dark:text-slate-300 font-medium mb-1">
                         $32,400
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <!-- end single -->
-            </div>
+            </div> --}}
             <!-- profile info-500 -->
         </div>
         <div class="grid grid-cols-12 gap-6">

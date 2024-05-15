@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Schedule extends Model
+class DoctorSpecialist extends Model
 {
     use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'employee_id',
+        'employee_id',  
         'employee_name',
         'shift',
         'date'
@@ -29,6 +28,4 @@ class Schedule extends Model
     protected $casts = [
         'id' => 'integer',
     ];
-
-    
 }

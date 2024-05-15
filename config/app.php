@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'dashcode-Laravel'),
+    'name' => env('APP_NAME', 'IGD SCHEDULE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -87,7 +87,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -105,6 +105,7 @@ return [
         'en'=>'united-states',
         'de'=>'germany',
         'fr'=>'france',
+        'id'=>'indonesia',
     ],
 
     /*

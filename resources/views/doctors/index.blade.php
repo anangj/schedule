@@ -1,68 +1,79 @@
 <x-app-layout>
     <div class="space-y-8">
         <div>
-          {{-- <x-breadcrumb :page-title="$pageTitle" :breadcrumb-items="$breadcrumbItems" /> --}}
+            {{-- <x-breadcrumb :page-title="$pageTitle" :breadcrumb-items="$breadcrumbItems" /> --}}
         </div>
 
         <div class=" space-y-5">
-            
+
 
 
             <div class="card">
-              <header class=" card-header noborder">
-                {{-- <h4 class="card-title">List Doctor
-                </h4> --}}
-                <a href="{{ route('doctors.create') }}" class="btn inline-flex justify-center btn-primary rounded-[25px]">Tambah Dokter</a>
-              </header>
-              <div class="card-body px-6 pb-6">
-                <div class="overflow-x-auto -mx-6 dashcode-data-table">
-                  <span class=" col-span-8  hidden"></span>
-                  <span class="  col-span-4 hidden"></span>
-                  <div class="inline-block min-w-full align-middle">
-                    <div class="overflow-hidden ">
-                      <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
-                        <thead class=" bg-slate-200 dark:bg-slate-700">
-                          <tr>
-                              <th scope="col" class=" table-th ">
-                                Nama
-                              </th>
-                              <th scope="col" class=" table-th ">
-                                Poli
-                              </th>
-                              
-                              <th scope="col" class=" table-th ">
-                                Action
-                              </th>
-                          </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
-                            @foreach($doctors as $item)
-                            <tr>
-                              <td class="table-td">{{ $item['doctor_personal.doctor_name'] }}</td>
-                              <td class="table-td ">{{ $item['doctor_job.poli'] }}</td>
-                              <td class="table-td ">
-                                <div class="flex space-x-3 rtl:space-x-reverse">
-                                  <button class="action-btn" type="button">
-                                    <a href="{{ route('doctors.show', $item['id']) }}" class="action-btn">
-                                      <iconify-icon icon="heroicons:eye"></iconify-icon>
-                                    </a>
-                                  </button>
-                                  <button class="action-btn" type="button">
-                                    <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
-                                  </button>
-                                  <button class="action-btn" type="button">
-                                    <iconify-icon icon="heroicons:trash"></iconify-icon>
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                      </table>
+                <header class=" card-header noborder">
+                    <h4 class="card-title">Doctor IGD
+                    </h4>
+                    {{-- <a href="{{ route('doctors.create') }}" class="btn inline-flex justify-center btn-primary rounded-[25px]">Tambah Dokter</a> --}}
+                    <form action="{{ route('doctors.uploadExcel') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="excel_file" accept=".xlsx, .xls" required>
+                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">Upload
+                            Schedule</button>
+                    </form>
+                </header>
+                <div class="card-body px-6 pb-6">
+                    <div class="overflow-x-auto -mx-6 dashcode-data-table">
+                        <span class=" col-span-8  hidden"></span>
+                        <span class="  col-span-4 hidden"></span>
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table
+                                    class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
+                                    <thead class=" bg-slate-200 dark:bg-slate-700">
+                                        <tr>
+                                            <th scope="col" class=" table-th ">
+                                                Nama
+                                            </th>
+                                            <th scope="col" class=" table-th ">
+                                                Tanggal
+                                            </th>
+                                            <th scope="col" class=" table-th ">
+                                              Shift
+                                          </th>
+
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody
+                                        class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+                                        @foreach ($doctors as $item)
+                                            <tr>
+                                                <td class="table-td">{{ $item['employee_name'] }}</td>
+                                                <td class="table-td ">{{ $item['date'] }}</td>
+                                                <td class="table-td">{{ $item->shift }}</td>
+                                                {{-- <td class="table-td ">
+                                                    <div class="flex space-x-3 rtl:space-x-reverse">
+                                                        <button class="action-btn" type="button">
+                                                            <a href="{{ route('doctors.show', $item['id']) }}"
+                                                                class="action-btn">
+                                                                <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                                            </a>
+                                                        </button>
+                                                        <button class="action-btn" type="button">
+                                                            <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
+                                                        </button>
+                                                        <button class="action-btn" type="button">
+                                                            <iconify-icon icon="heroicons:trash"></iconify-icon>
+                                                        </button>
+                                                    </div>
+                                                </td> --}}
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
         </div>
     </div>

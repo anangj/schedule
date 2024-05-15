@@ -171,5 +171,9 @@
     "results": "results",
     "success": "success",
     "to": "to",
-    "Please check your email to verify your new email address. You cant use your new email to login until you verify it.":"Please check your email to verify your new email address. You cant use your new email to login until you verify it."
+    "Please check your email to verify your new email address. You cant use your new email to login until you verify it.":"Please check your email to verify your new email address. You cant use your new email to login until you verify it.",
+    "Doctor Specialist": "Doctor Specialist",
+    "Nurse": "Nurse",
+    "Driver": "Driver",
+    "Doctor Specialist On Call": "Plasma Specialist On Call"
 }

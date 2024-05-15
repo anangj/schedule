@@ -30,6 +30,6 @@ class Nurse extends Model
 
     public function schedules()
     {
-        return $this->hasMany(Schedule::class, 'nurse_id');
+        return $this->hasMany(DoctorSchedule::class, 'nurse_id');
     }
 }
