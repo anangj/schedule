@@ -23,13 +23,17 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\PlasmaController;
 use App\Http\Controllers\PlasmaSpecialistController;
+use App\Http\Controllers\MarketingController;
+use App\Http\Controllers\PlasmaAioController;
 
 require __DIR__ . '/auth.php';
 
 Route::get('/', function () {
     return to_route('login');
 });
-
+// Plasma
+Route::get('plasma', [PlasmaController::class, 'index'])->name('plasma');
+Route::get('plasma2', [PlasmaAioController::class, 'index'])->name('plasma2');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // Dashboards
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard.index');
@@ -78,9 +82,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('drivers', DriverController::class);
     Route::post('/drivers/upload-excel', [DriverController::class, 'storeExcel'])->name('drivers.uploadExcel');
 
-
-    // Plasma
-    Route::get('plasma', [PlasmaController::class, 'index'])->name('plasma');
+    //Marketing
+    Route::resource('marketing', MarketingController::class);
+    
 
 
     // Plasma Specialist

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class PlasmaSpecialistController extends Controller
+class PlasmaAioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,10 +36,14 @@ class PlasmaSpecialistController extends Controller
             $shift = 'MALAM';
         }
 
-        // var_dump($schedules);
+        // var_dump($schedules[0]->employee_name);
 
-        // dd($schedules);
-        return view('schedules.plasma-specialist', compact('today', 'schedules','shift'));
+        // Driver
+        $drivers = DB::select("select employee_name, date, shift from drivers WHERE date = '$date'");
+
+        // var_dump($drivers);
+
+        return view('schedules.plasma-aio', compact( 'schedules', 'drivers', 'shift', 'today'));
     }
 
     /**
