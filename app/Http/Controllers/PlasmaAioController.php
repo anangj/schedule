@@ -42,8 +42,28 @@ class PlasmaAioController extends Controller
         $drivers = DB::select("select employee_name, date, shift from drivers WHERE date = '$date'");
 
         // var_dump($drivers);
+        $specialties = [
+            'Spesialis Anak' => [
+                (object) ['photo' => 'av-1.svg', 'name' => 'dr. William Soeryaatmadja, Sp.PD, FPCP', 'qualification' => 'Sp.PD, FPCP'],
+                (object) ['photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
+            ],
+            'Spesialis Saraf' => [
+                (object) ['photo' => 'av-3.svg', 'name' => 'dr. John Doe, Sp.S', 'qualification' => 'Sp.S'],
+                (object) ['photo' => 'av-4.svg', 'name' => 'dr. Jane Doe, Sp.S', 'qualification' => 'Sp.S'],
+            ],
+            // Tambahkan data spesialis dan dokter lainnya di sini
+        ];
+        $doctors = [
+            (object) ['specialty' => 'Spesialis Anak', 'photo' => 'av-1.svg', 'name' => 'dr. William Soeryaatmadja, Sp.PD, FPCP', 'qualification' => 'Sp.PD, FPCP'],
+            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
+            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
+            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
+            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
+            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
+            // Tambahkan data dokter lainnya di sini
+        ];
 
-        return view('schedules.plasma-aio', compact( 'schedules', 'drivers', 'shift', 'today'));
+        return view('schedules.plasma-aio', compact( 'schedules', 'drivers', 'shift', 'today', 'doctors'));
     }
 
     /**

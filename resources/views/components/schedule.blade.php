@@ -14,6 +14,7 @@
             margin: 0;
             padding: 20px;
         }
+
         .header {
             background-color: #cfe2f3;
             padding: 10px;
@@ -21,27 +22,33 @@
             font-size: 24px;
             color: #333;
         }
+
         .date {
             text-align: center;
             margin-top: 5px;
             font-size: 18px;
             color: #666;
         }
+
         table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ccc;
             text-align: center;
             padding: 8px;
 
         }
+
         th {
             background-color: #003974;
             color: white;
         }
+
         .shift {
             background-color: #008060;
             color: white;
@@ -52,21 +59,23 @@
     {{-- Scripts --}}
     @vite(['resources/css/app.scss', 'resources/js/custom/store.js'])
 </head>
-<body>
 
-    <div class="loginwrapper">
-        <div class="lg-inner-column">
-            
-            <div class="right-column  relative">
-                <div class="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
+<body class="font-inter"">
+    {{-- <div class="app-wrapper">
+        <div class="page-content">
+            <div class="transition-all duration-150 container-fluid">
+                <main id="content_layout"> --}}
+                    <!-- Page Content -->
                     {{ $slot }}
-                </div>
+                {{-- </main>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+    @vite(['resources/js/app.js', 'resources/js/main.js'])
 
 
-    @vite(['resources/js/app.js'])
+    @stack('scripts')
 </body>
 
 
