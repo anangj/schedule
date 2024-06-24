@@ -20,8 +20,7 @@ class DriverController extends Controller
         // var_dump($request->filter_date);
         $date = Carbon::now()->subMonth()->format('Y-m-d');
         // $drivers = Driver::where('date', $date)->get();
-        $drivers = DB::select("select * from drivers d ");
-        // var_dump($drivers);
+        $drivers = Driver::all();
         return view ('drivers.index', compact('drivers'));
     }
 
@@ -54,7 +53,27 @@ class DriverController extends Controller
      */
     public function show($id)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Driver',
+                'url' => route('drivers.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        $driverData = Driver::find($id);
+        $drivers = $driverData;
+
+        return view('drivers.show', [
+            'drivers' => $drivers,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Show Driver'
+        ]);
     }
 
     /**

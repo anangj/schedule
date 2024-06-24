@@ -1,93 +1,73 @@
 <x-schedule>
     <div class="bg-cover bg-center"
         style="background-image: url({{ asset('images/logo/background.svg') }}); height: 100%">
-        <div class="card">
-            <div class="flex items-center">
-                <div class="ml-5 mr-36 basis-1/4">
-                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" width="80%">
+        <div class="card" style="width: 100%;">
+            <div class="flex items-center" style="width: 100%;">
+                <div class="ml-5 mr-36 basis-1/4" style="width: 25%;">
+                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" style="width: 80%;">
                 </div>
-                <h1 class="basis-1/2 font-bold" style="color: #003974">Petugas Kami Hari Ini</h1>
-                <div id="clock" class="font-semibold text-4xl"></div>
+                <div class="basis-1/2 font-bold text-4xl text-responsive" style="color: #003974; width: 80%;">DOKTER SPESIALIS (ON CALL)</div>
+                <div id="clock" class="font-semibold text-4xl" style="width: 25%;"></div>
             </div>
         </div>
         <div class="card mt-3 ml-5 mr-5 text-center items-center text-3xl py-2 text-white"
-            style="background-color: #003974">{{ $today }} - {{ $shift }}</div>
-        <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">DOCTOR SPESIALIS (ON CALL)</div>
-        {{-- <div class="mt-3"> --}}
-            {{-- @foreach ($doctors as $doctor) --}}
-            @for ($i = 0; $i < 3; $i++)
-                <div class="grid grid-cols-6">
-                    @foreach ($doctors as $doctor)
-                        <div>
-                            <div class="ml-5 mt-2 text-xl font-bold" style="color: #008060">{{ $doctor->specialty }}</div>
-                            <div class="grid grid-rows-2 mt-2 ml-5">
-                                <div class="card shadow-md my-1">
-                                    <div class="grid grid-cols-4 gap-1">
-                                        <div class="relative">
-                                            <img src="{{ asset('images/avatar/' . $doctors[0]->photo) }}" alt="img">
-                                            <div class="absolute bottom-0 right-0">
-                                                <div class="text-sm">1</div>
-                                            </div>
+            style="background-color: #003974">{{ $today }}</div>
+        {{-- <div class="mt-2 ml-5 text-xl font-bold" style="color: #008060">DOKTER SPESIALIS (ON CALL)</div> --}}
+
+        <div class="slider carousel-interval owl-carousel -mt-4">
+            @foreach ($schedules->chunk(8) as $scheduleChunk) <!-- Each slide shows 8 specialties (4 columns, 2 rows) -->
+                <div class="grid grid-cols-4 gap-1 p-6">
+                    @foreach ($scheduleChunk as $item)
+                        <div class="bg-white shadow-md rounded-lg p-4">
+                            <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
+                            <div class="grid grid-rows-2 gap-1">
+                                @foreach ($item->doctors as $doctor)
+                                    <div class="card shadow-md rounded-lg flex items-center p-2">
+                                        <div class="relative w-16 h-16 flex-shrink-0">
+                                            <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img" class="w-full h-full object-cover rounded-full">
+                                            <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">{{ $loop->iteration }}</div>
                                         </div>
-                                        <div class="col-span-3 flex items-center text font-bold">{{ $doctors[0]->name }}
-                                        </div>
+                                        <div class="ml-4 text-md font-bold ">{{ $doctor }}</div>
                                     </div>
-                                </div>
-                                
-                                <div class="card shadow-md">
-                                    <div class="grid grid-cols-4 gap-1">
-                                        <div class="relative">
-                                            <img src="{{ asset('images/avatar/' . $doctors[1]->photo) }}" alt="img">
-                                            <div class="absolute bottom-0 right-0">
-                                                <div class="text-sm">2</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-span-3 flex items-center text font-bold">{{ $doctors[1]->name }}
-                                        </div>
-                                    </div>
-                                </div>
-                                
+                                @endforeach
                             </div>
                         </div>
                     @endforeach
                 </div>
-            @endfor
-
-            {{-- @endforeach --}}
-            {{-- <div class="grid grid-cols-3 gap-4 mt-5">
-                @foreach ($specialties as $specialty => $doctors)
-                    <div class="col-span-3 text-center text-2xl font-bold mb-2" style="color: #008060">{{ $specialty }}</div>
-                    @foreach ($doctors as $doctor)
-                        <div class="border p-4">
-                            <div class="flex items-center mt-2">
-                                <div class="w-1/4">
-                                    <img src="{{ asset('images/doctors/' . $doctor->photo) }}" alt="Doctor" class="w-full">
-                                </div>
-                                <div class="w-3/4 pl-2">
-                                    <p class="text-lg font-semibold">{{ $doctor->name }}</p>
-                                    <p>{{ $doctor->qualification }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                @endforeach
-            </div> --}}
-        {{-- </div> --}}
+            @endforeach
+        </div>
     </div>
+
+    @push('scripts')
+        @vite(['resources/js/plugins/owl.carousel.min.js'])
+        <script type="module">
+            // Carousel Interval
+            $(".carousel-interval").owlCarousel({
+                autoplay: true,
+                autoplayTimeout: 10000,
+                autoplayHoverPause: true,
+                lazyLoad: true,
+                loop: true,
+                nav: false,
+                items: 1,
+                dots: false,
+            });
+
+            function updateClock() {
+                var now = new Date();
+                var hours = String(now.getHours()).padStart(2, '0');
+                var minutes = String(now.getMinutes()).padStart(2, '0');
+                var seconds = String(now.getSeconds()).padStart(2, '0');
+                var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
+                document.getElementById('clock').textContent = timeString;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+        </script>
+    @endpush
 </x-schedule>
 
-<script>
-    function updateClock() {
-        var now = new Date();
-        var hours = String(now.getHours()).padStart(2, '0');
-        var minutes = String(now.getMinutes()).padStart(2, '0');
-        var seconds = String(now.getSeconds()).padStart(2, '0');
-        var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
-        document.getElementById('clock').textContent = timeString;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-</script>
+<script></script>
 
 {{-- <x-schedule>
 

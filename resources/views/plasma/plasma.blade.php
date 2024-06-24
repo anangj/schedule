@@ -1,5 +1,17 @@
 <x-schedule>
-    <div class="card">
+
+    <div class="bg-cover bg-center" style="background-image: url({{ asset('images/logo/background.svg') }}); height: 100%">
+        <div class="card">
+            <div class="flex items-center">
+                <div class="ml-5 mr-36 basis-1/4">
+                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" width="80%">
+                </div>
+                <h1 class="basis-1/2 font-bold" style="color: #003974">Petugas Kami Hari Ini</h1>
+                <div id="clock" class="font-semibold text-4xl"></div>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="card">
         
         <div class="flex pt-10">
             <div class="ml-5 mr-20 basis-1/4">
@@ -46,25 +58,22 @@
                                 @endfor
                             </tbody>
                         </table>
-                        {{-- <table>
-                            <thead>
-                                <tr>
-                                    <th colspan="2">Dr. Specialist</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for ($i = 0; $i < 5; $i++)
-                                <tr>
-                                    <td>{{ $pagi['dokter'][$i]['spesialis'] ?? 'Tidak tersedia' }} - {{ $pagi['dokter'][$i]['nama'] ?? 'Tidak tersedia' }}</td>
-                                    <td>{{ $pagi['perawat'][$i]['spesialis'] ?? 'Tidak tersedia' }} - {{ $pagi['perawat'][$i]['nama'] ?? 'Tidak tersedia' }}</td>
-                                </tr>
-                                @endfor
-                            </tbody>
-                        </table> --}}
                     </div>
                   </div>
                 </div>
               </div>
         </div>
-    </div>
+    </div> --}}
 </x-schedule>
+<script>
+    function updateClock() {
+        var now = new Date();
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var seconds = String(now.getSeconds()).padStart(2, '0');
+        var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
+        document.getElementById('clock').textContent = timeString;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>

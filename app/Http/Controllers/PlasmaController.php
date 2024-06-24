@@ -28,13 +28,13 @@ class PlasmaController extends Controller
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
 
         // Schedule
-        if ($time >= '07:00' && $time < '14:30') {
+        if ($time >= '07:00' && $time < '13:28') {
             $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op1%' OR shift LIKE '%$kp%')");
             $shift = 'PAGI';
-        } else if ($time >= '13:30' && $time < '21:00') {
+        } else if ($time >= '13:30' && $time < '20:28') {
             $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op2%' OR shift LIKE '%$kp%')");
             $shift = 'SIANG';
-        } else if ($time >= '20:30' && $time < '07:30') {
+        } else if ($time >= '20:30') {
             $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op3%')");
             $shift = 'MALAM';
         }
@@ -46,7 +46,7 @@ class PlasmaController extends Controller
 
         // var_dump($drivers);
 
-        return view('schedules.plasma', compact( 'schedules', 'drivers', 'shift', 'today'));
+        return view('plasma.plasma', compact( 'drivers', 'shift', 'today'));
     }
 
     /**

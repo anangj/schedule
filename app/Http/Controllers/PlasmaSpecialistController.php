@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\DoctorSpecialist;
 
 class PlasmaSpecialistController extends Controller
 {
@@ -15,31 +16,44 @@ class PlasmaSpecialistController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now()->format('Y-m-d');
+        // $date = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->subMonths(2)->format('Y-m-d');
         $time = Carbon::now()->format('H:i');
-        $kp = '%K-P%';
-        $op1 = 'OP-1';
-        $op2 = 'OP-2';
-        $op3 = 'OP-3';
+        $shiftCondition = '%L%';
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
 
-        // Schedule
-        if ($time >= '07:00' && $time < '14:30') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op1%' OR shift LIKE '%$kp%')");
-            $shift = 'PAGI';
-        } else if ($time >= '13:30' && $time < '21:00') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op2%' OR shift LIKE '%$kp%')");
-            $shift = 'SIANG';
-        } else if ($time >= '20:30' && $time < '07:30') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op3%')");
-            $shift = 'MALAM';
-        }
+        $subQuery = DB::table('doctor_specialists')
+            ->select(
+                'speciality_name',
+                'employee_name',
+                'date',
+                'shift',
+                DB::raw('ROW_NUMBER() OVER (PARTITION BY speciality_name ORDER BY employee_name) as row_num')
+            )
+            ->where('date', $date)
+            ->where('shift', 'not like', $shiftCondition)
+            ->orderBy('speciality_name')
+            ->orderBy('shift');
 
-        // var_dump($schedules);
+        $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
+            ->mergeBindings($subQuery) 
+            ->select('speciality_name', DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'))
+            ->where('row_num', '<=', 2)
+            ->orderBy('speciality_name')
+            ->orderBy('shift')
+            ->groupBy('speciality_name')
+            ->get();
+
+        $schedules = $schedules->map(function ($item) {
+            $item->doctors = explode('||', $item->doctors);
+            return $item;
+        });
 
         // dd($schedules);
-        return view('schedules.plasma-specialist', compact('today', 'schedules','shift'));
+
+        // dd($schedules);
+        return view('plasma.plasma-specialist', compact('schedules', 'shift', 'today'));
     }
 
     /**

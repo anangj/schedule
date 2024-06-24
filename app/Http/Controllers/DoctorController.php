@@ -8,6 +8,8 @@ use App\Http\Resources\DoctorCollection;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use App\Models\DoctorSchedule;
+use App\Models\MasterDokter;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +30,6 @@ class DoctorController extends Controller
         // $doctors = Doctor::all(); ///this is for mongodb
 
         $doctors = Doctor::all();
-
         return view('doctors.index', ['doctors' => $doctors]);
 
         // return new DoctorCollection($doctors);
@@ -77,6 +78,28 @@ class DoctorController extends Controller
         return view('doctors.show', compact('doctors'));
     }
 
+    public function edit( Doctor $doctor)
+    {
+        $breadcrumbsItems = [
+            [
+                'name' => 'Doctor',
+                'url' => route('doctors.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        return view('doctors.edit', [
+            'doctors' => $doctor,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Doctor'
+        ]);
+    }
+
     /**
      * @param \App\Http\Requests\DoctorControllerUpdateRequest $request
      * @param \App\Models\Doctor $doctor
@@ -84,9 +107,13 @@ class DoctorController extends Controller
      */
     public function update(DoctorUpdateRequest $request, Doctor $doctor)
     {
-        $doctor->update($request->validated());
-
-        return new DoctorResource($doctor);
+        // dd($request);
+        $doctor->update([
+            'shift' => $request->validated('shift'),
+            'date' => $request->validated('date')
+        ]);
+        
+        return to_route('doctors.index')->with('message', 'Doctor updates Successfully!');
     }
 
     /**
@@ -162,23 +189,21 @@ class DoctorController extends Controller
 
 
         foreach ($datas as $data) {
-            // var_dump($data['schedule']);
-            $doctor = new Doctor();
+            $doctor = new MasterDokter();
             $doctor->doctor_id = $data['doctor_id'];
             $doctor->doctor_name = $data['nama_doctor'];
             $doctor->poli = $data['poli'];
-            $doctor->specialist = $data['specialist'];
+            $doctor->spesialis = $data['specialist'];
             $doctor->save();
 
             foreach ($data['schedule'] as $scheduleData) {
                 if ($scheduleData !== null) {
-                    $schedule = new DoctorSchedule();
+                    $schedule = new Schedule();
                     $schedule->doctor_id = $doctor->id; // Assuming id is auto-incremented
                     $schedule->weekday = $scheduleData['weekday'];
                     $schedule->start_hour = $scheduleData['start_hour'];
                     $schedule->start_minute = $scheduleData['start_minute'];
-                    $schedule->end_hour = $scheduleData['end_hour'];
-                    $schedule->end_minute = $scheduleData['end_minute'];
+                    $schedule->status = true;
                     $schedule->save();
                 }
             }

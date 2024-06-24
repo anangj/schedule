@@ -10,7 +10,7 @@
 
             <div class="card">
                 <header class=" card-header noborder">
-                    <h4 class="card-title">{{__('List Driver')}}
+                    <h4 class="card-title">{{ __('List Driver') }}
                     </h4>
 
                     <form action="{{ route('drivers.uploadExcel') }}" method="POST" enctype="multipart/form-data">
@@ -40,9 +40,9 @@
                                                 Shift
                                             </th>
 
-                                            {{-- <th scope="col" class=" table-th ">
+                                            <th scope="col" class=" table-th ">
                                                 Action
-                                            </th> --}}
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody
@@ -53,19 +53,23 @@
                                                 <td class="table-td">{{ $item->date }}</td>
                                                 <td class="table-td">{{ $item->shift }}</td>
 
-                                                {{-- <td class="table-td "> --}}
-                                                    {{-- <div class="flex space-x-3 rtl:space-x-reverse">
-                                  <button class="action-btn" type="button">
-                                    <iconify-icon icon="heroicons:eye"></iconify-icon>
-                                  </button>
-                                  <button class="action-btn" type="button">
-                                    <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
-                                  </button>
-                                  <button class="action-btn" type="button">
-                                    <iconify-icon icon="heroicons:trash"></iconify-icon>
-                                  </button>
-                                </div> --}}
-                                                {{-- </td> --}}
+                                                <td class="table-td ">
+                                                    <div class="flex space-x-3 rtl:space-x-reverse">
+                                                        <button class="action-btn" type="button">
+                                                            <a href="{{route('drivers.show', $item['id'])}}"
+                                                                class="action-btn">
+                                                                <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                                            </a>
+                                                        </button>
+                                                        <button class="action-btn" type="button">
+                                                            <a href=""><iconify-icon
+                                                                    icon="heroicons:pencil-square"></iconify-icon></a>
+                                                        </button>
+                                                        <button class="action-btn" type="button">
+                                                            <iconify-icon icon="heroicons:trash"></iconify-icon>
+                                                        </button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

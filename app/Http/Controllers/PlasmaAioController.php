@@ -15,55 +15,62 @@ class PlasmaAioController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now()->format('Y-m-d');
+        // $date = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->subMonths(2)->format('Y-m-d');
         $time = Carbon::now()->format('H:i');
+        // $time = '21:30';
         $kp = '%K-P%';
         $op1 = 'OP-1';
         $op2 = 'OP-2';
         $op3 = 'OP-3';
+        $p = 'P';
+        $s = 'S';
+        $m = 'M';
+        $middle3 = 'middle-3';
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
 
         // Schedule
-        if ($time >= '07:00' && $time < '14:30') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op1%' OR shift LIKE '%$kp%')");
+        if ($time >= '07:00' && $time < '13:28') {
+            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
             $shift = 'PAGI';
-        } else if ($time >= '13:30' && $time < '21:00') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op2%' OR shift LIKE '%$kp%')");
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
             $shift = 'SIANG';
-        } else if ($time >= '20:30' && $time < '07:30') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op3%')");
+        } else if ($time >= '21:00') {
+            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
             $shift = 'MALAM';
         }
 
-        // var_dump($schedules[0]->employee_name);
+        // Nurses
+        if ($time >= '07:00' && $time < '13:28') {
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op1%')");
+            $shift = 'PAGI';
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op2%')");
+            $shift = 'SIANG';
+        } else if ($time >= '21:00') {
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
+            $shift = 'MALAM';
+        }
+
+        // dd($nurses);
 
         // Driver
-        $drivers = DB::select("select employee_name, date, shift from drivers WHERE date = '$date'");
+        if ($time >= '07:00' && $time < '13:28') {
+            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op1%')");
+            $shift = 'PAGI';
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op2%')");
+            $shift = 'SIANG';
+        } else if ($time >= '21:00') {
+            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op3%')");
+            $shift = 'MALAM';
+        }
 
-        // var_dump($drivers);
-        $specialties = [
-            'Spesialis Anak' => [
-                (object) ['photo' => 'av-1.svg', 'name' => 'dr. William Soeryaatmadja, Sp.PD, FPCP', 'qualification' => 'Sp.PD, FPCP'],
-                (object) ['photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
-            ],
-            'Spesialis Saraf' => [
-                (object) ['photo' => 'av-3.svg', 'name' => 'dr. John Doe, Sp.S', 'qualification' => 'Sp.S'],
-                (object) ['photo' => 'av-4.svg', 'name' => 'dr. Jane Doe, Sp.S', 'qualification' => 'Sp.S'],
-            ],
-            // Tambahkan data spesialis dan dokter lainnya di sini
-        ];
-        $doctors = [
-            (object) ['specialty' => 'Spesialis Anak', 'photo' => 'av-1.svg', 'name' => 'dr. William Soeryaatmadja, Sp.PD, FPCP', 'qualification' => 'Sp.PD, FPCP'],
-            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
-            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
-            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
-            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
-            (object) ['specialty' => 'Spesialis Saraf', 'photo' => 'av-2.svg', 'name' => 'dr. Diyas Anugrah, Sp.A', 'qualification' => 'Sp.A'],
-            // Tambahkan data dokter lainnya di sini
-        ];
+        // dd($shift);
 
-        return view('schedules.plasma-aio', compact( 'schedules', 'drivers', 'shift', 'today', 'doctors'));
+        return view('plasma.plasma-aio', compact( 'schedules', 'drivers', 'shift', 'today', 'nurses'));
     }
 
     /**

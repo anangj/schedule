@@ -78,7 +78,7 @@ class ScheduleController extends Controller
     public function plasmaView()
     {
         // PAGI = 07:00 - 14:30
-        // SIANG = 13:30 - 21:00
+        // SIANG = 13:30 - 21:00 
         // MALAM = 20:30 - 07:30
 
         $date = Carbon::now()->format('Y-m-d');
@@ -109,13 +109,13 @@ class ScheduleController extends Controller
 
         // $schedules = DB::select("SELECT * FROM schedules WHERE date = '$date' AND (shift LIKE '%OP-1%' OR shift LIKE '%K-P%')");
         // var_dump(count($schedules));
-        return view('schedules.plasma', ['schedules' => $schedules]);
+        return view('plasma.plasma', ['schedules' => $schedules]);
     }
 
     public function plasmaSpecialist()
     {
         $schedules = Schedule::all();
-        return view('schedules.plasma-specialist', ['schedules' => $schedules]);
+        return view('plasma.plasma-specialist', ['schedules' => $schedules]);
     }
 
     public function create()

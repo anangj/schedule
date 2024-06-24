@@ -18,9 +18,9 @@ class DoctorSpecialistController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now()->subMonth()->format('Y-m-d');
-        $doctors = DB::select("select * from doctor_specialists");
-        // var_dump($doctors);
+        $date = Carbon::now()->subMonths(2)->format('Y-m-d');
+        $doctors = DB::select("select * from doctor_specialists ");
+        // dd($doctors);
         return view('doctor-specialist.index', compact('doctors'));
     }
 
@@ -113,9 +113,10 @@ class DoctorSpecialistController extends Controller
             // Contoh cara mengakses data
             $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
             $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
+            $specialityName = $rowData[2]; // Diasumsikan Nama Spesialisasi adalah kolom ketiga
 
             // Menangani data secara dinamis berdasarkan header
-            for ($j = 2; $j < count($headers); $j++) {
+            for ($j = 3; $j < count($headers); $j++) {
                 // var_dump($employeeId);
                 $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
                 $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
@@ -124,6 +125,7 @@ class DoctorSpecialistController extends Controller
                 $specialist = new DoctorSpecialist();
                 $specialist->employee_id = $employeeId;
                 $specialist->employee_name = $employeeName;
+                $specialist->speciality_name = $specialityName;
                 $specialist->shift = $attendance;
                 $specialist->date = $date;
                 $specialist->save();

@@ -1,13 +1,6 @@
 <x-app-layout>
-    <div class="space-y-8">
-        <div>
-            {{-- <x-breadcrumb :page-title="$pageTitle" :breadcrumb-items="$breadcrumbItems" /> --}}
-        </div>
-
+     <div class="space-y-5">
         <div class=" space-y-5">
-
-
-
             <div class="card">
                 <header class=" card-header noborder">
                     <h4 class="card-title">{{__('List Doctor')}}
@@ -39,8 +32,6 @@
                                             <th scope="col" class=" table-th ">
                                               Shift
                                           </th>
-
-                                            
                                         </tr>
                                     </thead>
                                     <tbody

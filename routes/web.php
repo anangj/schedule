@@ -25,6 +25,8 @@ use App\Http\Controllers\PlasmaController;
 use App\Http\Controllers\PlasmaSpecialistController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
+use App\Http\Controllers\MasterDokterController;
+use App\Http\Controllers\ScheduleDokterController;
 
 require __DIR__ . '/auth.php';
 
@@ -62,6 +64,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
     Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.show');
+
+    // Master Doctor
+    Route::resource('master-dokters', MasterDokterController::class);
+    Route::post('/master-dokters/upload-json', [MasterDokterController::class, 'storeJson'])->name('master-dokters.storeJson');
+
+    // Schedule Doctor
+    Route::resource('schedule-dokters', ScheduleDokterController::class);
 
     // Doctor Specialist
     Route::resource('doctorSpecialist', DoctorSpecialistController::class);

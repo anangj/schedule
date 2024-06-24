@@ -22,7 +22,7 @@
                         class="leading-none bg-transparent relative text-xl top-[2px] text-slate-900 dark:text-white"
                         icon="heroicons-outline:menu-alt-3"></iconify-icon>
                 </button>
-                <x-header-search />
+                {{-- <x-header-search /> --}}
             </div>
             <!-- end horizontal -->
 

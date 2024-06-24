@@ -25,3 +25,30 @@
     font-size: 28px;
     color: #020202;
 }
+
+/* Ensure speciality name is styled appropriately */
+.speciality-name {
+    color: #008060;
+}
+
+/* Set a fixed size for the card */
+.fixed-card-size {
+    width: 250px; /* Adjust width as needed */
+    height: 80px; /* Adjust height as needed */
+    overflow: hidden; /* Hide overflow if text is too long */
+}
+
+/* Set a fixed size for the image */
+.fixed-img-size {
+    width: 50px; /* Adjust width as needed */
+    height: 50px; /* Adjust height as needed */
+    object-fit: cover; /* Ensure image covers the area */
+}
+
+/* Set a fixed size for the text */
+.fixed-text-size {
+    // white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    max-width: 100px; /* Adjust max-width as needed */
+}

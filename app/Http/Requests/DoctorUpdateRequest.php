@@ -24,10 +24,8 @@ class DoctorUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'doctor_id' => ['required', 'string'],
-            'doctor_name' => ['required', 'string'],
-            'poli' => ['required', 'string'],
-            'specialist' => ['string'],
+            'date' => ['required', 'string'],
+            'shift' => ['required','string'],
         ];
     }
 }
