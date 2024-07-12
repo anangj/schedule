@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DriverUpdateRequest;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use app\Models\Driver;
@@ -17,11 +18,28 @@ class DriverController extends Controller
      */
     public function index(Request $request)
     {
+
+        $breadcrumbsItems = [
+            [
+                'name' => 'Driver',
+                'url' => route('drivers.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
         // var_dump($request->filter_date);
         $date = Carbon::now()->subMonth()->format('Y-m-d');
         // $drivers = Driver::where('date', $date)->get();
         $drivers = Driver::all();
-        return view ('drivers.index', compact('drivers'));
+        return view ('drivers.index', [
+            'drivers' => $drivers,
+            'breadcrumbsItems' => $breadcrumbsItems,
+            'pageTitle' => 'Driver'
+        ]);
     }
 
     /**
@@ -60,7 +78,7 @@ class DriverController extends Controller
                 'active' => false
             ],
             [
-                'name' => 'Edit',
+                'name' => 'Show',
                 'url' => '#',
                 'active' => true
             ],
@@ -82,9 +100,26 @@ class DriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Driver $driver)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Driver',
+                'url' => route('drivers.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        return view('drivers.edit', [
+            'drivers' => $driver,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Driver'
+        ]);
     }
 
     /**
@@ -94,9 +129,14 @@ class DriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DriverUpdateRequest $request, Driver $driver)
     {
-        //
+        // dd($request);
+        $driver->update([
+            'shift' => $request->validated('shift'),
+            'date' => $request->validated('date')
+        ]);
+        return to_route('drivers.index')->with('message', 'Driver updates Successfully!');
     }
 
     /**
@@ -105,9 +145,10 @@ class DriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Driver $driver)
     {
-        //
+        $driver->delete();
+        return to_route('drivers.index')->with('message', 'Driver deleted successfully');
     }
 
     public function storeExcel(Request $request)

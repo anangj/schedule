@@ -17,10 +17,24 @@ class MasterDokterController extends Controller
      */
     public function index()
     {
-        $data = MasterDokter::all();
-
-        // $data = DB::select("select md.nama_dokter ,md.poli ,md.spesialis , sd.weekday ,sd.start_hour ,sd.end_hour ,sd.start_minute ,sd.end_minute , sd.status  from master_dokters md inner join schedule_dokters sd on md.id = sd.doctor_id");
-        return view('master-dokter.index', compact('data'));
+        $breadcrumbsItems = [
+            [
+                'name' => 'Master Dokter',
+                'url' => route('master-dokters.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+        $data = DB::select("select * from master_dokters where spesialis not like '%asisten%'");
+        return view('master-dokter.index', [
+            'data' => $data,
+            'breadcrumbsItems' => $breadcrumbsItems,
+            'pageTitle' => 'Master Dokter'
+        ]);
     }
 
     /**
@@ -52,11 +66,26 @@ class MasterDokterController extends Controller
      */
     public function show(MasterDokter $masterDokter)
     {
+        $breadcrumbsItems = [
+            [
+                'name' => 'Master Dokter',
+                'url' => route('master-dokters.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
         
         // $dokter = DB::select("select nama_dokter ,poli ,spesialis from master_dokters where id = '$masterDokter'");
         $masterDokter->load('schedule');
         // dd($masterDokter->nama_dokter);
-        return view('master-dokter.show', compact('masterDokter'));
+        return view('master-dokter.show', [
+            'masterDokter' => $masterDokter,
+            'breadcrumbItems'
+        ]);
     }
 
     /**
@@ -95,6 +124,7 @@ class MasterDokterController extends Controller
 
     public function storeJson(Request $request)
     {
+        // dd($request);
         $json = File::get($request->file('json_file'));
         $datas = json_decode($json, true);
         // dd($datas);
@@ -106,6 +136,7 @@ class MasterDokterController extends Controller
             $doctor->nama_dokter = $data['nama_doctor'];
             $doctor->poli = $data['poli'];
             $doctor->spesialis = $data['specialist'];
+            $doctor->image_url = $data['photo'];
             $doctor->save();
 
             foreach ($data['schedule'] as $scheduleData) {

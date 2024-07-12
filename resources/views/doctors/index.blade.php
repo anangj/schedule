@@ -5,7 +5,8 @@
                 class="font-medium lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4 mb-4 sm:mb-0 flex space-x-3 rtl:space-x-reverse">
                 DOCTOR IGD</h4>
             <div class="flex sm:space-x-4 space-x-2 sm:justify-end items-center rtl:space-x-reverse">
-                <form class="form-control" action="{{ route('doctors.uploadExcel') }}" method="POST" enctype="multipart/form-data">
+                <form class="form-control" action="{{ route('doctors.uploadExcel') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="excel_file" accept=".xlsx, .xls" required>
                     <button type="submit"
@@ -37,14 +38,14 @@
             </div>
         </div>
 
-         
+
 
         <div class=" space-y-5">
             {{-- Alert start --}}
-         @if (session('message'))
-         <x-alert :message="session('message')" :type="'success'" />
-         @endif
-         {{-- Alert end --}}
+            @if (session('message'))
+                <x-alert :message="session('message')" :type="'success'" />
+            @endif
+            {{-- Alert end --}}
             <div class="card">
                 <div class="card-body px-6 pb-6">
                     <div class="overflow-x-auto -mx-6 dashcode-data-table">
@@ -87,11 +88,21 @@
                                                             </a>
                                                         </button>
                                                         <button class="action-btn" type="button">
-                                                            <a href="{{ route('doctors.edit', $item['id']) }}"><iconify-icon icon="heroicons:pencil-square"></iconify-icon></a>
+                                                            <a href="{{ route('doctors.edit', $item['id']) }}"><iconify-icon
+                                                                    icon="heroicons:pencil-square"></iconify-icon></a>
                                                         </button>
-                                                        <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:trash"></iconify-icon>
-                                                        </button>
+                                                        <form id="deleteForm{{ $item['id'] }}" method="POST"
+                                                            action="{{ route('drivers.destroy', $item['id']) }}"
+                                                            class="cursor-pointer">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a class="action-btn"
+                                                                onclick="sweetAlertDelete(event, 'deleteForm{{ $item['id'] }}')"
+                                                                type="submit">
+                                                                <iconify-icon
+                                                                    icon="fluent:delete-24-regular"></iconify-icon>
+                                                            </a>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -126,7 +137,23 @@
                     search: "Search:",
                 },
             });
-
+        </script>
+        <script>
+            function sweetAlertDelete(event, formId) {
+                event.preventDefault();
+                let form = document.getElementById(formId);
+                Swal.fire({
+                    title: '@lang('Are you sure ? ')',
+                    icon: 'question',
+                    showDenyButton: true,
+                    confirmButtonText: '@lang('Delete ')',
+                    denyButtonText: '@lang(' Cancel ')',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            }
         </script>
     @endpush
 </x-app-layout>

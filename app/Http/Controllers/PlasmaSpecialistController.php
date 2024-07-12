@@ -35,6 +35,7 @@ class PlasmaSpecialistController extends Controller
             ->where('shift', 'not like', $shiftCondition)
             ->orderBy('speciality_name')
             ->orderBy('shift');
+            // dd($subQuery);
 
         $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
             ->mergeBindings($subQuery) 
@@ -50,7 +51,7 @@ class PlasmaSpecialistController extends Controller
             return $item;
         });
 
-        // dd($schedules);
+        dd($today);
 
         // dd($schedules);
         return view('plasma.plasma-specialist', compact('schedules', 'shift', 'today'));

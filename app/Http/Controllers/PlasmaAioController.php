@@ -39,6 +39,7 @@ class PlasmaAioController extends Controller
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
             $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
+            dd($schedules);
             $shift = 'MALAM';
         }
 

@@ -52,12 +52,12 @@
 
         <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">NURSE ON DUTY </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
-            {{-- @foreach ($schedules as $schedule) --}}
+            @foreach ($schedules as $schedule)
                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
-                    <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $schedule->employee_name }}" class="h-12 w-12 rounded-full object-cover">
+                    <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $schedules->employee_name }}" class="h-12 w-12 rounded-full object-cover">
                     <div class="col-span-6 flex items-center text font-bold">{{ $schedules[0]->employee_name }}</div>
                 </div>
-            {{-- @endforeach --}}
+            @endforeach
         </div>
 
     </div>

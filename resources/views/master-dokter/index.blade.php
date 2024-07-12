@@ -1,19 +1,28 @@
 <x-app-layout>
     <div>
         <div class=" space-y-8">
-            {{-- <x-breadcrumb :breadcrumb-items="$breadcrumbItems" :page-title="$pageTitle" /> --}}
+            <div class="md:flex justify-between items-center mb-6">
+                <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
+                <div class="flex flex-wrap ">
+                    {{-- <form action="{{ route('master-dokters.storeJson') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="json_file" required>
+                        <button type="submit" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
+                            <span class="flex items-center">
+                                <span>Upload Dokter</span>
+                            </span>
+                        </button>
+                    </form> --}}
+                    <button class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1 ">
+                        <span class="flex items-center">
+                            <span>Tambah Dokter</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="space-y-5">
             <div class="card">
-                <header class="card-header noborder">
-                    <h4 class="card-title">Master Dokter</h4>
-                    <form action="{{ route('master-dokters.storeJson') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="json_file" accept=".json" required>
-                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">Upload
-                            Dokter</button>
-                    </form>
-                </header>
                 <div class="card-body px-6 pb-6">
                     <div class="overflow-x-auto -mx-6 dashcode-data-table">
                         <span class=" col-span-8  hidden"></span>
@@ -24,6 +33,9 @@
                                     class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
                                     <thead class=" bg-slate-200 dark:bg-slate-700">
                                         <tr>
+                                            {{-- <th scope="col" class=" table-th ">
+                                                Photo
+                                            </th> --}}
                                             <th scope="col" class=" table-th ">
                                                 Nama Dokter
                                             </th>
@@ -42,36 +54,52 @@
                                         class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                         @foreach ($data as $item)
                                             <tr>
-                                                <td class="table-td ">{{ $item->nama_dokter }}</td>
+                                                {{-- <td class="table-td "><img src="{{ $item->image_url ?: asset('images/avatar/av-1.svg') }}" alt="Foto Dokter" style="width: 50px; height: auto;" class="rounded-full"></td> --}}
+                                                {{-- <td class="table-td"></td> --}}
+                                                <td class="table-td ">
+                                                    <div class="flex space-x-3 items-center text-left rtl:space-x-reverse">
+                                                        <div class="flex-none">
+                                                            <div class="h-12 w-12 rounded-full text-sm flex flex-col items-center justify-center font-medium -tracking-[1px]">
+                                                                <img src="{{ $item->image_url ?: asset('images/avatar/av-1.svg') }}" class="rounded-full">
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-1 font-medium text-sm leading-4 whitespace-nowrap">
+                                                            {{ $item->nama_dokter }}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </td>
                                                 <td class="table-td ">{{ $item->poli }}</td>
                                                 <td class="table-td ">{{ $item->spesialis }}</td>
-                                                <td class="table-td">
-                                                    <div class="dropstart relative">
-                                                    <button class="inline-flex justify-center items-center" type="button" id="tableDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <iconify-icon class="text-xl ltr:ml-2 rtl:mr-2" icon="heroicons-outline:dots-vertical"></iconify-icon>
-                                                    </button>
-                                                    <ul class="dropdown-menu min-w-max absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                                        <li>
-                                                        <a href="{{ route('master-dokters.show', $item->id) }}" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize  rtl:space-x-reverse">
-                                                            <iconify-icon icon="heroicons-outline:eye"></iconify-icon>
-                                                            <span>View</span></a>
-                                                        </li>
-                                                        <li>
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#editModal" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300 last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize rtl:space-x-reverse">
-                                                            <iconify-icon icon="clarity:note-edit-line"></iconify-icon>
-                                                            <span>Edit</span></a>
-                                                        </li>
-                                                        <li>
-                                                        <a href="#" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300 last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize rtl:space-x-reverse">
-                                                            <iconify-icon icon="fluent:delete-28-regular"></iconify-icon>
-                                                            <span>Delete</span></a>
-                                                        </li>
-                                                    </ul>
+                                                <td class="table-td ">
+                                                    <div class="flex space-x-3 rtl:space-x-reverse">
+                                                        <button class="action-btn" type="button">
+                                                            <a href="{{ route('master-dokters.show', $item->id) }}"
+                                                                class="action-btn">
+                                                                <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                                            </a>
+                                                        </button>
+                                                        <button class="action-btn" type="button">
+                                                            <a href="{{ route('master-dokters.edit', $item->id) }}"><iconify-icon
+                                                                    icon="heroicons:pencil-square"></iconify-icon></a>
+                                                        </button>
+                                                        <form id="deleteForm{{ $item->id }}" method="POST"
+                                                            action="{{ route('master-dokters.destroy', $item->id) }}"
+                                                            class="cursor-pointer">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a class="action-btn"
+                                                                onclick="sweetAlertDelete(event, 'deleteForm{{ $item->id }}')"
+                                                                type="submit">
+                                                                <iconify-icon
+                                                                    icon="fluent:delete-24-regular"></iconify-icon>
+                                                            </a>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        @endforeach 
-                                        
+                                        @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
@@ -80,7 +108,23 @@
                 </div>
             </div>
         </div>
-
+        <!-- Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="previewImage" src="" alt="Preview Image" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     @push('scripts')
@@ -102,6 +146,31 @@
                     },
                     search: "Search:",
                 },
+            });
+        </script>
+        <script>
+            function sweetAlertDelete(event, formId) {
+                event.preventDefault();
+                let form = document.getElementById(formId);
+                Swal.fire({
+                    title: '@lang('Are you sure ? ')',
+                    icon: 'question',
+                    showDenyButton: true,
+                    confirmButtonText: '@lang('Delete ')',
+                    denyButtonText: '@lang(' Cancel ')',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            }
+        </script>
+        <script type="module">
+            $('#imageModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var imageUrl = button.data('image'); // Extract info from data-* attributes
+                var modal = $(this);
+                modal.find('.modal-body #previewImage').attr('src', imageUrl);
             });
         </script>
     @endpush
