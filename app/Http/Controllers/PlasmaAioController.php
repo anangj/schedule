@@ -16,7 +16,7 @@ class PlasmaAioController extends Controller
     public function index()
     {
         // $date = Carbon::now()->format('Y-m-d');
-        $date = Carbon::now()->subMonths(2)->format('Y-m-d');
+        $date = Carbon::now()->subMonths(3)->format('Y-m-d');
         $time = Carbon::now()->format('H:i');
         // $time = '21:30';
         $kp = '%K-P%';
@@ -32,14 +32,13 @@ class PlasmaAioController extends Controller
 
         // Schedule
         if ($time >= '07:00' && $time < '13:28') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
-            dd($schedules);
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
             $shift = 'MALAM';
         }
 
@@ -55,7 +54,7 @@ class PlasmaAioController extends Controller
             $shift = 'MALAM';
         }
 
-        // dd($nurses);
+        // dd($doctors);
 
         // Driver
         if ($time >= '07:00' && $time < '13:28') {
@@ -71,7 +70,7 @@ class PlasmaAioController extends Controller
 
         // dd($shift);
 
-        return view('plasma.plasma-aio', compact( 'schedules', 'drivers', 'shift', 'today', 'nurses'));
+        return view('plasma.plasma-aio', compact( 'doctors', 'drivers', 'shift', 'today', 'nurses'));
     }
 
     /**

@@ -1,79 +1,95 @@
 <x-schedule>
-
-    <div class="bg-cover bg-center" style="background-image: url({{ asset('images/logo/background.svg') }}); height: 100%">
-        <div class="card">
-            <div class="flex items-center">
-                <div class="ml-5 mr-36 basis-1/4">
-                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" width="80%">
+    <div class="bg-cover bg-center h-full" style="background-image: url({{ asset('images/logo/background.svg') }});">
+        <div class="card w-full">
+            <div class="flex flex-wrap items-center w-full">
+                <div class="ml-5 mr-8 sm:mr-48 flex-shrink-0 w-1/4 sm:w-1/4">
+                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" class="w-3/4">
                 </div>
-                <h1 class="basis-1/2 font-bold" style="color: #003974">Petugas Kami Hari Ini</h1>
-                <div id="clock" class="font-semibold text-4xl"></div>
+                <div id="header-text" class="text-center sm:text-left flex-1 font-bold text-2xl sm:text-4xl text-responsive text-blue-900">
+                    PETUGAS KAMI HARI INI
+                </div>
+                <div id="clock" class="font-bold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right"></div>
+            </div>
+        </div>
+        <div class="card w-full mt-2">
+            <div class="flex flex-wrap items-center w-full">
+                <div class="ml-16 mr-8 sm:mr-48 flex-shrink-0 w-1/4 sm:w-1/4">
+                    {{-- <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" class="w-3/4"> --}}
+                </div>
+                <div id="header-text" class="text-left sm:text-left flex-1 font-bold text-2xl sm:text-4xl text-responsive text-blue-900">
+                    {{ $today }}
+                </div>
+                <div id="clock" class="font-bold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right"></div>
+            </div>
+        </div>
+        {{-- <div class="card mt-3 mx-5 text-center items-center text-xl sm:text-3xl py-2 text-blue-900">
+            {{ $today }}
+        </div> --}}
+
+        <!-- Carousel for Schedules and Personnel -->
+        <div class="slider carousel-interval owl-carousel -mt-4">
+            @foreach ($schedules->chunk(8) as $scheduleChunk)
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6">
+                    @foreach ($scheduleChunk as $item)
+                        <div class="bg-white shadow-md rounded-lg p-4">
+                            <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
+                            <div class="grid grid-rows-2 gap-1">
+                                @foreach ($item->doctors as $doctor)
+                                    <div class="card shadow-md rounded-lg flex items-center p-2">
+                                        <div class="relative w-16 h-16 flex-shrink-0">
+                                            <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img" class="w-full h-full object-cover rounded-full">
+                                            <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">{{ $loop->iteration }}</div>
+                                        </div>
+                                        <div class="ml-4 text-md font-bold">{{ $doctor }}</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+
+            <!-- Card for Doctors, Nurses, and Drivers -->
+            <div class="p-6">
+                @foreach ($personnel->groupBy('title') as $title => $group)
+                    <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">{{ $title }}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
+                        @foreach ($group as $item)
+                            <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
+                                <img src="{{ asset('images/avatar/av-1.svg') }}" alt="{{ $item['data']->employee_name }}" class="h-12 w-12 rounded-full object-cover">
+                                <div class="col-span-6 flex items-center text font-bold">{{ $item['data']->employee_name }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
-    {{-- <div class="card">
-        
-        <div class="flex pt-10">
-            <div class="ml-5 mr-20 basis-1/4">
-                <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" width="50%">
-            </div>
-            <h1 class=" basis-1/2">PETUGAS KAMI HARI INI</h1>
-            <div class="font-semibold text-4xl">{{ now()->format('H:i') }} WIB</div>
-        </div>
-        <div class="date-schedule">{{ $today }} - {{ $shift }}</div>
-        <div class="card mt-12">
-            <div class="card-body ">
-                <div class="overflow-x-auto -mx-6 dashcode-data-table">
-                  <div class="inline-block min-w-full align-middle">
-                    <div class="overflow-hidden ">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 50%">DOKTER</th>
-                                    <th style="width: 50%">PERAWAT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for ($i = 0; $i < count($schedules); $i++)
-                                <tr>
-                                    <td style="width: 50%">{{ $drivers[$i]->employee_name }}</td>
-                                    <td style="width: 50%">{{ $schedules[$i]->employee_name }}</td>
-                                </tr>
-                                @endfor
-                            </tbody>
-                        </table>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 50%">DRIVER</th>
-                                    <th style="width: 50%">NURSE ON DUTY</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for ($i = 0; $i < count($drivers); $i++)
-                                <tr>
-                                    <td style="width: 50%">{{ $drivers[$i]->employee_name }}</td>
-                                    <td style="width: 50%">{{ $drivers[$i]->employee_name }}</td>
-                                </tr>
-                                @endfor
-                            </tbody>
-                        </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div>
-    </div> --}}
+
+    @push('scripts')
+        @vite(['resources/js/plugins/owl.carousel.min.js'])
+        <script type="module">
+            $(".carousel-interval").owlCarousel({
+                autoplay: true,
+                autoplayTimeout: 10000,
+                autoplayHoverPause: true,
+                lazyLoad: true,
+                loop: true,
+                nav: false,
+                items: 1,
+                dots: false,
+            });
+
+            function updateClock() {
+                var now = new Date();
+                var hours = String(now.getHours()).padStart(2, '0');
+                var minutes = String(now.getMinutes()).padStart(2, '0');
+                var seconds = String(now.getSeconds()).padStart(2, '0');
+                var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
+                document.getElementById('clock').textContent = timeString;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+        </script>
+    @endpush
 </x-schedule>
-<script>
-    function updateClock() {
-        var now = new Date();
-        var hours = String(now.getHours()).padStart(2, '0');
-        var minutes = String(now.getMinutes()).padStart(2, '0');
-        var seconds = String(now.getSeconds()).padStart(2, '0');
-        var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
-        document.getElementById('clock').textContent = timeString;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-</script>

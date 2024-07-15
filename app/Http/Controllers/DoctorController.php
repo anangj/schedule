@@ -24,13 +24,28 @@ class DoctorController extends Controller
      */
     public function index(Request $request)
     {
+        $breadcrumbsItems = [
+            [
+                'name' => 'Doctor',
+                'url' => route('doctors.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
         // $doctors = Doctor::where('doctor_id', 'I12345')->get();
         // var_dump($doctors);
 
         // $doctors = Doctor::all(); ///this is for mongodb
 
         $doctors = Doctor::all();
-        return view('doctors.index', ['doctors' => $doctors]);
+        return view('doctors.index', [
+            'doctors' => $doctors, 'breadcrumbsItems' => $breadcrumbsItems,
+            'pageTitle' => 'Doctor'
+        ]);
 
         // return new DoctorCollection($doctors);
     }
@@ -78,7 +93,7 @@ class DoctorController extends Controller
         return view('doctors.show', compact('doctors'));
     }
 
-    public function edit( Doctor $doctor)
+    public function edit(Doctor $doctor)
     {
         $breadcrumbsItems = [
             [
@@ -112,7 +127,7 @@ class DoctorController extends Controller
             'shift' => $request->validated('shift'),
             'date' => $request->validated('date')
         ]);
-        
+
         return to_route('doctors.index')->with('message', 'Doctor updates Successfully!');
     }
 
@@ -130,42 +145,48 @@ class DoctorController extends Controller
 
     public function storeExcel(Request $request)
     {
-        // Mengasumsikan file telah diunggah melalui form
-        $file = $request->file('excel_file');
+        try {
 
-        // Memuat file
-        $rows = Excel::toArray([], $file);
+            Doctor::truncate();
+            // Mengasumsikan file telah diunggah melalui form
+            $file = $request->file('excel_file');
 
-        // Mendapatkan nomor baris header
-        $headerRowNumber = $this->getHeaderRowNumber($rows);
+            // Memuat file
+            $rows = Excel::toArray([], $file);
 
-        // Mendapatkan header
-        $headers = $rows[0][$headerRowNumber];
-        // var_dump($headers);
+            // Mendapatkan nomor baris header
+            $headerRowNumber = $this->getHeaderRowNumber($rows);
 
-        // Melakukan iterasi melalui baris data
-        for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
-            // Mengakses data setiap baris
-            $rowData = $rows[0][$i];
+            // Mendapatkan header
+            $headers = $rows[0][$headerRowNumber];
+            // var_dump($headers);
 
-            // Contoh cara mengakses data
-            $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
-            $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
+            // Melakukan iterasi melalui baris data
+            for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
+                // Mengakses data setiap baris
+                $rowData = $rows[0][$i];
 
-            // Menangani data secara dinamis berdasarkan header
-            for ($j = 2; $j < count($headers); $j++) {
-                // var_dump($employeeId);
-                $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
-                $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+                // Contoh cara mengakses data
+                $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
+                $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
 
-                // Memproses data Anda di sini
-                $doctor = new Doctor();
-                $doctor->employee_id = $employeeId;
-                $doctor->employee_name = $employeeName;
-                $doctor->shift = $attendance;
-                $doctor->date = $date;
-                $doctor->save();
+                // Menangani data secara dinamis berdasarkan header
+                for ($j = 2; $j < count($headers); $j++) {
+                    // var_dump($employeeId);
+                    $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
+                    $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+
+                    // Memproses data Anda di sini
+                    $doctor = new Doctor();
+                    $doctor->employee_id = $employeeId;
+                    $doctor->employee_name = $employeeName;
+                    $doctor->shift = $attendance;
+                    $doctor->date = $date;
+                    $doctor->save();
+                }
             }
+        } catch (\Throwable $th) {
+            throw $th;
         }
         return redirect()->route('doctors.index');
     }

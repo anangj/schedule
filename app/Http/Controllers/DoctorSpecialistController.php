@@ -18,10 +18,27 @@ class DoctorSpecialistController extends Controller
      */
     public function index()
     {
+        $breadcrumbsItems = [
+            [
+                'name' => 'Doctor-Specialist',
+                'url' => route('doctorSpecialist.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
         $date = Carbon::now()->subMonths(2)->format('Y-m-d');
         $doctors = DB::select("select * from doctor_specialists ");
         // dd($doctors);
-        return view('doctor-specialist.index', compact('doctors'));
+        return view('doctor-specialist.index', [
+            'doctors' => $doctors,
+            'breadcrumbsItems' => $breadcrumbsItems,
+            'pageTitle' => 'Doctor Specialist'
+        ]);
     }
 
     /**
@@ -92,44 +109,49 @@ class DoctorSpecialistController extends Controller
 
     public function storeExcel(Request $request)
     {
-        // Mengasumsikan file telah diunggah melalui form
-        $file = $request->file('excel_file');
+        try {
+            DoctorSpecialist::truncate();
+            // Mengasumsikan file telah diunggah melalui form
+            $file = $request->file('excel_file');
 
-        // Memuat file
-        $rows = Excel::toArray([], $file);
+            // Memuat file
+            $rows = Excel::toArray([], $file);
 
-        // Mendapatkan nomor baris header
-        $headerRowNumber = $this->getHeaderRowNumber($rows);
+            // Mendapatkan nomor baris header
+            $headerRowNumber = $this->getHeaderRowNumber($rows);
 
-        // Mendapatkan header
-        $headers = $rows[0][$headerRowNumber];
-        // var_dump($headers);
+            // Mendapatkan header
+            $headers = $rows[0][$headerRowNumber];
+            // var_dump($headers);
 
-        // Melakukan iterasi melalui baris data
-        for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
-            // Mengakses data setiap baris
-            $rowData = $rows[0][$i];
+            // Melakukan iterasi melalui baris data
+            for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
+                // Mengakses data setiap baris
+                $rowData = $rows[0][$i];
 
-            // Contoh cara mengakses data
-            $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
-            $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
-            $specialityName = $rowData[2]; // Diasumsikan Nama Spesialisasi adalah kolom ketiga
+                // Contoh cara mengakses data
+                $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
+                $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
+                $specialityName = $rowData[2]; // Diasumsikan Nama Spesialisasi adalah kolom ketiga
 
-            // Menangani data secara dinamis berdasarkan header
-            for ($j = 3; $j < count($headers); $j++) {
-                // var_dump($employeeId);
-                $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
-                $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+                // Menangani data secara dinamis berdasarkan header
+                for ($j = 3; $j < count($headers); $j++) {
+                    // var_dump($employeeId);
+                    $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
+                    $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
 
-                // Memproses data Anda di sini
-                $specialist = new DoctorSpecialist();
-                $specialist->employee_id = $employeeId;
-                $specialist->employee_name = $employeeName;
-                $specialist->speciality_name = $specialityName;
-                $specialist->shift = $attendance;
-                $specialist->date = $date;
-                $specialist->save();
+                    // Memproses data Anda di sini
+                    $specialist = new DoctorSpecialist();
+                    $specialist->employee_id = $employeeId;
+                    $specialist->employee_name = $employeeName;
+                    $specialist->speciality_name = $specialityName;
+                    $specialist->shift = $attendance;
+                    $specialist->date = $date;
+                    $specialist->save();
+                }
             }
+        } catch (\Throwable $th) {
+            throw $th;
         }
         return redirect()->route('doctorSpecialist.index');
     }

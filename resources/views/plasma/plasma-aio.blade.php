@@ -16,10 +16,10 @@
         <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">DOKTER </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
-            @foreach ($schedules as $schedule)
+            @foreach ($doctors as $doctor)
                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
-                    <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $schedule->employee_name }}" class="h-12 w-12 rounded-full object-cover">
-                    <div class="col-span-6 flex items-center text font-bold">{{ $schedule->employee_name }}</div>
+                    <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $doctor->employee_name }}" class="h-12 w-12 rounded-full object-cover">
+                    <div class="col-span-6 flex items-center text font-bold">{{ $doctor->employee_name }}</div>
                 </div>
             @endforeach
         </div>
@@ -42,23 +42,23 @@
 
         <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">DRIVER</div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
-            @foreach ($drivers as $drivers)
+            @foreach ($drivers as $driver)
                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
-                    <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $schedule->employee_name }}" class="h-12 w-12 rounded-full object-cover">
-                    <div class="col-span-6 flex items-center text font-bold">{{ $drivers->employee_name }}</div>
+                    <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $driver->employee_name }}" class="h-12 w-12 rounded-full object-cover">
+                    <div class="col-span-6 flex items-center text font-bold">{{ $driver->employee_name }}</div>
                 </div>
             @endforeach
         </div>
 
         <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">NURSE ON DUTY </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
+        {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
             @foreach ($schedules as $schedule)
                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
                     <img src="{{  asset('images/avatar/av-1.svg') }}" alt="{{ $schedules->employee_name }}" class="h-12 w-12 rounded-full object-cover">
                     <div class="col-span-6 flex items-center text font-bold">{{ $schedules[0]->employee_name }}</div>
                 </div>
             @endforeach
-        </div>
+        </div> --}}
 
     </div>
 </x-schedule>

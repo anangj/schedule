@@ -18,35 +18,110 @@ class PlasmaController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now()->format('Y-m-d');
+        /// for page spesialis
+        $date = Carbon::now()->subMonths(3)->format('Y-m-d');
         $time = Carbon::now()->format('H:i');
+        $shiftCondition = '%L%';
+        $shift = '';
+        $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
+
+        $subQuery = DB::table('doctor_specialists')
+            ->select(
+                'speciality_name',
+                'employee_name',
+                'date',
+                'shift',
+                DB::raw('ROW_NUMBER() OVER (PARTITION BY speciality_name ORDER BY employee_name) as row_num')
+            )
+            ->where('date', $date)
+            ->where('shift', 'not like', $shiftCondition)
+            ->orderBy('speciality_name')
+            ->orderBy('shift');
+        // dd($subQuery);
+
+        $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
+            ->mergeBindings($subQuery)
+            ->select('speciality_name', DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'))
+            ->where('row_num', '<=', 2)
+            ->orderBy('speciality_name')
+            ->orderBy('shift')
+            ->groupBy('speciality_name')
+            ->get();
+
+        $schedules = $schedules->map(function ($item) {
+            $item->doctors = explode('||', $item->doctors);
+            return $item;
+        });
+        /// end spesialis
+
+        /// petugas igd
         $kp = '%K-P%';
         $op1 = 'OP-1';
         $op2 = 'OP-2';
         $op3 = 'OP-3';
+        $p = 'P';
+        $s = 'S';
+        $m = 'M';
+        $middle3 = 'middle-3';
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
+        $doctors = [];
+        $nurses = [];
+        $drivers = [];
 
         // Schedule
         if ($time >= '07:00' && $time < '13:28') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op1%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
             $shift = 'PAGI';
-        } else if ($time >= '13:30' && $time < '20:28') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op2%' OR shift LIKE '%$kp%')");
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
             $shift = 'SIANG';
-        } else if ($time >= '20:30') {
-            $schedules = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$op3%')");
+        } else if ($time >= '21:00') {
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
             $shift = 'MALAM';
         }
 
-        // var_dump($schedules[0]->employee_name);
+        // Nurses
+        if ($time >= '07:00' && $time < '13:28') {
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op1%')");
+            $shift = 'PAGI';
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op2%')");
+            $shift = 'SIANG';
+        } else if ($time >= '21:00') {
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
+            $shift = 'MALAM';
+        }
+
+        // dd($doctors);
 
         // Driver
-        $drivers = DB::select("select employee_name, date, shift from drivers WHERE date = '$date'");
+        if ($time >= '07:00' && $time < '13:28') {
+            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op1%')");
+            $shift = 'PAGI';
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op2%')");
+            $shift = 'SIANG';
+        } else if ($time >= '21:00') {
+            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op3%')");
+            $shift = 'MALAM';
+        }
+        /// end petugas igd
 
-        // var_dump($drivers);
+        // Combine doctors, nurses, and drivers into one collection
+        $personnel = collect($doctors)->map(function ($doctor) {
+            return ['type' => 'doctor', 'data' => $doctor, 'title' => 'DOCTOR'];
+        })->merge(
+            collect($nurses)->map(function ($nurse) {
+                return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
+            })
+        )->merge(
+            collect($drivers)->map(function ($driver) {
+                return ['type' => 'driver', 'data' => $driver, 'title' => 'DRIVER'];
+            })
+        );
 
-        return view('plasma.plasma', compact( 'drivers', 'shift', 'today'));
+        return view('plasma.plasma', compact('schedules', 'personnel', 'shift', 'today'));
     }
 
     /**

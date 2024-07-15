@@ -17,7 +17,7 @@ class PlasmaSpecialistController extends Controller
     public function index()
     {
         // $date = Carbon::now()->format('Y-m-d');
-        $date = Carbon::now()->subMonths(2)->format('Y-m-d');
+        $date = Carbon::now()->subMonths(3)->format('Y-m-d');
         $time = Carbon::now()->format('H:i');
         $shiftCondition = '%L%';
         $shift = '';
@@ -51,7 +51,7 @@ class PlasmaSpecialistController extends Controller
             return $item;
         });
 
-        dd($today);
+        // dd($today);
 
         // dd($schedules);
         return view('plasma.plasma-specialist', compact('schedules', 'shift', 'today'));

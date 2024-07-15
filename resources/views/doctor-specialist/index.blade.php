@@ -1,18 +1,26 @@
 <x-app-layout>
-     <div class="space-y-5">
+     <div class="space-y-8">
+        <div class="block sm:flex items-center justify-between mb-6">
+            <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
+            <div class="text-end">
+                <form class="form-control" action="{{ route('doctorSpecialist.uploadExcel') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="excel_file" accept=".xlsx, .xls" required>
+                    <button type="submit"
+                        class="btn leading-0 inline-flex justify-center bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-300 !font-normal">
+                        <span class="flex items-center">
+                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2 font-light"
+                                icon="heroicons-outline:upload"></iconify-icon>
+                            <span>Upload</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
         <div class=" space-y-5">
             <div class="card">
-                <header class=" card-header noborder">
-                    <h4 class="card-title">{{__('List Doctor')}}
-                    </h4>
-                    {{-- <a href="{{ route('doctors.create') }}" class="btn inline-flex justify-center btn-primary rounded-[25px]">Tambah Dokter</a> --}}
-                    <form action="{{ route('doctorSpecialist.uploadExcel') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="excel_file" accept=".xlsx, .xls" required>
-                        <button type="submit" class="btn inline-flex justify-center btn-outline-primary">Upload
-                            Schedule</button>
-                    </form>
-                </header>
                 <div class="card-body px-6 pb-6">
                     <div class="overflow-x-auto -mx-6 dashcode-data-table">
                         <span class=" col-span-8  hidden"></span>

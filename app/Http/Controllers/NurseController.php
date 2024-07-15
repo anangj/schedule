@@ -18,9 +18,26 @@ class NurseController extends Controller
      */
     public function index(Request $request)
     {
+        $breadcrumbsItems = [
+            [
+                'name' => 'Nurse',
+                'url' => route('nurses.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
         $nurses = Nurse::all();
 
-        return view('nurses.index', ['nurses' => $nurses]);
+        return view('nurses.index', [
+            'nurses' => $nurses,
+            'breadcrumbsItems' => $breadcrumbsItems,
+            'pageTitle' => 'Nurse'
+        ]);
 
         // return new NurseCollection($nurses);
     }
@@ -72,42 +89,48 @@ class NurseController extends Controller
 
     public function storeExcel(Request $request)
     {
-        // Mengasumsikan file telah diunggah melalui form
-        $file = $request->file('excel_file');
+        try {
 
-        // Memuat file
-        $rows = Excel::toArray([], $file);
+            Nurse::truncate();
+            // Mengasumsikan file telah diunggah melalui form
+            $file = $request->file('excel_file');
 
-        // Mendapatkan nomor baris header
-        $headerRowNumber = $this->getHeaderRowNumber($rows);
+            // Memuat file
+            $rows = Excel::toArray([], $file);
 
-        // Mendapatkan header
-        $headers = $rows[0][$headerRowNumber];
+            // Mendapatkan nomor baris header
+            $headerRowNumber = $this->getHeaderRowNumber($rows);
 
-        // Melakukan iterasi melalui baris data
-        for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
-            // Mengakses data setiap baris
-            $rowData = $rows[0][$i];
+            // Mendapatkan header
+            $headers = $rows[0][$headerRowNumber];
 
-            // Contoh cara mengakses data
-            $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
-            $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
+            // Melakukan iterasi melalui baris data
+            for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
+                // Mengakses data setiap baris
+                $rowData = $rows[0][$i];
 
-            // Menangani data secara dinamis berdasarkan header
-            for ($j = 2; $j < count($headers); $j++) {
-                // var_dump($employeeId);
-                $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
-                $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+                // Contoh cara mengakses data
+                $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
+                $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
 
-                // Memproses data Anda di sini
-                $nurse = new Nurse();
-                $nurse->employee_id = $employeeId;
-                $nurse->employee_name = $employeeName;
-                $nurse->date = $date;
-                $nurse->shift = $attendance;
-                // var_dump($nurse);
-                $nurse->save();
+                // Menangani data secara dinamis berdasarkan header
+                for ($j = 2; $j < count($headers); $j++) {
+                    // var_dump($employeeId);
+                    $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
+                    $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+
+                    // Memproses data Anda di sini
+                    $nurse = new Nurse();
+                    $nurse->employee_id = $employeeId;
+                    $nurse->employee_name = $employeeName;
+                    $nurse->date = $date;
+                    $nurse->shift = $attendance;
+                    // var_dump($nurse);
+                    $nurse->save();
+                }
             }
+        } catch (\Throwable $th) {
+            throw $th;
         }
 
         // return redirect()

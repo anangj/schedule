@@ -1,22 +1,23 @@
 <x-schedule>
-    <div class="bg-cover bg-center"
-        style="background-image: url({{ asset('images/logo/background.svg') }}); height: 100%">
-        <div class="card" style="width: 100%;">
-            <div class="flex items-center" style="width: 100%;">
-                <div class="ml-5 mr-36 basis-1/4" style="width: 25%;">
-                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" style="width: 80%;">
+    <div class="bg-cover bg-center h-full"
+        style="background-image: url({{ asset('images/logo/background.svg') }});">
+        <div class="card w-full">
+            <div class="flex flex-wrap items-center w-full">
+                <div class="ml-5 mr-8 sm:mr-36 flex-shrink-0 w-1/4 sm:w-1/4">
+                    <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" class="w-3/4">
                 </div>
-                <div class="basis-1/2 font-bold text-4xl text-responsive" style="color: #003974; width: 80%;">DOKTER SPESIALIS (ON CALL)</div>
-                <div id="clock" class="font-semibold text-4xl" style="width: 25%;"></div>
+                <div id="header-text" class="text-center sm:text-left flex-1 font-bold text-2xl sm:text-4xl text-responsive text-blue-900">
+                    DOKTER SPESIALIS (ON CALL)
+                </div>
+                <div id="clock" class="font-semibold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right"></div>
             </div>
         </div>
-        <div class="card mt-3 ml-5 mr-5 text-center items-center text-3xl py-2 text-white"
-            style="background-color: #003974">{{ $today }}</div>
-        {{-- <div class="mt-2 ml-5 text-xl font-bold" style="color: #008060">DOKTER SPESIALIS (ON CALL)</div> --}}
-
+        <div class="card mt-3 mx-5 text-center items-center text-xl sm:text-3xl py-2 text-blue-900">
+            {{ $today }}
+        </div>
         <div class="slider carousel-interval owl-carousel -mt-4">
-            @foreach ($schedules->chunk(8) as $scheduleChunk) <!-- Each slide shows 8 specialties (4 columns, 2 rows) -->
-                <div class="grid grid-cols-4 gap-1 p-6">
+            @foreach ($schedules->chunk(8) as $scheduleChunk)
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6">
                     @foreach ($scheduleChunk as $item)
                         <div class="bg-white shadow-md rounded-lg p-4">
                             <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
@@ -27,7 +28,7 @@
                                             <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img" class="w-full h-full object-cover rounded-full">
                                             <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">{{ $loop->iteration }}</div>
                                         </div>
-                                        <div class="ml-4 text-md font-bold ">{{ $doctor }}</div>
+                                        <div class="ml-4 text-md font-bold">{{ $doctor }}</div>
                                     </div>
                                 @endforeach
                             </div>
@@ -41,7 +42,6 @@
     @push('scripts')
         @vite(['resources/js/plugins/owl.carousel.min.js'])
         <script type="module">
-            // Carousel Interval
             $(".carousel-interval").owlCarousel({
                 autoplay: true,
                 autoplayTimeout: 10000,

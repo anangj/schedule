@@ -35,7 +35,7 @@ class DriverController extends Controller
         $date = Carbon::now()->subMonth()->format('Y-m-d');
         // $drivers = Driver::where('date', $date)->get();
         $drivers = Driver::all();
-        return view ('drivers.index', [
+        return view('drivers.index', [
             'drivers' => $drivers,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Driver'
@@ -153,43 +153,49 @@ class DriverController extends Controller
 
     public function storeExcel(Request $request)
     {
-        // Mengasumsikan file telah diunggah melalui form
-        $file = $request->file('excel_file');
+        try {
+            // Menghapus semua data dalam tabel drivers sebelum menyimpan data baru
+            Driver::truncate();
 
-        // Memuat file
-        $rows = Excel::toArray([], $file);
+            // Mengasumsikan file telah diunggah melalui form
+            $file = $request->file('excel_file');
 
-        // Mendapatkan nomor baris header
-        $headerRowNumber = $this->getHeaderRowNumber($rows);
+            // Memuat file
+            $rows = Excel::toArray([], $file);
 
-        // Mendapatkan header
-        $headers = $rows[0][$headerRowNumber];
-        // var_dump($headers);
+            // Mendapatkan nomor baris header
+            $headerRowNumber = $this->getHeaderRowNumber($rows);
 
-        // Melakukan iterasi melalui baris data
-        for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
-            // Mengakses data setiap baris
-            $rowData = $rows[0][$i];
+            // Mendapatkan header
+            $headers = $rows[0][$headerRowNumber];
+            // dd($headers);
 
-            // Contoh cara mengakses data
-            $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
-            $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
+            // Melakukan iterasi melalui baris data
+            for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
+                // Mengakses data setiap baris
+                $rowData = $rows[0][$i];
 
-            // Menangani data secara dinamis berdasarkan header
-            for ($j = 2; $j < count($headers); $j++) {
-                // var_dump($employeeId);
-                $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
-                $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+                // Contoh cara mengakses data
+                $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
+                $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
 
-                // Memproses data Anda di sini
-                $drivers = new Driver();
-                $drivers->employee_id = $employeeId;
-                $drivers->employee_name = $employeeName;
-                $drivers->shift = $attendance;
-                $drivers->date = $date;
-                // var_dump($drivers);
-                $drivers->save();
+                // Menangani data secara dinamis berdasarkan header
+                for ($j = 2; $j < count($headers); $j++) {
+                    // var_dump($employeeId);
+                    $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
+                    $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+
+                    // Memproses data Anda di sini
+                    $drivers = new Driver();
+                    $drivers->employee_id = $employeeId;
+                    $drivers->employee_name = $employeeName;
+                    $drivers->shift = $attendance;
+                    $drivers->date = $date;
+                    $drivers->save();
+                }
             }
+        } catch (\Throwable $th) {
+            throw $th;
         }
         return redirect()->route('drivers.index');
     }
