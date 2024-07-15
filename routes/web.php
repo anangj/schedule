@@ -63,7 +63,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/doctors/upload-excel', [DoctorController::class, 'storeExcel'])->name('doctors.uploadExcel');
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-    Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.show');
 
     // Master Doctor
     Route::resource('master-dokters', MasterDokterController::class);
