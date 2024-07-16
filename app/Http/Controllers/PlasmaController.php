@@ -19,7 +19,7 @@ class PlasmaController extends Controller
     public function index()
     {
         /// for page spesialis
-        $date = Carbon::now()->subMonths(3)->format('Y-m-d');
+        $date = Carbon::now()->format('Y-m-d');
         $time = Carbon::now()->format('H:i');
         $shiftCondition = '%L%';
         $shift = '';
