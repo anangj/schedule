@@ -44,8 +44,8 @@ class PlasmaController extends Controller
             ->select('speciality_name', DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'))
             ->where('row_num', '<=', 2)
             ->orderBy('speciality_name')
-            ->orderBy('shift')
-            ->groupBy('speciality_name', 'shift')
+            // ->orderBy('shift')
+            ->groupBy('speciality_name')
             ->get();
 
         $schedules = $schedules->map(function ($item) {
