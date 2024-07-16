@@ -9,6 +9,7 @@ use App\Http\Resources\NurseResource;
 use App\Models\Nurse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Carbon;
 
 class NurseController extends Controller
 {
@@ -31,7 +32,12 @@ class NurseController extends Controller
             ],
         ];
 
-        $nurses = Nurse::all();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $nurses = Nurse::whereMonth('date', $currentMonth)
+        ->whereYear('date', $currentYear)
+        ->get();
 
         return view('nurses.index', [
             'nurses' => $nurses,
@@ -90,8 +96,6 @@ class NurseController extends Controller
     public function storeExcel(Request $request)
     {
         try {
-
-            Nurse::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 

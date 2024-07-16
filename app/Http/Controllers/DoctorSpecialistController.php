@@ -32,7 +32,14 @@ class DoctorSpecialistController extends Controller
         ];
 
         $date = Carbon::now()->subMonths(2)->format('Y-m-d');
-        $doctors = DB::select("select * from doctor_specialists ");
+
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $doctors = DoctorSpecialist::whereMonth('date', $currentMonth)
+        ->whereYear('date', $currentYear)
+        ->get();
+        
         // dd($doctors);
         return view('doctor-specialist.index', [
             'doctors' => $doctors,
@@ -110,7 +117,6 @@ class DoctorSpecialistController extends Controller
     public function storeExcel(Request $request)
     {
         try {
-            DoctorSpecialist::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 

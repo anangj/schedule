@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use MongoDB\BSON\ObjectId;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Carbon;
 
 class DoctorController extends Controller
 {
@@ -36,12 +37,14 @@ class DoctorController extends Controller
                 'active' => true
             ],
         ];
-        // $doctors = Doctor::where('doctor_id', 'I12345')->get();
-        // var_dump($doctors);
 
-        // $doctors = Doctor::all(); ///this is for mongodb
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
 
-        $doctors = Doctor::all();
+        $doctors = Doctor::whereMonth('date', $currentMonth)
+        ->whereYear('date', $currentYear)
+        ->get();
+
         return view('doctors.index', [
             'doctors' => $doctors, 'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Doctor'
@@ -146,7 +149,6 @@ class DoctorController extends Controller
     public function storeExcel(Request $request)
     {
         try {
-            Doctor::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 

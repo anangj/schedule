@@ -31,10 +31,14 @@ class DriverController extends Controller
                 'active' => true
             ],
         ];
-        // var_dump($request->filter_date);
-        $date = Carbon::now()->subMonth()->format('Y-m-d');
-        // $drivers = Driver::where('date', $date)->get();
-        $drivers = Driver::all();
+
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $drivers = Driver::whereMonth('date', $currentMonth)
+        ->whereYear('date', $currentYear)
+        ->get();
+
         return view('drivers.index', [
             'drivers' => $drivers,
             'breadcrumbsItems' => $breadcrumbsItems,
@@ -154,8 +158,6 @@ class DriverController extends Controller
     public function storeExcel(Request $request)
     {
         try {
-            // Menghapus semua data dalam tabel drivers sebelum menyimpan data baru
-            Driver::truncate();
 
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
