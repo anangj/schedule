@@ -104,6 +104,20 @@ class NurseController extends Controller
             // Mendapatkan header
             $headers = $rows[0][$headerRowNumber];
 
+            // Fungsi untuk mengubah format tanggal
+            function convertDate($excelDate)
+            {
+                // Periksa apakah tanggal dalam format angka Excel
+                if (is_numeric($excelDate)) {
+                    $unix_date = ($excelDate - 25569) * 86400;
+                    return gmdate("Y-m-d", $unix_date);
+                } else {
+                    // Jika bukan angka, coba konversi langsung
+                    $date = \DateTime::createFromFormat('d/m/Y', $excelDate);
+                    return $date ? $date->format('Y-m-d') : $excelDate;
+                }
+            }
+
             // Melakukan iterasi melalui baris data
             for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
                 // Mengakses data setiap baris
@@ -119,13 +133,15 @@ class NurseController extends Controller
                     $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
                     $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
 
+                    // Mengubah format tanggal
+                    $formattedDate = convertDate($date);
+
                     // Memproses data Anda di sini
                     $nurse = new Nurse();
                     $nurse->employee_id = $employeeId;
                     $nurse->employee_name = $employeeName;
-                    $nurse->date = $date;
+                    $nurse->date = $formattedDate;
                     $nurse->shift = $attendance;
-                    // var_dump($nurse);
                     $nurse->save();
                 }
             }

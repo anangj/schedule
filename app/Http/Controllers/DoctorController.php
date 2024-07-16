@@ -146,7 +146,6 @@ class DoctorController extends Controller
     public function storeExcel(Request $request)
     {
         try {
-
             Doctor::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
@@ -159,7 +158,20 @@ class DoctorController extends Controller
 
             // Mendapatkan header
             $headers = $rows[0][$headerRowNumber];
-            // var_dump($headers);
+
+            // Fungsi untuk mengubah format tanggal
+            function convertDate($excelDate)
+            {
+                // Periksa apakah tanggal dalam format angka Excel
+                if (is_numeric($excelDate)) {
+                    $unix_date = ($excelDate - 25569) * 86400;
+                    return gmdate("Y-m-d", $unix_date);
+                } else {
+                    // Jika bukan angka, coba konversi langsung
+                    $date = \DateTime::createFromFormat('d/m/Y', $excelDate);
+                    return $date ? $date->format('Y-m-d') : $excelDate;
+                }
+            }
 
             // Melakukan iterasi melalui baris data
             for ($i = $headerRowNumber + 1; $i < count($rows[0]); $i++) {
@@ -172,16 +184,19 @@ class DoctorController extends Controller
 
                 // Menangani data secara dinamis berdasarkan header
                 for ($j = 2; $j < count($headers); $j++) {
-                    // var_dump($employeeId);
                     $date = $headers[$j]; // Diasumsikan kolom tanggal dimulai dari kolom ketiga
                     $attendance = $rowData[$j]; // Data kehadiran untuk tanggal tersebut
+
+                    // Mengubah format tanggal
+                    $formattedDate = convertDate($date);
+                    // dd($attendance);
 
                     // Memproses data Anda di sini
                     $doctor = new Doctor();
                     $doctor->employee_id = $employeeId;
                     $doctor->employee_name = $employeeName;
                     $doctor->shift = $attendance;
-                    $doctor->date = $date;
+                    $doctor->date = $formattedDate;
                     $doctor->save();
                 }
             }
