@@ -3,7 +3,7 @@
         <div class="block sm:flex items-center justify-between mb-6">
             <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
             <div class="text-end">
-                <form class="form-control" action="{{ route('doctorSpecialist.uploadExcel') }}" method="POST"
+                <form id="uploadForm" class="form-control" action="{{ route('doctorSpecialist.uploadExcel') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="excel_file" accept=".xlsx, .xls" required>
@@ -16,6 +16,10 @@
                         </span>
                     </button>
                 </form>
+                <div id="progressContainer" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-75 z-50">
+                    <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
+                    <p class="text-lg font-semibold text-gray-700">Loading...</p>
+                </div>
             </div>
         </div>
         
@@ -99,5 +103,71 @@
                 },
             });
         </script>
+        <script>
+            document.getElementById('uploadForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                let form = this;
+                let formData = new FormData(form);
+                let xhr = new XMLHttpRequest();
+
+                xhr.open('POST', form.action, true);
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                xhr.upload.addEventListener('progress', function (e) {
+                    document.getElementById('progressContainer').classList.remove('hidden');
+                });
+
+                xhr.addEventListener('load', function () {
+                    document.getElementById('progressContainer').classList.add('hidden');
+                    if (xhr.status === 200) {
+                        Swal.fire({
+                            title: 'Upload successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Upload failed!',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+
+                xhr.send(formData);
+            });
+        </script>
+    @endpush
+    @push('styles')
+        <style>
+            .loader {
+                border-top-color: #3498db;
+                -webkit-animation: spin 1s linear infinite;
+                animation: spin 1s linear infinite;
+            }
+
+            @-webkit-keyframes spin {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                }
+                100% {
+                    -webkit-transform: rotate(360deg);
+                }
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
     @endpush
 </x-app-layout>
