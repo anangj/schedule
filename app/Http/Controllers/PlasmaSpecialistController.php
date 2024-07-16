@@ -43,7 +43,7 @@ class PlasmaSpecialistController extends Controller
             ->where('row_num', '<=', 2)
             ->orderBy('speciality_name')
             ->orderBy('shift')
-            ->groupBy('speciality_name')
+            ->groupBy('speciality_name', 'shift')
             ->get();
 
         $schedules = $schedules->map(function ($item) {
