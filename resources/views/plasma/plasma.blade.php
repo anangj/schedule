@@ -96,20 +96,46 @@
                 var seconds = String(now.getSeconds()).padStart(2, '0');
                 var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
                 document.getElementById('clock').textContent = timeString;
-                
+
             }
 
-            function checkRefreshTime(currentTime) {
-                // Define refresh times
-                var refreshTimes = ['07:01', '13:30', '21:01'];
-                var currentTimeString = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes()
-                    .toString().padStart(2, '0');
+            function scheduleRefresh() {
+                var now = new Date();
+                var nextRefresh = getNextRefreshTime(now);
+                var delay = nextRefresh - now;
 
-                // Check if current time matches any refresh time
-                if (refreshTimes.includes(currentTimeString)) {
-                    window.location.reload(); // Refresh the page
+                setTimeout(function() {
+                    window.location.reload();
+                }, delay);
+            }
+
+            function getNextRefreshTime(currentTime) {
+                var refreshTimes = ['07:02', '13:32', '21:02']; // Define refresh times
+                var nextRefresh = new Date(currentTime.toISOString().slice(0,
+                    10)); // Set to today's date with time reset to midnight
+
+                refreshTimes = refreshTimes.map(time => {
+                    var [hours, minutes] = time.split(':');
+                    var date = new Date(nextRefresh.getTime());
+                    date.setHours(hours, minutes);
+                    return date;
+                });
+
+                // Find the next refresh time that is later than the current time
+                var futureTimes = refreshTimes.filter(time => time > currentTime);
+                if (futureTimes.length === 0) {
+                    // If all times are past, set the next refresh for the first refresh time tomorrow
+                    nextRefresh.setDate(nextRefresh.getDate() + 1);
+                    nextRefresh.setHours(refreshTimes[0].getHours(), refreshTimes[0].getMinutes());
+                    return nextRefresh;
                 }
+
+                // Return the nearest future refresh time
+                return futureTimes[0];
             }
+
+            // Initialize the refresh schedule
+            scheduleRefresh();
             setInterval(updateClock, 1000);
             updateClock();
         </script>
