@@ -96,8 +96,7 @@
                 var seconds = String(now.getSeconds()).padStart(2, '0');
                 var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
                 document.getElementById('clock').textContent = timeString;
-
-                checkRefreshTime(now);
+                
             }
 
             function checkRefreshTime(currentTime) {
