@@ -2,14 +2,14 @@
     <div class="bg-cover bg-center h-full" style="background-image: url({{ asset('images/logo/background.svg') }});">
         <div class="card w-full">
             <div class="flex items-center w-full">
-                <div class="ml-5 mr-8 sm:mr-36 flex-shrink-0 w-1/4 sm:w-1/4">
+                <div class="ml-5 sm:mr-36 flex-shrink-0 w-1/4 sm:w-1/4">
                     <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" class="w-3/4">
                 </div>
                 {{-- <div id="header-text" class="text-center sm:text-left flex-1 font-bold text-2xl sm:text-4xl text-responsive text-blue-900">
                     PETUGAS KAMI HARI INI
                 </div> --}}
                 <h1 class="basis-1/2 font-bold" style="color: #003974">Petugas Kami Hari Ini</h1>
-                <div id="clock" class="font-bold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right"></div>
+                <div id="clock" class="font-bold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right mr-5"></div>
             </div>
         </div>
         {{-- <div class="card w-full mt-2">
@@ -41,8 +41,10 @@
                                 @foreach ($item->doctors as $doctor)
                                     <div class="card shadow-md rounded-lg flex items-center p-2">
                                         <div class="relative w-16 h-16 flex-shrink-0">
-                                            <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img" class="w-full h-full object-cover rounded-full">
-                                            <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">{{ $loop->iteration }}</div>
+                                            <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img"
+                                                class="w-full h-full object-cover rounded-full">
+                                            <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
+                                                {{ $loop->iteration }}</div>
                                         </div>
                                         <div class="ml-4 text-md font-bold">{{ $doctor }}</div>
                                     </div>
@@ -60,8 +62,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
                         @foreach ($group as $item)
                             <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
-                                <img src="{{ asset('images/avatar/av-1.svg') }}" alt="{{ $item['data']->employee_name }}" class="h-12 w-12 rounded-full object-cover">
-                                <div class="col-span-6 flex items-center text font-bold">{{ $item['data']->employee_name }}</div>
+                                <img src="{{ asset('images/avatar/av-1.svg') }}"
+                                    alt="{{ $item['data']->employee_name }}"
+                                    class="h-12 w-12 rounded-full object-cover">
+                                <div class="col-span-6 flex items-center text font-bold">
+                                    {{ $item['data']->employee_name }}</div>
                             </div>
                         @endforeach
                     </div>
@@ -91,6 +96,20 @@
                 var seconds = String(now.getSeconds()).padStart(2, '0');
                 var timeString = hours + ':' + minutes + ':' + seconds + ' WIB';
                 document.getElementById('clock').textContent = timeString;
+
+                checkRefreshTime(now);
+            }
+
+            function checkRefreshTime(currentTime) {
+                // Define refresh times
+                var refreshTimes = ['07:01', '13:30', '21:01'];
+                var currentTimeString = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes()
+                    .toString().padStart(2, '0');
+
+                // Check if current time matches any refresh time
+                if (refreshTimes.includes(currentTimeString)) {
+                    window.location.reload(); // Refresh the page
+                }
             }
             setInterval(updateClock, 1000);
             updateClock();
