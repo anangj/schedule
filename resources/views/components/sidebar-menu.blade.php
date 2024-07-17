@@ -87,9 +87,9 @@
                         <li>
                             <a href="{{ route('plasma2') }}" class="{{ (\Request::route()->getName() == 'plasma2') ? 'active' : '' }}">{{ __('Plasma2') }}</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('plasmaSpecialist') }}" class="{{ (\Request::route()->getName() == 'plasmaSpecialist') ? 'active' : '' }}">{{ __('Plasma Specialist') }}</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 <!-- Settings -->

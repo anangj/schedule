@@ -1,0 +1,36 @@
+.main-runtext {
+    margin: 0 auto;
+    overflow: visible;
+    position: relative;
+    height: 40px;
+}
+
+
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    // color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    animation: marquee 1ms;
+}
+
+.runtext-container {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding: 0 3px 0 3px;
+}
+
+.runtext-container .holder .text-container {
+    display: inline;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%); 
+    }
+}
