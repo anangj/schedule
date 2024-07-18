@@ -31,20 +31,18 @@ class PlasmaController extends Controller
                 'employee_name',
                 'date',
                 'shift',
-                DB::raw('ROW_NUMBER() OVER (PARTITION BY speciality_name ORDER BY employee_name) as row_num')
+                DB::raw('ROW_NUMBER() OVER (PARTITION BY speciality_name ORDER BY shift) as row_num')
             )
             ->where('date', $date)
             ->where('shift', 'not like', $shiftCondition)
             ->orderBy('speciality_name')
             ->orderBy('shift');
-        // dd($subQuery);
 
         $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
             ->mergeBindings($subQuery)
             ->select('speciality_name', DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'))
             ->where('row_num', '<=', 2)
             ->orderBy('speciality_name')
-            // ->orderBy('shift')
             ->groupBy('speciality_name')
             ->get();
 
