@@ -117,6 +117,7 @@ class DoctorSpecialistController extends Controller
     public function storeExcel(Request $request)
     {
         try {
+            DoctorSpecialist::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 
@@ -128,7 +129,6 @@ class DoctorSpecialistController extends Controller
 
             // Mendapatkan header
             $headers = $rows[0][$headerRowNumber];
-            // var_dump($headers);
 
             // Fungsi untuk mengubah format tanggal
             function convertDate($excelDate)
