@@ -66,6 +66,7 @@ class PlasmaController extends Controller
         $doctors = [];
         $nurses = [];
         $drivers = [];
+        // $kp = [];
 
         // Schedule
         if ($time >= '07:00' && $time < '13:28') {
@@ -96,7 +97,14 @@ class PlasmaController extends Controller
             $shift = 'MALAM';
         }
 
-        $merged = array_merge($kp,$nurses);
+
+        if ($time >= '07:00' && $time <= '16:00') {
+            $merged = array_merge($kp,$nurses);
+        } else {
+            $merged = $nurses;
+        }
+
+        
 
 
         // Driver
