@@ -80,7 +80,7 @@
         <script type="module">
             $(".carousel-interval").owlCarousel({
                 autoplay: true,
-                autoplayTimeout: 3000,
+                autoplayTimeout: 5000,
                 autoplayHoverPause: true,
                 lazyLoad: true,
                 loop: true,
@@ -110,7 +110,7 @@
             }
 
             function getNextRefreshTime(currentTime) {
-                var refreshTimes = ['07:02', '13:32', '21:02']; // Define refresh times
+                var refreshTimes = ['07:02', '13:32', '21:02', '16:02']; // Define refresh times
                 var nextRefresh = new Date(currentTime.toISOString().slice(0,
                     10)); // Set to today's date with time reset to midnight
 

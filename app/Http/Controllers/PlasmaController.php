@@ -55,7 +55,7 @@ class PlasmaController extends Controller
         /// end spesialis
 
         /// petugas igd
-        $kp = '%K-P%';
+        $kp = 'KP'; // dari jam 7-16
         $op1 = 'OP-1';
         $op2 = 'OP-2';
         $op3 = 'OP-3';
@@ -81,19 +81,25 @@ class PlasmaController extends Controller
             $shift = 'MALAM';
         }
 
+        // QUERY FOR KP
+        if ($time >= '07:00' && $time <= '16:00') {
+            $kp = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND shift = '$kp'");
+        }
+
         // Nurses
         if ($time >= '07:00' && $time < '13:28') {
-            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op1%')");
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND shift = '$op1'");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op2%')");
+            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND shift = '$op2'");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
             $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
             $shift = 'MALAM';
         }
 
-        // dd($doctors);
+        $merged = array_merge($kp,$nurses);
+
 
         // Driver
         if ($time >= '07:00' && $time < '13:28') {
@@ -112,7 +118,7 @@ class PlasmaController extends Controller
         $personnel = collect($doctors)->map(function ($doctor) {
             return ['type' => 'doctor', 'data' => $doctor, 'title' => 'DOCTOR'];
         })->merge(
-            collect($nurses)->map(function ($nurse) {
+            collect($merged)->map(function ($nurse) {
                 return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
             })
         )->merge(
