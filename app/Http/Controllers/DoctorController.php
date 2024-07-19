@@ -149,6 +149,7 @@ class DoctorController extends Controller
     public function storeExcel(Request $request)
     {
         try {
+            Doctor::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 
