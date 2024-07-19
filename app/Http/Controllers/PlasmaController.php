@@ -60,6 +60,7 @@ class PlasmaController extends Controller
         $p = 'P';
         $s = 'S';
         $m = 'M';
+        $ps = 'PS';
         $middle3 = 'middle-3';
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
@@ -70,10 +71,10 @@ class PlasmaController extends Controller
 
         // Schedule
         if ($time >= '07:00' && $time < '13:28') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%' OR shift = '$ps')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%' OR shift = '$ps')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
             $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
