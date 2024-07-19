@@ -1,22 +1,32 @@
 <x-app-layout>
-    <div>
-        <div class=" mb-6">
-            {{-- <x-breadcrumb :breadcrumb-items="$breadcrumbItems" :page-title="$pageTitle" /> --}}
+    <div class="space-y-8">
+        <div class="block sm:flex items-center justify-between mb-6">
+            {{-- Breadcrumb --}}
+            <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbItems" />
+            <div class="text-end">
+                <a href="{{ route('master-dokters.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('master-dokters.edit', $masterDokter->id) }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1 mt-4 !px-3 !py-2">Edit</a>
+            </div>
         </div>
-
-        <div class="card">
-            <form>
-                <div class="form-group my-2">
-                    <label>Nama Dokter:</label>
-                    <input type="text" class="form-control" value="{{$masterDokter->nama_dokter}}" readonly>
+        <div class="rounded-md overflow-hidden">
+            <div class="bg-white dark:bg-slate-800 px-5 py-7">
+                <div class="form-group">
+                    <label for="nama_dokter">Nama Doctor</label>
+                    <input type="text" id="nama_dokter" class="form-control" value="{{ $masterDokter->nama_dokter }}" readonly>
                 </div>
                 <div class="form-group">
-                    <label>Jadwal:</label>
-                    @foreach ($masterDokter->schedule as $item)
-                        <input type="text" class="form-control mb-2" value="{{$item->weekday}} {{$item->start_hour}}:{{$item->start_minute}} - {{$item->end_hour}}:{{$item->end_minute}}" readonly>
-                    @endforeach
+                    <label for="poli">Poli</label>
+                    <input type="text" id="poli" class="form-control" value="{{ $masterDokter->poli }}" readonly>
                 </div>
-            </form>
+                <div class="form-group">
+                    <label for="spesialis">Spesialis</label>
+                    <input type="text" id="spesialis" class="form-control" value="{{ $masterDokter->spesialis }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="image" name="image">Image</label>
+                    <img src="{{ $masterDokter->image_url ? Storage::url($masterDokter->image_url) : '#' }}" alt="Doctor Image" class="block w-32 h-32 object-cover rounded-full mt-2">
+                </div>
+            </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout> 

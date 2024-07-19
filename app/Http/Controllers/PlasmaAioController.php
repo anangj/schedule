@@ -32,16 +32,16 @@ class PlasmaAioController extends Controller
 
         // Schedule
         if ($time >= '07:00' && $time < '13:28') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("select d.employee_name, d.`date` , d.shift  , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera where date = '$date' and shift like '%P%'");
+            // $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
+            $doctors = DB::select("select d.employee_name, d.`date` , d.shift  , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera where date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
+            $doctors = DB::select("select d.employee_name, d.`date` , d.shift  , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera where date = '$date' AND (shift LIKE '%$m%')");
             $shift = 'MALAM';
         }
-
         // Nurses
         if ($time >= '07:00' && $time < '13:28') {
             $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op1%')");

@@ -3,7 +3,7 @@
         <div class="flex justify-between flex-wrap items-center mb-6">
             <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
             <div class="text-end">
-                <form id="uploadForm" class="form-control" action="{{ route('doctors.uploadExcel') }}" method="POST"
+                <form  class="form-control" action="{{ route('doctors.uploadExcel') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="excel_file" accept=".xlsx, .xls" required>

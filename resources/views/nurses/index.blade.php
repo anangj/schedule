@@ -45,6 +45,9 @@
                                             <th scope="col" class=" table-th ">
                                                 Shift
                                             </th>
+                                            <th scope="col" class=" table-th ">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody
@@ -54,6 +57,32 @@
                                                 <td class="table-td">{{ $item['employee_name'] }}</td>
                                                 <td>{{ $item['date'] }}</td>
                                                 <td>{{ $item['shift'] }}</td>
+                                                <td class="table-td ">
+                                                    <div class="flex space-x-3 rtl:space-x-reverse">
+                                                        <button class="action-btn" type="button">
+                                                            <a href="{{ route('nurses.show', $item->id) }}"
+                                                                class="action-btn">
+                                                                <iconify-icon icon="heroicons:eye"></iconify-icon>
+                                                            </a>
+                                                        </button>
+                                                        <button class="action-btn" type="button">
+                                                            <a href="{{ route('nurses.edit', $item->id) }}"><iconify-icon
+                                                                    icon="heroicons:pencil-square"></iconify-icon></a>
+                                                        </button>
+                                                        <form id="deleteForm{{ $item->id }}" method="POST"
+                                                            action="{{ route('nurses.destroy', $item->id) }}"
+                                                            class="cursor-pointer">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a class="action-btn"
+                                                                onclick="sweetAlertDelete(event, 'deleteForm{{ $item->id }}')"
+                                                                type="submit">
+                                                                <iconify-icon
+                                                                    icon="fluent:delete-24-regular"></iconify-icon>
+                                                            </a>
+                                                        </form>
+                                                    </div>
+                                                </td>
                                                 {{-- <td class="table-td ">
                                                     <div class="flex space-x-3 rtl:space-x-reverse">
                                                         <button class="action-btn" type="button">

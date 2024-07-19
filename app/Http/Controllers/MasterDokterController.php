@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\ScheduleDokter;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MasterDokterController extends Controller
 {
@@ -64,7 +65,7 @@ class MasterDokterController extends Controller
      * @param  \App\Models\MasterDokter  $masterDokter
      * @return \Illuminate\Http\Response
      */
-    public function show(MasterDokter $masterDokter)
+    public function show($id)
     {
         $breadcrumbsItems = [
             [
@@ -79,12 +80,11 @@ class MasterDokterController extends Controller
             ],
         ];
         
-        // $dokter = DB::select("select nama_dokter ,poli ,spesialis from master_dokters where id = '$masterDokter'");
-        $masterDokter->load('schedule');
-        // dd($masterDokter->nama_dokter);
+        $masterDokter = MasterDokter::find($id);
         return view('master-dokter.show', [
             'masterDokter' => $masterDokter,
-            'breadcrumbItems'
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Show Master Doctor',
         ]);
     }
 
@@ -96,7 +96,24 @@ class MasterDokterController extends Controller
      */
     public function edit(MasterDokter $masterDokter)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Master Dokter',
+                'url' => route('master-dokters.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        return view('master-dokter.edit', [
+            'masterDokter' => $masterDokter,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Master Doctor'
+        ]);
     }
 
     /**
@@ -108,7 +125,38 @@ class MasterDokterController extends Controller
      */
     public function update(Request $request, MasterDokter $masterDokter)
     {
-        //
+        // dd($request);
+        // Validate the request
+        $request->validate([
+            'nama_dokter' => 'required|string|max:255',
+            'poli' => 'required|string|max:255',
+            'spesialis' => 'required|string|max:255',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Update doctor information
+        $masterDokter->nama_dokter = $request->nama_dokter;
+        $masterDokter->poli = $request->poli;
+        $masterDokter->spesialis = $request->spesialis;
+        // Handle file upload
+        if ($request->hasFile('image_url')) {
+            // Delete the old image if it exists
+            if ($masterDokter->image_url) {
+                Storage::disk('public')->delete($masterDokter->image_url);
+            }
+
+            // Store the new image in the 'public/images/dokter' directory
+            $path = $request->file('image_url')->store('images/dokter', 'public');
+
+            // Save the image path in the database
+            $masterDokter->image_url = $path;
+        }
+
+        // Save the updated doctor information
+        $masterDokter->save();
+
+        return redirect()->route('master-dokters.index')->with('success', 'Doctor updated successfully', compact('masterDokter'));
+
     }
 
     /**

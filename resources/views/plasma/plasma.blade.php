@@ -35,11 +35,11 @@
             @foreach ($schedules->chunk(8) as $scheduleChunk)
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6 mt-3">
                     @foreach ($scheduleChunk as $item)
-                        <div class="bg-white shadow-md rounded-lg p-4">
+                        <div class="bg-transparent rounded-lg p-4">
                             <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
                             <div class="grid grid-rows-2 gap-1">
                                 @foreach ($item->doctors as $doctor)
-                                    <div class="card shadow-md rounded-lg flex items-center p-2">
+                                    <div class="card shadow-md rounded-lg flex items-center p-2 mb-2">
                                         <div class="relative w-16 h-16 flex-shrink-0">
                                             <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img"
                                                 class="w-full h-full object-cover rounded-full">
@@ -61,13 +61,13 @@
                     <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">{{ $title }}</div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
                         @foreach ($group as $item)
-                            <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
-                                <img src="{{ asset('images/avatar/av-1.svg') }}"
-                                    alt="{{ $item['data']->employee_name }}"
-                                    class="h-12 w-12 rounded-full object-cover">
-                                <div class="col-span-6 flex items-center text font-bold">
-                                    {{ $item['data']->employee_name }}</div>
+                        <div class="card shadow-md rounded-lg flex items-center p-2 mb-2">
+                            <div class="relative w-16 h-16 flex-shrink-0">
+                                <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img"
+                                    class="w-full h-full object-cover rounded-full">
                             </div>
+                            <div class="ml-4 text-md font-bold">{{ $item['data']->employee_name }}</div>
+                        </div>
                         @endforeach
                     </div>
                 @endforeach

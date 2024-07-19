@@ -26,6 +26,7 @@ use App\Http\Controllers\PlasmaSpecialistController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
 use App\Http\Controllers\MasterDokterController;
+use App\Http\Controllers\MasterNurseController;
 use App\Http\Controllers\ScheduleDokterController;
 
 require __DIR__ . '/auth.php';
@@ -67,6 +68,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Master Doctor
     Route::resource('master-dokters', MasterDokterController::class);
     Route::post('/master-dokters/upload-json', [MasterDokterController::class, 'storeJson'])->name('master-dokters.storeJson');
+
+    // Master Nurse
+    Route::resource('master-nurses', MasterNurseController::class);
+    Route::post('/master-nurses/upload-json', [MasterNurseController::class, 'storeExcel'])->name('master-nurses.storeExcel');
 
     // Schedule Doctor
     Route::resource('schedule-dokters', ScheduleDokterController::class);

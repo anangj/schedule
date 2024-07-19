@@ -10,6 +10,7 @@ use App\Models\Nurse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class NurseController extends Controller
 {
@@ -64,21 +65,87 @@ class NurseController extends Controller
      * @param \App\Models\Nurse $nurse
      * @return \App\Http\Resources\NurseResource
      */
-    public function show(Request $request, Nurse $nurse)
+    public function show($id)
     {
-        return new NurseResource($nurse);
+        $breadcrumbsItems = [
+            [
+                'name' => 'Nurse',
+                'url' => route('nurses.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+        $nurses = Nurse::find($id);
+        return view('nurses.show', [
+            'nurses' => $nurses,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Show Nurse',
+        ]);
     }
 
     /**
-     * @param \App\Http\Requests\NurseControllerUpdateRequest $request
-     * @param \App\Models\Nurse $nurse
-     * @return \App\Http\Resources\NurseResource
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Nurse  $Nurse
+     * @return \Illuminate\Http\Response
      */
-    public function update(NurseUpdateRequest $request, Nurse $nurse)
+    public function edit(Nurse $nurse)
     {
-        $nurse->update($request->validated());
+        $breadcrumbsItems = [
+            [
+                'name' => 'Nurse',
+                'url' => route('nurses.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
 
-        return new NurseResource($nurse);
+        return view('nurses.edit', [
+            'nurses' => $nurse,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Nurse'
+        ]);
+    }
+
+    /**
+     * @param \App\Models\Nurse $nurse
+     */
+    public function update(Request $request, Nurse $nurse)
+    {
+        $request->validate([
+            'employee_name' => 'required|string|max:255',
+            'date' => 'required|date',
+            'shift' => 'required|string|max:255',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $nurse->employee_name = $request->employee_name;
+        $nurse->date = $request->date;
+        $nurse->shift = $request->shift;
+        // dd($request);
+
+        if ($request->hasFile('image_url')) {
+            // Delete the old image if it exists
+            if ($nurse->image_url) {
+                Storage::delete($nurse->image_url);
+            }
+
+            // Store the new image and update the image_url path in the database
+            $path = $request->file('image_url')->store('images/nurse', 'public');
+            $nurse->image_url = $path;
+        }
+
+        $nurse->save();
+
+        return redirect()->route('nurses.index')->with('success', 'Nurse updated successfully!');
     }
 
     /**

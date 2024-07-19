@@ -15,8 +15,11 @@ class Nurse extends Model
      * @var array
      */
     protected $fillable = [
-        'nurse_id',
-        'nurse_name',
+        'employee_id',
+        'employee_name',
+        'date',
+        'shift',
+        'image_url',
     ];
 
     /**
@@ -28,8 +31,8 @@ class Nurse extends Model
         'id' => 'integer',
     ];
 
-    public function schedules()
-    {
-        return $this->hasMany(DoctorSchedule::class, 'nurse_id');
-    }
+    // public function schedules()
+    // {
+    //     return $this->hasMany(DoctorSchedule::class, 'nurse_id');
+    // }
 }

@@ -42,8 +42,8 @@ class DoctorController extends Controller
         $currentYear = Carbon::now()->year;
 
         $doctors = Doctor::whereMonth('date', $currentMonth)
-        ->whereYear('date', $currentYear)
-        ->get();
+            ->whereYear('date', $currentYear)
+            ->get();
 
         return view('doctors.index', [
             'doctors' => $doctors, 'breadcrumbsItems' => $breadcrumbsItems,
@@ -146,10 +146,16 @@ class DoctorController extends Controller
         return response()->noContent();
     }
 
+
+
     public function storeExcel(Request $request)
     {
+
+
+
+        $today = Carbon::now()->month;
+
         try {
-            Doctor::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 
@@ -174,6 +180,13 @@ class DoctorController extends Controller
                     $date = \DateTime::createFromFormat('d/m/Y', $excelDate);
                     return $date ? $date->format('Y-m-d') : $excelDate;
                 }
+            }
+
+            $dateMonth = convertDate($headers[3]);
+            $month = Carbon::parse($dateMonth)->month;
+
+            if ($today === $month) {
+                Doctor::truncate();
             }
 
             // Melakukan iterasi melalui baris data
