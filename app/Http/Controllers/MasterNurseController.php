@@ -30,7 +30,7 @@ class MasterNurseController extends Controller
         ];
 
         $data = DB::select('select * from master_nurses');
-        dd($data);
+        // dd($data);
 
         return view('master-nurse.index', [
             'data' => $data,
@@ -128,19 +128,22 @@ class MasterNurseController extends Controller
                 $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
                 $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
 
+                dd(count($headers));
                 // Menangani data secara dinamis berdasarkan header
                 for ($j = 2; $j < count($headers); $j++) {
                     // Memproses data 
                     $nurse = new MasterNurse();
                     $nurse->employee_id = $employeeId;
                     $nurse->employee_name = $employeeName;
+                    // dd($nurse);
                     $nurse->save();
                 }
             }
 
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
+        return redirect()->route('master-nurses.index');
     }
 
     private function getHeaderRowNumber($rows)

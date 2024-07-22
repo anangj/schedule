@@ -168,6 +168,14 @@ class DoctorController extends Controller
             // Mendapatkan header
             $headers = $rows[0][$headerRowNumber];
 
+            // Mendapatkan header dan menghapus nilai null di akhir
+            $headers = array_filter($rows[0][$headerRowNumber], function ($header) {
+                return !is_null($header);
+            });
+
+            // Reset array keys untuk memastikan indeksnya berurutan
+            $headers = array_values($headers);
+
             // Fungsi untuk mengubah format tanggal
             function convertDate($excelDate)
             {
@@ -186,7 +194,7 @@ class DoctorController extends Controller
             $month = Carbon::parse($dateMonth)->month;
 
             if ($today === $month) {
-                Doctor::truncate();
+                Doctor::whereMonth('date', $today)->delete();
             }
 
             // Melakukan iterasi melalui baris data

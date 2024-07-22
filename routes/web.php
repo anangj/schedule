@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Master Nurse
     Route::resource('master-nurses', MasterNurseController::class);
-    Route::post('/master-nurses/upload-json', [MasterNurseController::class, 'storeExcel'])->name('master-nurses.storeExcel');
+    Route::post('/master-nurses/upload-excel', [MasterNurseController::class, 'storeExcel'])->name('master-nurses.uploadExcel');
 
     // Schedule Doctor
     Route::resource('schedule-dokters', ScheduleDokterController::class);

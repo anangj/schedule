@@ -162,6 +162,7 @@ class NurseController extends Controller
 
     public function storeExcel(Request $request)
     {
+        $today = Carbon::now()->month;
         try {
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
@@ -175,6 +176,14 @@ class NurseController extends Controller
             // Mendapatkan header
             $headers = $rows[0][$headerRowNumber];
 
+            // Mendapatkan header dan menghapus nilai null di akhir
+            $headers = array_filter($rows[0][$headerRowNumber], function ($header) {
+                return !is_null($header);
+            });
+
+            // Reset array keys untuk memastikan indeksnya berurutan
+            $headers = array_values($headers);
+
             // Fungsi untuk mengubah format tanggal
             function convertDate($excelDate)
             {
@@ -187,6 +196,13 @@ class NurseController extends Controller
                     $date = \DateTime::createFromFormat('d/m/Y', $excelDate);
                     return $date ? $date->format('Y-m-d') : $excelDate;
                 }
+            }
+
+            $dateMonth = convertDate($headers[3]);
+            $month = Carbon::parse($dateMonth)->month;
+
+            if ($today === $month) {
+                Nurse::whereMonth('date', $today)->delete();
             }
 
             // Melakukan iterasi melalui baris data

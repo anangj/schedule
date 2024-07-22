@@ -38,6 +38,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Nurses') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('drivers.index') }}" class="navItem {{ (request()->is('drivers*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="ph:ambulance"></iconify-icon>

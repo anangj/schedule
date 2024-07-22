@@ -9,5 +9,5 @@ class MasterNurse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'employee_id', 'employee_name', 'image_url'];
+    protected $fillable = ['employee_id', 'employee_name', 'image_url'];
 }
