@@ -55,11 +55,6 @@
                                     <tbody
                                         class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                         @foreach ($data as $item)
-                                            @php
-                                                // Correctly fetch the server path for the file using Storage::path() instead of URL for existence checking.
-                                                $filePath = storage_path('app/public/storage' . $item->image_url);
-                                                $imagePath = $item->image_url ?? (file_exists($filePath) ? Storage::url($item->image_url) : asset('images/avatar/av-1.svg'));
-                                            @endphp
                                             <tr>
                                                 {{-- <td class="table-td "><img src="{{ $item->image_url ?: asset('images/avatar/av-1.svg') }}" alt="Foto Dokter" style="width: 50px; height: auto;" class="rounded-full"></td> --}}
                                                 {{-- <td class="table-td"></td> --}}
@@ -67,10 +62,8 @@
                                                     <div
                                                         class="flex space-x-3 items-center text-left rtl:space-x-reverse">
                                                         <div class="flex-none">
-                                                            <div
-                                                                class="h-12 w-12 rounded-full text-sm flex flex-col items-center justify-center font-medium -tracking-[1px]">
-                                                                <img src="{{ $imagePath }}"
-                                                                    class="rounded-full">
+                                                            <div class="h-12 w-12 rounded-full text-sm flex flex-col items-center justify-center font-medium -tracking-[1px]">
+                                                                <img src="{{ asset('storage/' . $item->image_url) }}" class="rounded-full">
                                                             </div>
                                                         </div>
                                                         <div

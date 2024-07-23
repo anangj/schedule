@@ -181,7 +181,7 @@ class DoctorSpecialistController extends Controller
                     
                     // Memproses data Anda di sini
                     $specialist = new DoctorSpecialist();
-                    $specialist->employee_id = $employeeId;
+                    $specialist->employee_id = (string) $employeeId;
                     $specialist->employee_name = $employeeName;
                     $specialist->speciality_name = $specialityName;
                     $specialist->shift = $attendance;

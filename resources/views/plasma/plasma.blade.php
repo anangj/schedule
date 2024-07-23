@@ -33,27 +33,27 @@
         <!-- Carousel for Schedules and Personnel -->
         <div class="slider carousel-interval owl-carousel -mt-4">
             @foreach ($schedules->chunk(8) as $scheduleChunk)
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6 mt-3">
-                    @foreach ($scheduleChunk as $item)
-                        <div class="bg-transparent rounded-lg p-4">
-                            <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
-                            <div class="grid grid-rows-2 gap-1">
-                                @foreach ($item->doctors as $doctor)
-                                    <div class="card shadow-md rounded-lg flex items-center p-2 mb-2">
-                                        <div class="relative w-16 h-16 flex-shrink-0">
-                                            <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img"
-                                                class="w-full h-full object-cover rounded-full">
-                                            <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
-                                                {{ $loop->iteration }}</div>
-                                        </div>
-                                        <div class="ml-4 text-md font-bold">{{ $doctor }}</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6 mt-3">
+                @foreach ($scheduleChunk as $item)
+                    <div class="bg-transparent rounded-lg p-4">
+                        <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
+                        <div class="grid grid-rows-2 gap-1">
+                            @foreach ($item->doctors as $index => $doctor)
+                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-2">
+                                    <div class="relative w-16 h-16 flex-shrink-0">
+                                        <img src="{{ $item->image_url[$index] ? asset('storage/' . $item->image_url[$index]) : asset('images/avatar/av-1.svg') }}" alt="img"
+                                            class="w-full h-full object-cover rounded-full">
+                                        <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
+                                            {{ $loop->iteration }}</div>
                                     </div>
-                                @endforeach
-                            </div>
+                                    <div class="ml-4 text-md font-bold">{{ $doctor }}</div>
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
-            @endforeach
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
 
             <!-- Card for Doctors, Nurses, and Drivers -->
             <div class="p-6">

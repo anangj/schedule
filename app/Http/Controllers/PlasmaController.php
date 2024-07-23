@@ -25,29 +25,37 @@ class PlasmaController extends Controller
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
 
-        $subQuery = DB::table('doctor_specialists')
+        // Subquery
+        $subQuery = DB::table('doctor_specialists as ds')
+            ->select(
+                'md.id_tera',
+                'ds.speciality_name',
+                'ds.employee_name',
+                'ds.date',
+                'ds.shift',
+                'md.image_url',
+                DB::raw('ROW_NUMBER() OVER (PARTITION BY ds.speciality_name ORDER BY ds.shift) as row_num')
+            )
+            ->rightJoin('master_dokters as md', 'md.id_tera', '=', 'ds.employee_id')
+            ->where('ds.date', $date)
+            ->where('ds.shift', 'not like', $shiftCondition);
+
+        // Main Query
+        $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
+            ->mergeBindings($subQuery) // Bind the parameters from the subquery
             ->select(
                 'speciality_name',
-                'employee_name',
-                'date',
-                'shift',
-                DB::raw('ROW_NUMBER() OVER (PARTITION BY speciality_name ORDER BY shift) as row_num')
+                DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'),
+                DB::raw('GROUP_CONCAT(image_url SEPARATOR "||") as image_url')
             )
-            ->where('date', $date)
-            ->where('shift', 'not like', $shiftCondition)
-            ->orderBy('speciality_name')
-            ->orderBy('shift');
-
-        $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
-            ->mergeBindings($subQuery)
-            ->select('speciality_name', DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'))
             ->where('row_num', '<=', 2)
-            ->orderBy('speciality_name')
             ->groupBy('speciality_name')
+            ->orderBy('speciality_name')
             ->get();
 
         $schedules = $schedules->map(function ($item) {
             $item->doctors = explode('||', $item->doctors);
+            $item->image_url = explode('||', $item->image_url);
             return $item;
         });
         /// end spesialis
