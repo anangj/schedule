@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('database-backups-download/{fileName}', [DatabaseBackupController::class, 'databaseBackupDownload'])->name('database-backups.download');
 
     // Doctor
+    Route::get('doctors/download-template', [DoctorController::class, 'downloadTemplate'])->name('doctors.downloadTemplate');
     Route::resource('doctors', DoctorController::class);
     Route::post('/doctors/upload-excel', [DoctorController::class, 'storeExcel'])->name('doctors.uploadExcel');
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
@@ -81,6 +82,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('doctorSpecialist/upload-excel', [DoctorSpecialistController::class, 'storeExcel'])->name('doctorSpecialist.uploadExcel');
 
     // Nurse
+    Route::get('nurses/download-template', [NurseController::class, 'downloadTemplate'])->name('nurses.downloadTemplate');
     Route::resource('nurses', NurseController::class);
     Route::post('/nurses/upload-excel', [NurseController::class, 'storeExcel'])->name('nurses.uploadExcel');
 
@@ -92,6 +94,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
     // Driver
+    Route::get('drivers/download-template', [DriverController::class, 'downloadTemplate'])->name('drivers.downloadTemplate');
     Route::resource('drivers', DriverController::class);
     Route::post('/drivers/upload-excel', [DriverController::class, 'storeExcel'])->name('drivers.uploadExcel');
 

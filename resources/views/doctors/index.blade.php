@@ -2,23 +2,31 @@
     <div class="space-y-8">
         <div class="flex justify-between flex-wrap items-center mb-6">
             <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
-            <div class="text-end">
-                <form  class="form-control" action="{{ route('doctors.uploadExcel') }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="excel_file" accept=".xlsx, .xls" required>
-                    <button type="submit"
-                        class="btn leading-0 inline-flex justify-center bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-300 !font-normal">
-                        <span class="flex items-center">
-                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2 font-light"
-                                icon="heroicons-outline:upload"></iconify-icon>
-                            <span>Upload</span>
-                        </span>
-                    </button>
-                </form>
-                <div id="progressContainer" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-75 z-50">
-                    <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
-                    <p class="text-lg font-semibold text-gray-700">Loading...</p>
+            <div class="flex justify-end">
+                <a href="{{ route('doctors.downloadTemplate') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
+                    <span class="flex items-center">
+                        <span>Template</span>
+                    </span>
+                </a>
+                
+                <div class="flex flex-wrap">
+                    <form id="uploadForm" class="form-control" action="{{ route('doctors.uploadExcel') }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="excel_file" accept=".xlsx, .xls" required>
+                        <button type="submit"
+                            class="btn leading-0 inline-flex justify-center bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-300 !font-normal">
+                            <span class="flex items-center">
+                                <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2 font-light"
+                                    icon="heroicons-outline:upload"></iconify-icon>
+                                <span>Upload</span>
+                            </span>
+                        </button>
+                    </form>
+                    <div id="progressContainer" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-75 z-50">
+                        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
+                        <p class="text-lg font-semibold text-gray-700">Loading...</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -242,6 +242,22 @@ class DoctorController extends Controller
         return null; // Menangani jika baris header tidak ditemukan
     }
 
+    /**
+     * Download the Excel template.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadTemplate()
+    {
+        $filePath = storage_path('app/templates/template_igd.xlsx');
+
+        if (File::exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'Template file not found.');
+        }
+    }
+
     public function storeJson(Request $request)
     {
         $json = File::get($request->file('json_file'));

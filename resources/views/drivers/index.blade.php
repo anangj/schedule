@@ -2,7 +2,12 @@
     <div class="space-y-8">
         <div class="block sm:flex items-center justify-between mb-6">
             <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
-            <div class="text-end">
+            <div class="flex justify-end">
+                <a href="{{ route('drivers.downloadTemplate') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
+                    <span class="flex items-center">
+                        <span>Template</span>
+                    </span>
+                </a>
                 <form id="uploadForm" class="form-control" action="{{ route('drivers.uploadExcel') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf

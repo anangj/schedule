@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class NurseController extends Controller
 {
@@ -250,5 +251,16 @@ class NurseController extends Controller
             }
         }
         return null; // Menangani jika baris header tidak ditemukan
+    }
+
+    public function downloadTemplate()
+    {
+        $filePath = storage_path('app/templates/template_nurse.xlsx');
+
+        if (File::exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'Template file not found.');
+        }
     }
 }

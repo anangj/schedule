@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use app\Models\Driver;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;;
 
 class DriverController extends Controller
 {
@@ -240,5 +241,16 @@ class DriverController extends Controller
             }
         }
         return null; // Menangani jika baris header tidak ditemukan
+    }
+
+    public function downloadTemplate()
+    {
+        $filePath = storage_path('app/templates/template_driver.xlsx');
+
+        if (File::exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'Template file not found.');
+        }
     }
 }
