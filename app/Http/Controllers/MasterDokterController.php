@@ -129,7 +129,7 @@ class MasterDokterController extends Controller
         // Validate the request
         $request->validate([
             'nama_dokter' => 'required|string|max:255',
-            'poli' => 'required|string|max:255',
+            'poli' => 'string|max:255',
             'spesialis' => 'required|string|max:255',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
