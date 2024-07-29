@@ -69,6 +69,13 @@ class PlasmaController extends Controller
         $s = 'S';
         $m = 'M';
         $ps = 'PS';
+        $pj1 = 'OP-1-pj';
+        $pj2 = 'OP-2-pj';
+        $pj3 = 'OP-2-pj';
+        $ls1 = 'OP-1-ls';
+        $ls2 = 'OP-2-ls';
+        $ls3 = 'OP-3-ls';
+        $office = 'office';
         $middle3 = 'middle-3';
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
