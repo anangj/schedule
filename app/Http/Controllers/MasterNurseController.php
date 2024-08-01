@@ -6,6 +6,7 @@ use App\Models\MasterNurse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MasterNurseController extends Controller
 {
@@ -68,7 +69,25 @@ class MasterNurseController extends Controller
      */
     public function show($id)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Master Nurse',
+                'url' => route('master-nurses.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+        
+        $masterNurse = MasterNurse::find($id);
+        return view('master-nurse.show', [
+            'masterNurse' => $masterNurse,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Show Master Nurses',
+        ]);
     }
 
     /**
@@ -77,9 +96,26 @@ class MasterNurseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(MasterNurse $masterNurse)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Master Nurse',
+                'url' => route('master-nurses.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        return view('master-nurse.edit', [
+            'masterNurse' => $masterNurse,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Master Nurse'
+        ]);
     }
 
     /**
@@ -89,9 +125,37 @@ class MasterNurseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, MasterNurse $masterNurse)
     {
-        //
+        // dd($request);
+        // Validate the request
+        $request->validate([
+            'employee_name' => 'required|string|max:255',
+            'employee_id' => 'nullable|string|max:255',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Update doctor information
+        $masterNurse->employee_name = $request->employee_name;
+        $masterNurse->employee_id = $request->employee_id;
+        // Handle file upload
+        if ($request->hasFile('image_url')) {
+            // Delete the old image if it exists
+            if ($masterNurse->image_url) {
+                Storage::disk('public')->delete($masterNurse->image_url);
+            }
+
+            // Store the new image in the 'public/images/dokter' directory
+            $path = $request->file('image_url')->store('images/nurse', 'public');
+
+            // Save the image path in the database
+            $masterNurse->image_url = $path;
+        }
+
+        // Save the updated doctor information
+        $masterNurse->save();
+
+        return redirect()->route('master-nurses.index')->with('success', 'Doctor updated successfully', compact('masterNurse'));
     }
 
     /**
@@ -128,16 +192,15 @@ class MasterNurseController extends Controller
                 $employeeId = $rowData[0]; // Diasumsikan ID Karyawan adalah kolom pertama
                 $employeeName = $rowData[1]; // Diasumsikan Nama Karyawan adalah kolom kedua
 
-                dd(count($headers));
                 // Menangani data secara dinamis berdasarkan header
-                for ($j = 2; $j < count($headers); $j++) {
+                // for ($j = 2; $j < count($headers); $j++) {
                     // Memproses data 
                     $nurse = new MasterNurse();
                     $nurse->employee_id = $employeeId;
                     $nurse->employee_name = $employeeName;
                     // dd($nurse);
                     $nurse->save();
-                }
+                // }
             }
 
         } catch (\Throwable $th) {

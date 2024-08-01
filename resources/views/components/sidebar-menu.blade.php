@@ -37,6 +37,22 @@
                         </span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('shift.index') }}" class="navItem {{ (request()->is('shift*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="dashicons:calendar-alt"></iconify-icon>
+                            <span>{{ __('Master Shift') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Nurse') }}</span>
+                        </span>
+                    </a>
+                </li>
                 {{-- <li>
                     <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
                         <span class="flex items-center">
@@ -130,6 +146,14 @@
             @endif
             @if (Auth::user()->hasRole('igd'))
                 <li>
+                    <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Nurse') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('nurses.index') }}" class="navItem {{ (request()->is('nurses*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
@@ -148,12 +172,6 @@
                     <ul class="sidebar-submenu">
                         <li>
                             <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('plasma2') }}" class="{{ (\Request::route()->getName() == 'plasma2') ? 'active' : '' }}">{{ __('Plasma2') }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('plasmaSpecialist') }}" class="{{ (\Request::route()->getName() == 'plasmaSpecialist') ? 'active' : '' }}">{{ __('Plasma Specialist') }}</a>
                         </li>
                     </ul>
                 </li>
