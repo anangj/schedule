@@ -27,6 +27,7 @@ use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
 use App\Http\Controllers\MasterDokterController;
 use App\Http\Controllers\MasterNurseController;
+use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\NodController;
 use App\Http\Controllers\ScheduleDokterController;
 
@@ -66,6 +67,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/doctors/upload-excel', [DoctorController::class, 'storeExcel'])->name('doctors.uploadExcel');
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+
+    // Master Shift
+    Route::resource('shift', MasterShiftController::class);
 
     // Master Doctor
     Route::resource('master-dokters', MasterDokterController::class);
