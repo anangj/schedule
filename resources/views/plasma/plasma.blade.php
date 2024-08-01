@@ -39,8 +39,8 @@
                         <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
                         <div class="grid grid-rows-2 gap-1">
                             @foreach ($item->doctors as $index => $doctor)
-                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-2">
-                                    <div class="relative w-16 h-16 flex-shrink-0">
+                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 h-32">
+                                    <div class="relative w-20 h-20 flex-shrink-0">
                                         <img src="{{ $item->image_url[$index] ? asset('storage/' . $item->image_url[$index]) : asset('images/avatar/av-1.svg') }}" alt="img"
                                             class="w-full h-full object-cover rounded-full">
                                         <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
