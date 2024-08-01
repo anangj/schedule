@@ -37,7 +37,7 @@ class PlasmaController extends Controller
                 DB::raw('ROW_NUMBER() OVER (PARTITION BY ds.speciality_name ORDER BY ds.shift) as row_num')
             )
             ->rightJoin('master_dokters as md', 'md.id_tera', '=', 'ds.employee_id')
-            ->where('ds.date', '2024-07-30')
+            ->where('ds.date', $date)
             ->where('ds.shift', 'not like', $shiftCondition);
 
         // Main Query
