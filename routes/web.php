@@ -27,6 +27,7 @@ use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
 use App\Http\Controllers\MasterDokterController;
 use App\Http\Controllers\MasterNurseController;
+use App\Http\Controllers\NodController;
 use App\Http\Controllers\ScheduleDokterController;
 
 require __DIR__ . '/auth.php';
@@ -80,6 +81,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Doctor Specialist
     Route::resource('doctorSpecialist', DoctorSpecialistController::class);
     Route::post('doctorSpecialist/upload-excel', [DoctorSpecialistController::class, 'storeExcel'])->name('doctorSpecialist.uploadExcel');
+
+    // Nod
+    Route::get('nod/download-template', [NodController::class, 'downloadTemplate'])->name('nod.downloadTemplate');
+    Route::resource('nod', NodController::class);
+    Route::post('/nod/upload-excel', [NodController::class, 'storeExcel'])->name('nod.uploadExcel');
 
     // Nurse
     Route::get('nurses/download-template', [NurseController::class, 'downloadTemplate'])->name('nurses.downloadTemplate');

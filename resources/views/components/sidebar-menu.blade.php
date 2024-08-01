@@ -54,6 +54,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('nod.index') }}" class="navItem {{ (request()->is('nod*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Nod') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('nurses.index') }}" class="navItem {{ (request()->is('nurses*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>

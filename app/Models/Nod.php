@@ -19,6 +19,5 @@ class Nod extends Model
         'employee_name',
         'date',
         'shift',
-        'image_url',
     ];
 }

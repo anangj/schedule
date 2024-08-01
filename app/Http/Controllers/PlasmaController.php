@@ -82,6 +82,7 @@ class PlasmaController extends Controller
         $doctors = [];
         $nurses = [];
         $drivers = [];
+        $nod = [];
         // $kp = [];
 
         // Schedule
@@ -93,6 +94,18 @@ class PlasmaController extends Controller
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
             $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
+            $shift = 'MALAM';
+        }
+
+        // NOD
+        if ($time >= '07:00' && $time < '13:28') {
+            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift = '$op1'");
+            $shift = 'PAGI';
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift = '$op2'");
+            $shift = 'SIANG';
+        } else if ($time >= '21:00') {
+            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
             $shift = 'MALAM';
         }
 
@@ -140,6 +153,10 @@ class PlasmaController extends Controller
         $personnel = collect($doctors)->map(function ($doctor) {
             return ['type' => 'doctor', 'data' => $doctor, 'title' => 'DOCTOR'];
         })->merge(
+            collect($nod)->map(function ($nod) {
+                return ['type' => 'nod', 'data' => $nod, 'title' => 'NOD'];
+            })
+        )->merge(
             collect($merged)->map(function ($nurse) {
                 return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
             })

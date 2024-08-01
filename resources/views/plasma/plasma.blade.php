@@ -110,7 +110,7 @@
             }
 
             function getNextRefreshTime(currentTime) {
-                var refreshTimes = ['07:02', '13:32', '21:02', '16:02']; // Define refresh times
+                var refreshTimes = ['07:02', '13:32', '21:02', '16:02', '09:30']; // Define refresh times
                 var nextRefresh = new Date(currentTime.toISOString().slice(0,
                     10)); // Set to today's date with time reset to midnight
 

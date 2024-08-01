@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Nod;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Carbon;
 
 class NodController extends Controller
 {
@@ -15,7 +16,31 @@ class NodController extends Controller
      */
     public function index()
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Nod',
+                'url' => route('nod.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $nods = Nod::whereMonth('date', $currentMonth)
+        ->whereYear('date', $currentYear)
+        ->get();
+
+        return view('nod.index', [
+            'nods' => $nods,
+            'breadcrumbsItems' => $breadcrumbsItems,
+            'pageTitle' => 'Nod'
+        ]);
     }
 
     /**
@@ -86,6 +111,7 @@ class NodController extends Controller
 
     public function storeExcel(Request $request)
     {
+        $today = Carbon::now()->month;
         try {
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
@@ -99,6 +125,14 @@ class NodController extends Controller
             // Mendapatkan header
             $headers = $rows[0][$headerRowNumber];
 
+            // Mendapatkan header dan menghapus nilai null di akhir
+            $headers = array_filter($rows[0][$headerRowNumber], function ($header) {
+                return !is_null($header);
+            });
+
+            // Reset array keys untuk memastikan indeksnya berurutan
+            $headers = array_values($headers);
+
             // Fungsi untuk mengubah format tanggal
             function convertDate($excelDate)
             {
@@ -111,6 +145,13 @@ class NodController extends Controller
                     $date = \DateTime::createFromFormat('d/m/Y', $excelDate);
                     return $date ? $date->format('Y-m-d') : $excelDate;
                 }
+            }
+
+            $dateMonth = convertDate($headers[3]);
+            $month = Carbon::parse($dateMonth)->month;
+
+            if ($today === $month) {
+                Nod::whereMonth('date', $today)->delete();
             }
 
             // Melakukan iterasi melalui baris data
@@ -143,7 +184,11 @@ class NodController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+
+        // return redirect()
+        return redirect()->route('nod.index');
     }
+
     private function getHeaderRowNumber($rows)
     {
         // Melakukan iterasi melalui baris untuk menemukan baris header
