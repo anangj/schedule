@@ -31,47 +31,63 @@
         </div> --}}
 
         <!-- Carousel for Schedules and Personnel -->
-        <div class="slider carousel-interval owl-carousel -mt-4">
+        <div class="slider carousel-interval owl-carousel -mt-6">
             @foreach ($schedules->chunk(8) as $scheduleChunk)
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6 mt-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6 ">
                 @foreach ($scheduleChunk as $item)
                     <div class="bg-transparent rounded-lg p-4">
                         <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
                         <div class="grid grid-rows-2 gap-1">
                             @foreach ($item->doctors as $index => $doctor)
-                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 h-32">
+                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 h-36">
                                     <div class="relative w-20 h-20 flex-shrink-0">
                                         <img src="{{ $item->image_url[$index] ? asset('storage/' . $item->image_url[$index]) : asset('images/avatar/av-1.svg') }}" alt="img"
-                                            class="w-full h-full object-cover rounded-full">
+                                            class="w-24 h-24 object-cover rounded-full">
                                         <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
                                             {{ $loop->iteration }}</div>
                                     </div>
-                                    <div class="ml-4 text-md font-bold">{{ $doctor }}</div>
+                                    <div class="ml-4 text-xl font-bold">{{ $doctor }}</div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
                 @endforeach
             </div>
-        @endforeach
+            @endforeach
 
             <!-- Card for Doctors, Nurses, and Drivers -->
+
             <div class="p-6">
-                @foreach ($personnel->groupBy('title') as $title => $group)
-                    <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">{{ $title }}</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
-                        @foreach ($group as $item)
-                        <div class="card shadow-md rounded-lg flex items-center p-2 mb-2">
-                            <div class="relative w-16 h-16 flex-shrink-0">
-                                <img src="{{ asset('images/avatar/av-1.svg') }}" alt="img"
-                                    class="w-full h-full object-cover rounded-full">
-                            </div>
-                            <div class="ml-4 text-md font-bold">{{ $item['data']->employee_name }}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
+                    @foreach ($columns as $column)
+                        <div>
+                            @php
+                                $displayedTitles = [];
+                            @endphp
+                            @foreach ($column as $item)
+                                @if (!in_array($item['title'], $displayedTitles))
+                                    <div class="mt-3 text-xl font-bold" style="color: #008060">{{ $item['title'] }}</div>
+                                    @php
+                                        $displayedTitles[] = $item['title'];
+                                    @endphp
+                                @endif
+                                <div class="card shadow-md rounded-lg flex items-center p-4 mb-6 bg-white">
+                                    <div class="relative w-32 h-32 flex-shrink-0">
+                                        @php
+                                            $imageUrl = isset($item['data']->image_url) && $item['data']->image_url ? asset('storage/' . $item['data']->image_url) : asset('images/avatar/av-1.svg');
+                                        @endphp
+                                        <img src="{{ $imageUrl }}" alt="img" class="w-full h-full object-cover rounded-full">
+                                    </div>
+                                    <div class="ml-6 text-lg font-bold">{{ $item['data']->employee_name }}</div>
+                                </div>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
+            
+            
+            
         </div>
     </div>
 
@@ -110,7 +126,7 @@
             }
 
             function getNextRefreshTime(currentTime) {
-                var refreshTimes = ['07:02', '13:32', '21:02', '16:02', '10:48']; // Define refresh times
+                var refreshTimes = ['07:02', '08:00', '13:32', '21:02', '16:02', '17:02']; // Define refresh times
                 var nextRefresh = new Date(currentTime.toISOString().slice(0,
                     10)); // Set to today's date with time reset to midnight
 

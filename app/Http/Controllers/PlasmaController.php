@@ -85,24 +85,35 @@ class PlasmaController extends Controller
         $nod = [];
         // $kp = [];
 
-        // Schedule
+        // Query for doctors office
+        if ($time >= '08:00' && $time <= '17:00') {
+            $doctorOffice = DB::select("SELECT md.id_tera, d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND md.id_tera = '-1639' ");
+        }
+
+        // Doctors
         if ($time >= '07:00' && $time < '13:28') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%' OR shift = '$ps')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp%' OR shift = '$ps')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$s%' OR shift LIKE '%$kp%' OR shift = '$ps')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$s%' OR shift = '$ps')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $doctors = DB::select("SELECT employee_name, date, shift FROM doctors WHERE date = '$date' AND (shift LIKE '%$m%')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$m%')");
             $shift = 'MALAM';
+        }
+
+        if ($time >= '08:00' && $time <= '17:00') {
+            $mergedDoctors = array_merge($doctorOffice,$doctors);
+        } else {
+            $mergedDoctors = $doctors;
         }
 
         // NOD
         if ($time >= '07:00' && $time < '13:28') {
-            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift = '$op1'");
+            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift like '%$op1%'");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift = '$op2'");
+            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift like '%$op2%'");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
             $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
@@ -111,18 +122,18 @@ class PlasmaController extends Controller
 
         // QUERY FOR KP
         if ($time >= '07:00' && $time <= '16:00') {
-            $kp = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND shift = '$kp'");
+            $kp = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift = '$kp' group by n.id ");
         }
 
         // Nurses
         if ($time >= '07:00' && $time < '13:28') {
-            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND shift = '$op1'");
+            $nurses = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op1%' group by n.id");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND shift = '$op2'");
+            $nurses = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op2%' group by n.id");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $nurses = DB::select("SELECT employee_name, date, shift FROM nurses WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
+            $nurses = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%') group by n.id");
             $shift = 'MALAM';
         }
 
@@ -133,7 +144,7 @@ class PlasmaController extends Controller
             $merged = $nurses;
         }
 
-        
+
 
 
         // Driver
@@ -149,24 +160,55 @@ class PlasmaController extends Controller
         }
         /// end petugas igd
 
-        // Combine doctors, nurses, and drivers into one collection
-        $personnel = collect($doctors)->map(function ($doctor) {
+        // // Combine doctors, nurses, and drivers into one collection
+        
+        $doctors = collect($doctors)->map(function ($doctor) {
             return ['type' => 'doctor', 'data' => $doctor, 'title' => 'DOCTOR'];
-        })->merge(
-            collect($nod)->map(function ($nod) {
-                return ['type' => 'nod', 'data' => $nod, 'title' => 'NOD'];
-            })
-        )->merge(
-            collect($merged)->map(function ($nurse) {
-                return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
-            })
-        )->merge(
-            collect($drivers)->map(function ($driver) {
-                return ['type' => 'driver', 'data' => $driver, 'title' => 'DRIVER'];
-            })
-        );
+        });
+        
+        $nods = collect($nod)->map(function ($nod) {
+            return ['type' => 'nod', 'data' => $nod, 'title' => 'NOD'];
+        });
+        
+        $nurses = collect($merged)->map(function ($nurse) {
+            return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
+        });
+        
+        $drivers = collect($drivers)->map(function ($driver) {
+            return ['type' => 'driver', 'data' => $driver, 'title' => 'DRIVER'];
+        });
+        
+        $columns = [[], [], [], []]; // Initialize four columns
+        
+        // Add doctors and NODs to the first column
+        foreach ($doctors as $doctor) {
+            $columns[0][] = $doctor;
+        }
+        foreach ($nods as $nod) {
+            $columns[0][] = $nod;
+        }
+        
+        // Add nurses to the second column, handle overflow into the third column if needed
+        $currentColumn = 1; // Start from the second column for nurses
+        foreach ($nurses as $nurse) {
+            $columns[1][] = $nurse;
+        }
+        
+        // If there is overflow in the second column (more than 5 nurses), move the overflow to the third column
+        if (count($columns[1]) > 4) {
+            $overflowNurses = array_splice($columns[1], 4); // Get the overflow nurses
+            $columns[2] = array_merge($columns[2], $overflowNurses); // Add overflow nurses to the third column
+        }
+        
+        // Add drivers to the third column if the second column has no overflow, otherwise to the fourth column
+        $driverColumn = count($columns[2]) > 0 ? 3 : 2;
+        foreach ($drivers as $driver) {
+            $columns[$driverColumn][] = $driver;
+        }
+        
+        return view('plasma.plasma', compact('schedules', 'columns', 'shift', 'today'));
+        
 
-        return view('plasma.plasma', compact('schedules', 'personnel', 'shift', 'today'));
     }
 
     /**
