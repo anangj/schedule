@@ -71,12 +71,12 @@
                                         $displayedTitles[] = $item['title'];
                                     @endphp
                                 @endif
-                                <div class="card shadow-md rounded-lg flex items-center p-4 mb-6 bg-white">
+                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 bg-white">
                                     <div class="relative w-32 h-32 flex-shrink-0">
                                         @php
                                             $imageUrl = isset($item['data']->image_url) && $item['data']->image_url ? asset('storage/' . $item['data']->image_url) : asset('images/avatar/av-1.svg');
                                         @endphp
-                                        <img src="{{ $imageUrl }}" alt="img" class="w-full h-full object-cover rounded-full">
+                                        <img src="{{ $imageUrl }}" alt="img" class="w-22 h-32 object-cover rounded-full">
                                     </div>
                                     <div class="ml-6 text-lg font-bold">{{ $item['data']->employee_name }}</div>
                                 </div>
