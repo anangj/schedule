@@ -118,7 +118,6 @@ class DoctorSpecialistController extends Controller
     {
         $today = Carbon::now()->month;
         try {
-            DoctorSpecialist::truncate();
             // Mengasumsikan file telah diunggah melalui form
             $file = $request->file('excel_file');
 
