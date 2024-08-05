@@ -40,9 +40,9 @@
                         <div class="grid grid-rows-2 gap-1">
                             @foreach ($item->doctors as $index => $doctor)
                                 <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 h-36">
-                                    <div class="relative w-20 h-20 flex-shrink-0">
+                                    <div class="relative w-32 h-32 flex-shrink-0">
                                         <img src="{{ $item->image_url[$index] ? asset('storage/' . $item->image_url[$index]) : asset('images/avatar/av-1.svg') }}" alt="img"
-                                            class="w-24 h-24 object-cover rounded-full">
+                                            class="w-32 h-32 object-cover rounded-full">
                                         <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
                                             {{ $loop->iteration }}</div>
                                     </div>
@@ -76,7 +76,7 @@
                                         @php
                                             $imageUrl = isset($item['data']->image_url) && $item['data']->image_url ? asset('storage/' . $item['data']->image_url) : asset('images/avatar/av-1.svg');
                                         @endphp
-                                        <img src="{{ $imageUrl }}" alt="img" class="w-22 h-32 object-cover rounded-full">
+                                        <img src="{{ $imageUrl }}" alt="img" class="w-32 h-32 object-cover rounded-full">
                                     </div>
                                     <div class="ml-6 text-lg font-bold">{{ $item['data']->employee_name }}</div>
                                 </div>
