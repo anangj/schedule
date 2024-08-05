@@ -162,7 +162,7 @@ class PlasmaController extends Controller
 
         // // Combine doctors, nurses, and drivers into one collection
         
-        $doctors = collect($doctors)->map(function ($doctor) {
+        $doctors = collect($mergedDoctors)->map(function ($doctor) {
             return ['type' => 'doctor', 'data' => $doctor, 'title' => 'DOCTOR'];
         });
         
