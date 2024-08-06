@@ -26,6 +26,7 @@ use App\Http\Controllers\PlasmaSpecialistController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
 use App\Http\Controllers\MasterDokterController;
+use App\Http\Controllers\MasterNodController;
 use App\Http\Controllers\MasterNurseController;
 use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\NodController;
@@ -74,6 +75,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Master Doctor
     Route::resource('master-dokters', MasterDokterController::class);
     Route::post('/master-dokters/upload-json', [MasterDokterController::class, 'storeJson'])->name('master-dokters.storeJson');
+
+    // Master Nod
+    Route::resource('master-nod', MasterNodController::class);
+    Route::post('/master-nod/upload-excel', [MasterNodController::class, 'storeExcel'])->name('master-nod.uploadExcel');
 
     // Master Nurse
     Route::resource('master-nurses', MasterNurseController::class);

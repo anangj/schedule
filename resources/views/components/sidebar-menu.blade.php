@@ -38,6 +38,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('master-nod.index') }}" class="navItem {{ (request()->is('master-nods*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Nod') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('shift.index') }}" class="navItem {{ (request()->is('shift*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="dashicons:calendar-alt"></iconify-icon>
@@ -240,6 +248,38 @@
                         </li>
                     </ul>
                 </li>
+            @endif
+            @if (Auth::user()->hasRole('nod'))
+            <li>
+                <a href="{{ route('master-nod.index') }}" class="navItem {{ (request()->is('master-nods*')) ? 'active' : '' }}">
+                    <span class="flex items-center">
+                        <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                        <span>{{ __('Master Nod') }}</span>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('nod.index') }}" class="navItem {{ (request()->is('nods*')) ? 'active' : '' }}">
+                    <span class="flex items-center">
+                        <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                        <span>{{ __('Nod') }}</span>
+                    </span>
+                </a>
+            </li>
+            <li class="{{ (\Request::route()->getName() == 'Schedules*') ? 'active' : '' }}">
+                <a href="javascript:void(0)" class="navItem">
+                    <span class="flex items-center">
+                        <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
+                        <span>{{ __('Plasma') }}</span>
+                    </span>
+                    <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
+                    </li>
+                </ul>
+            </li>
             @endif
         </ul>
     </div>

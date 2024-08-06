@@ -19,5 +19,11 @@ class Nod extends Model
         'employee_name',
         'date',
         'shift',
+        'shift_id'
     ];
+
+    public function shift()
+    {
+        return $this->belongsTo(MasterShift::class, 'shift_id');
+    }
 }

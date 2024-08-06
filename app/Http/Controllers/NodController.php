@@ -61,7 +61,20 @@ class NodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'employee_id' => 'required|string|max:255',
+            'employee_name' => 'required|string|max:255',
+            'date' => 'required|date_format:H:i',
+            'shift' => 'required|date_format:H:i',
+        ]);
+
+        $nod = new Nod();
+        $nod->employee_id = $validatedData['employee_id'];
+        $nod->employee_name = $validatedData['employee_name'];
+        $nod->date = $validatedData['date'];
+        $nod->shift = $validatedData['shift'];
+        $nod->save();
+        return redirect()->route('nod.index')->with('success', 'Shift created successfully');
     }
 
     /**
@@ -70,9 +83,26 @@ class NodController extends Controller
      * @param  \App\Models\Nod  $nod
      * @return \Illuminate\Http\Response
      */
-    public function show(Nod $nod)
+    public function show($id)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Nod',
+                'url' => route('nod.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+        $nurses = Nod::find($id);
+        return view('nod.show', [
+            'nods' => $nurses,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Show Nod',
+        ]);
     }
 
     /**
@@ -83,7 +113,24 @@ class NodController extends Controller
      */
     public function edit(Nod $nod)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Nod',
+                'url' => route('nod.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        return view('nod.edit', [
+            'nods' => $nod,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Nod'
+        ]);
     }
 
     /**
@@ -95,7 +142,18 @@ class NodController extends Controller
      */
     public function update(Request $request, Nod $nod)
     {
-        //
+        $request->validate([
+            'employee_name' => 'required|string|max:255',
+            'date' => 'required|date',
+            'shift' => 'required|string|max:255',
+        ]);
+
+        $nod->employee_name = $request->employee_name;
+        $nod->date = $request->date;
+        $nod->shift = $request->shift;
+        $nod->save();
+
+        return redirect()->route('nod.index')->with('success', 'Nod updated successfully!');
     }
 
     /**
@@ -106,7 +164,9 @@ class NodController extends Controller
      */
     public function destroy(Nod $nod)
     {
-        //
+        $nod->delete();
+
+        return response()->noContent();
     }
 
     public function storeExcel(Request $request)
