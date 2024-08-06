@@ -110,4 +110,51 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script type="module">
+            // data table validation
+            $("#data-table, .data-table").DataTable({
+                dom: "<'grid grid-cols-12 gap-5 px-6 mt-6'<'col-span-4'l><'col-span-8 flex justify-end'f><'#pagination.flex items-center'>><'min-w-full't><'flex justify-end items-center'p>",
+                paging: true,
+                ordering: true,
+                info: false,
+                searching: true,
+                lengthChange: true,
+                lengthMenu: [10, 25, 50, 100],
+                language: {
+                    lengthMenu: "Show _MENU_ entries",
+                    paginate: {
+                        previous: `<iconify-icon icon="ic:round-keyboard-arrow-left"></iconify-icon>`,
+                        next: `<iconify-icon icon="ic:round-keyboard-arrow-right"></iconify-icon>`,
+                    },
+                    search: "Search:",
+                },
+            });
+        </script>
+        <script>
+            function sweetAlertDelete(event, formId) {
+                event.preventDefault();
+                let form = document.getElementById(formId);
+                Swal.fire({
+                    title: '@lang('Are you sure ? ')',
+                    icon: 'question',
+                    showDenyButton: true,
+                    confirmButtonText: '@lang('Delete ')',
+                    denyButtonText: '@lang(' Cancel ')',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            }
+        </script>
+        <script type="module">
+            $('#imageModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var imageUrl = button.data('image'); // Extract info from data-* attributes
+                var modal = $(this);
+                modal.find('.modal-body #previewImage').attr('src', imageUrl);
+            });
+        </script>
+    @endpush
 </x-app-layout>
