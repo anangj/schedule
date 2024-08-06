@@ -1,5 +1,5 @@
 <x-schedule>
-    <div class="bg-cover bg-center h-full" style="background-image: url({{ asset('images/logo/background.svg') }});">
+    <div class="bg-cover bg-center h-full" style="background-image: url({{ asset('images/logo/bg-logo.svg') }});">
         <div class="card w-full">
             <div class="flex items-center w-full">
                 <div class="ml-5 sm:mr-36 flex-shrink-0 w-1/4 sm:w-1/4">
@@ -31,31 +31,45 @@
         </div> --}}
 
         <!-- Carousel for Schedules and Personnel -->
+        @php
+            // Group the schedules by category
+            $groupedSchedules = $schedules->groupBy('category');
+        @endphp
+
         <div class="slider carousel-interval owl-carousel -mt-6">
-            @foreach ($schedules->chunk(8) as $scheduleChunk)
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 p-6 ">
-                @foreach ($scheduleChunk as $item)
-                    <div class="bg-transparent rounded-lg p-4">
-                        <div class="text-lg font-bold text-green-600 mb-2">{{ $item->speciality_name }}</div>
-                        <div class="grid grid-rows-2 gap-1">
-                            @foreach ($item->doctors as $index => $doctor)
-                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 h-36">
-                                    <div class="relative w-32 h-32 flex-shrink-0">
-                                        <img src="{{ $item->image_url[$index] ? asset('storage/' . $item->image_url[$index]) : asset('images/avatar/av-1.svg') }}" alt="img"
-                                            class="w-32 h-32 object-cover rounded-full">
-                                        <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
-                                            {{ $loop->iteration }}</div>
+            @foreach ($groupedSchedules as $category => $schedules)
+                <div class="item">
+                    {{-- <h3 class="text-xl font-bold mb-4">{{ $category }}</h3> --}}
+                    @foreach ($schedules->chunk(8) as $scheduleChunk)
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6">
+                            @foreach ($scheduleChunk as $item)
+                                <div class="bg-transparent rounded-lg p-4">
+                                    <div class="bg-transparent rounded-lg">
+                                        <div class="speciality-name text-lg font-bold text-green-600">{{ $item->speciality_name }}</div>
                                     </div>
-                                    <div class="ml-4 text-xl font-bold">{{ $doctor }}</div>
+
+                                    <div class="flex flex-col h-full">
+                                        <div class="flex flex-col flex-grow">
+                                            @foreach ($item->doctors as $index => $doctor)
+                                                <div class="card shadow-xl rounded-lg flex items-center p-2 mb-4 h-36">
+                                                    <div class="relative w-40 h-32 flex-shrink-0">
+                                                        <img src="{{ $item->image_url[$index] ? asset('storage/' . $item->image_url[$index]) : asset('images/avatar/av-1.svg') }}" alt="img"
+                                                            class="w-32 h-32 object-cover rounded-full">
+                                                        <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
+                                                            {{ $loop->iteration }}</div>
+                                                    </div>
+                                                    <div class="ml-4 text-xl font-bold">{{ $doctor }}</div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
-                    </div>
-                @endforeach
-            </div>
-            @endforeach
+                    @endforeach
 
-            <!-- Card for Doctors, Nurses, and Drivers -->
+                </div>
+            @endforeach
 
             <div class="p-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
@@ -71,7 +85,7 @@
                                         $displayedTitles[] = $item['title'];
                                     @endphp
                                 @endif
-                                <div class="card shadow-md rounded-lg flex items-center p-2 mb-4 bg-white">
+                                <div class="card shadow-xl rounded-lg flex items-center p-2 mb-4 h-36 bg-white">
                                     <div class="relative w-32 h-32 flex-shrink-0">
                                         @php
                                             $imageUrl = isset($item['data']->image_url) && $item['data']->image_url ? asset('storage/' . $item['data']->image_url) : asset('images/avatar/av-1.svg');
@@ -85,9 +99,6 @@
                     @endforeach
                 </div>
             </div>
-            
-            
-            
         </div>
     </div>
 

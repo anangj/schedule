@@ -25,7 +25,33 @@ class PlasmaController extends Controller
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
 
-        // Subquery
+        $categories = [
+            'slide 1' => ['SPESIALIS PENYAKIT DALAM KONSULTAN GINJAL DAN HIPERTENSI',
+                'SPESIALIS PENYAKIT DALAM KONSULTAN GASTRO ENTRO HEPATOLOGI',
+                'SPESIALIS PENYAKIT DALAM',
+                'SPESIALIS JANTUNG DAN PEMBULUH DARAH',
+                'SPESIALIS PARU',
+                'SPESIALIS ANAK',
+                'SPESIALIS THT'],
+            'slide 2' => ['SPESIALIS BEDAH UROLOGI',
+                'SPESIALIS BEDAH UMUM',
+                'SPESIALIS BEDAH ORTHOPEDI DAN TRAUMATOLOGI',
+                'SPESIALIS BEDAH ORTHOPEDI DAN TRAUMATOLOGI KONSULTAN HIP DAN KNEE',
+                'SPESIALIS BEDAH KONSULTAN BEDAH DIGESTIF',
+                'SPESIALIS BEDAH TORAKS DAN KARDIOVASKULAR',
+                'SPESIALIS BEDAH SYARAF',
+                'SPESIALIS BEDAH PLASTIK'],
+            'slide 3' => ['SPESIALIS MATA',
+                'SPESIALIS AKUPUNTUR',
+                'SPESIALIS SARAF',
+                'SPESIALIS KEBIDANAN DAN KANDUNGAN',
+                'SPESIALIS KULIT DAN KELAMIN',
+                'SPESIALIS ANASTESI',
+                'SPESIALIS ANASTESI KONSULTAN INTENSIF CARE',
+                'SPESIALIS ANASTESI KONSULTAN KARDIOVASKULAR']
+        ];
+        
+        // Create a new query with the category column
         $subQuery = DB::table('doctor_specialists as ds')
             ->select(
                 'md.id_tera',
@@ -34,25 +60,35 @@ class PlasmaController extends Controller
                 'ds.date',
                 'ds.shift',
                 'md.image_url',
-                DB::raw('ROW_NUMBER() OVER (PARTITION BY ds.speciality_name ORDER BY ds.shift) as row_num')
+                DB::raw('ROW_NUMBER() OVER (PARTITION BY ds.speciality_name ORDER BY ds.shift) as row_num'),
+                DB::raw("
+                    CASE 
+                        " . implode(" ", array_map(function($category, $specialities) {
+                            return "WHEN ds.speciality_name IN ('" . implode("','", $specialities) . "') THEN '{$category}'";
+                        }, array_keys($categories), $categories)) . "
+                        ELSE 'Other'
+                    END as category
+                ")
             )
             ->rightJoin('master_dokters as md', 'md.id_tera', '=', 'ds.employee_id')
             ->where('ds.date', $date)
             ->where('ds.shift', 'not like', $shiftCondition);
-
+        
         // Main Query
         $schedules = DB::table(DB::raw("({$subQuery->toSql()}) as ranked_doctors"))
             ->mergeBindings($subQuery) // Bind the parameters from the subquery
             ->select(
+                'category',
                 'speciality_name',
                 DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'),
                 DB::raw('GROUP_CONCAT(image_url SEPARATOR "||") as image_url')
             )
             ->where('row_num', '<=', 2)
-            ->groupBy('speciality_name')
+            ->groupBy('category', 'speciality_name')
+            ->orderBy('category')
             ->orderBy('speciality_name')
             ->get();
-
+        
         $schedules = $schedules->map(function ($item) {
             $item->doctors = explode('||', $item->doctors);
             $item->image_url = explode('||', $item->image_url);

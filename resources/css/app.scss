@@ -29,6 +29,9 @@
 /* Ensure speciality name is styled appropriately */
 .speciality-name {
     color: #008060;
+    min-height: 3.5rem;
+    display: flex;
+    align-items: center;
 }
 
 /* Set a fixed size for the card */
