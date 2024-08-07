@@ -345,6 +345,38 @@
                     </ul>
                 </li>
             @endif
+            @if (Auth::user()->hasRole('spesialis'))
+                <li>
+                    <a href="{{ route('master-dokters.index') }}" class="navItem {{ (request()->is('master-dokters*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="maki:doctor"></iconify-icon>
+                            <span>{{ __('Master Doctor') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('doctorSpecialist.index') }}" class="navItem {{ (request()->is('doctorSpecialists*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="maki:doctor"></iconify-icon>
+                            <span>{{ __('Doctor Spesialis') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="{{ (\Request::route()->getName() == 'Schedules*') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="navItem">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
+                            <span>{{ __('Plasma') }}</span>
+                        </span>
+                        <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
         </ul>
     </div>
 </div>
