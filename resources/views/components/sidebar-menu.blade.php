@@ -151,6 +151,15 @@
                         </span>
                     </a>
                 </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
+                </li>
             @endif
             @if (Auth::user()->hasRole('igd'))
                 <li>
@@ -182,6 +191,15 @@
                             <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
                         </li>
                     </ul>
+                </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
                 </li>
             @endif
             @if (Auth::user()->hasRole('hr'))
@@ -248,6 +266,15 @@
                         </li>
                     </ul>
                 </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
+                </li>
             @endif
             @if (Auth::user()->hasRole('nod'))
                 <li>
@@ -279,6 +306,15 @@
                             <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
                         </li>
                     </ul>
+                </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
                 </li>
             @endif
             @if (Auth::user()->hasRole('driver'))
@@ -312,6 +348,15 @@
                         </li>
                     </ul>
                 </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
+                </li>
             @endif
             @if (Auth::user()->hasRole('dokter'))
                 <li>
@@ -344,6 +389,15 @@
                         </li>
                     </ul>
                 </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
+                </li>
             @endif
             @if (Auth::user()->hasRole('spesialis'))
                 <li>
@@ -375,6 +429,15 @@
                             <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
                         </li>
                     </ul>
+                </li>
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
+                        </span>
+                    </a>
                 </li>
             @endif
         </ul>
