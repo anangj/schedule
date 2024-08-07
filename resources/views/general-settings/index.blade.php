@@ -105,7 +105,7 @@
                     </div>
                 @endif
                 
-                @if (Auth::user()->hasRole('driver'))
+                @if (Auth::user()->hasRole('driver') || Auth::user()->hasRole('spesialis') || Auth::user()->hasRole('igd') || Auth::user()->hasRole('nod') || Auth::user()->hasRole('dokter') || Auth::user()->hasRole('hr'))
                     <div class="card">
                         <div class="card-body p-6">
                             <div class="space-y-6">
