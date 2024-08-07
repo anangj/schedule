@@ -62,6 +62,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('master-ponek.index') }}" class="navItem {{ (request()->is('master-poneks*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Ponek') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('master-driver.index') }}" class="navItem {{ (request()->is('master-drivers*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="ph:ambulance"></iconify-icon>

@@ -29,6 +29,7 @@ use App\Http\Controllers\MasterDokterController;
 use App\Http\Controllers\MasterDriverController;
 use App\Http\Controllers\MasterNodController;
 use App\Http\Controllers\MasterNurseController;
+use App\Http\Controllers\MasterPonekController;
 use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\NodController;
 use App\Http\Controllers\ScheduleDokterController;
@@ -84,6 +85,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Master Nurse
     Route::resource('master-nurses', MasterNurseController::class);
     Route::post('/master-nurses/upload-excel', [MasterNurseController::class, 'storeExcel'])->name('master-nurses.uploadExcel');
+
+    Route::resource('master-ponek', MasterPonekController::class);
+    Route::post('/master-ponek/upload-json', [MasterPonekController::class, 'storeExcel'])->name('master-ponek.uploadExcel');
 
     // Master Driver
     Route::resource('master-driver', MasterDriverController::class);
