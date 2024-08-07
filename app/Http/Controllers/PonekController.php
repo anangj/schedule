@@ -38,7 +38,7 @@ class PonekController extends Controller
         ->get();
 
         return view('ponek.index', [
-            'Poneks' => $Poneks,
+            'poneks' => $Poneks,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Ponek'
         ]);
