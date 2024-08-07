@@ -45,14 +45,14 @@
                         </span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('shift.index') }}" class="navItem {{ (request()->is('shift*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="dashicons:calendar-alt"></iconify-icon>
                             <span>{{ __('Master Shift') }}</span>
                         </span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
                         <span class="flex items-center">
@@ -61,14 +61,14 @@
                         </span>
                     </a>
                 </li>
-                {{-- <li>
-                    <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
+                <li>
+                    <a href="{{ route('master-driver.index') }}" class="navItem {{ (request()->is('master-drivers*')) ? 'active' : '' }}">
                         <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
-                            <span>{{ __('Master Nurses') }}</span>
+                            <iconify-icon class=" nav-icon" icon="ph:ambulance"></iconify-icon>
+                            <span>{{ __('Master Driver') }}</span>
                         </span>
                     </a>
-                </li> --}}
+                </li>
                 <li>
                     <a href="{{ route('drivers.index') }}" class="navItem {{ (request()->is('drivers*')) ? 'active' : '' }}">
                         <span class="flex items-center">
@@ -250,36 +250,100 @@
                 </li>
             @endif
             @if (Auth::user()->hasRole('nod'))
-            <li>
-                <a href="{{ route('master-nod.index') }}" class="navItem {{ (request()->is('master-nods*')) ? 'active' : '' }}">
-                    <span class="flex items-center">
-                        <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
-                        <span>{{ __('Master Nod') }}</span>
-                    </span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('nod.index') }}" class="navItem {{ (request()->is('nods*')) ? 'active' : '' }}">
-                    <span class="flex items-center">
-                        <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
-                        <span>{{ __('Nod') }}</span>
-                    </span>
-                </a>
-            </li>
-            <li class="{{ (\Request::route()->getName() == 'Schedules*') ? 'active' : '' }}">
-                <a href="javascript:void(0)" class="navItem">
-                    <span class="flex items-center">
-                        <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
-                        <span>{{ __('Plasma') }}</span>
-                    </span>
-                    <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
-                    </li>
-                </ul>
-            </li>
+                <li>
+                    <a href="{{ route('master-nod.index') }}" class="navItem {{ (request()->is('master-nods*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Nod') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('nod.index') }}" class="navItem {{ (request()->is('nods*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Nod') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="{{ (\Request::route()->getName() == 'Schedules*') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="navItem">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
+                            <span>{{ __('Plasma') }}</span>
+                        </span>
+                        <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+            @if (Auth::user()->hasRole('driver'))
+                <li>
+                    <a href="{{ route('master-driver.index') }}" class="navItem {{ (request()->is('master-drivers*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="ph:ambulance"></iconify-icon>
+                            <span>{{ __('Master Driver') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('drivers.index') }}" class="navItem {{ (request()->is('drivers*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="ph:ambulance"></iconify-icon>
+                            <span>{{ __('Driver') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="{{ (\Request::route()->getName() == 'Schedules*') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="navItem">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
+                            <span>{{ __('Plasma') }}</span>
+                        </span>
+                        <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+            @if (Auth::user()->hasRole('dokter'))
+                <li>
+                    <a href="{{ route('master-dokters.index') }}" class="navItem {{ (request()->is('master-dokters*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="maki:doctor"></iconify-icon>
+                            <span>{{ __('Master Doctor') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('doctors.index') }}" class="navItem {{ (request()->is('doctors*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="maki:doctor"></iconify-icon>
+                            <span>{{ __('Doctor IGD') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="{{ (\Request::route()->getName() == 'Schedules*') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="navItem">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
+                            <span>{{ __('Plasma') }}</span>
+                        </span>
+                        <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('plasma') }}" class="{{ (\Request::route()->getName() == 'plasma') ? 'active' : '' }}">{{ __('Plasma') }}</a>
+                        </li>
+                    </ul>
+                </li>
             @endif
         </ul>
     </div>

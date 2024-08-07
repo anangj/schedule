@@ -26,6 +26,7 @@ use App\Http\Controllers\PlasmaSpecialistController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
 use App\Http\Controllers\MasterDokterController;
+use App\Http\Controllers\MasterDriverController;
 use App\Http\Controllers\MasterNodController;
 use App\Http\Controllers\MasterNurseController;
 use App\Http\Controllers\MasterShiftController;
@@ -83,6 +84,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Master Nurse
     Route::resource('master-nurses', MasterNurseController::class);
     Route::post('/master-nurses/upload-excel', [MasterNurseController::class, 'storeExcel'])->name('master-nurses.uploadExcel');
+
+    // Master Driver
+    Route::resource('master-driver', MasterDriverController::class);
+    Route::post('/master-driver/upload-excel', [MasterDriverController::class, 'storeExcel'])->name('master-driver.uploadExcel');
 
     // Schedule Doctor
     Route::resource('schedule-dokters', ScheduleDokterController::class);

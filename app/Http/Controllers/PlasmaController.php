@@ -146,13 +146,13 @@ class PlasmaController extends Controller
 
         // NOD
         if ($time >= '07:00' && $time < '13:28') {
-            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift like '%$op1%'");
+            $nod = DB::select("SELECT n.employee_name, n.date, n.shift , mn.image_url FROM nods n left join master_nods mn on n.employee_id = mn.employee_id  WHERE date = '$date' AND shift like '%$op1%'");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND shift like '%$op2%'");
+            $nod = DB::select("SELECT n.employee_name, n.date, n.shift , mn.image_url FROM nods n left join master_nods mn on n.employee_id = mn.employee_id  WHERE date = '$date' AND shift like '%$op2%'");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $nod = DB::select("SELECT employee_name, date, shift FROM nods WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
+            $nod = DB::select("SELECT n.employee_name, n.date, n.shift , mn.image_url FROM nods n left join master_nods mn on n.employee_id = mn.employee_id  WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
             $shift = 'MALAM';
         }
 
