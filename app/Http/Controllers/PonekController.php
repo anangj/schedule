@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Nod;
+use App\Models\Ponek;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
 
-class NodController extends Controller
+class PonekController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class NodController extends Controller
     {
         $breadcrumbsItems = [
             [
-                'name' => 'Nod',
-                'url' => route('nod.index'),
+                'name' => 'Ponek',
+                'url' => route('ponek.index'),
                 'active' => false
             ],
             [
@@ -33,14 +33,14 @@ class NodController extends Controller
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
-        $nods = Nod::whereMonth('date', $currentMonth)
+        $Poneks = Ponek::whereMonth('date', $currentMonth)
         ->whereYear('date', $currentYear)
         ->get();
 
-        return view('nod.index', [
-            'nods' => $nods,
+        return view('ponek.index', [
+            'Poneks' => $Poneks,
             'breadcrumbsItems' => $breadcrumbsItems,
-            'pageTitle' => 'Nod'
+            'pageTitle' => 'Ponek'
         ]);
     }
 
@@ -69,27 +69,27 @@ class NodController extends Controller
             'shift' => 'required|date_format:H:i',
         ]);
 
-        $nod = new Nod();
+        $nod = new Ponek();
         $nod->employee_id = $validatedData['employee_id'];
         $nod->employee_name = $validatedData['employee_name'];
         $nod->date = $validatedData['date'];
         $nod->shift = $validatedData['shift'];
         $nod->save();
-        return redirect()->route('nod.index')->with('success', 'Shift created successfully');
+        return redirect()->route('ponek.index')->with('success', 'Shift created successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Nod  $nod
+     * @param  \App\Models\Ponek  $ponek
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $breadcrumbsItems = [
             [
-                'name' => 'Nod',
-                'url' => route('nod.index'),
+                'name' => 'Ponek',
+                'url' => route('ponek.index'),
                 'active' => false
             ],
             [
@@ -98,26 +98,26 @@ class NodController extends Controller
                 'active' => true
             ],
         ];
-        $nurses = Nod::find($id);
-        return view('nod.show', [
-            'nods' => $nurses,
+        $poneks = Ponek::find($id);
+        return view('ponek.show', [
+            'poneks' => $poneks,
             'breadcrumbItems' => $breadcrumbsItems,
-            'pageTitle' => 'Show Nod',
+            'pageTitle' => 'Show Ponek',
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Nod  $nod
+     * @param  \App\Models\Ponek  $ponek
      * @return \Illuminate\Http\Response
      */
-    public function edit(Nod $nod)
+    public function edit(Ponek $ponek)
     {
         $breadcrumbsItems = [
             [
-                'name' => 'Nod',
-                'url' => route('nod.index'),
+                'name' => 'Ponek',
+                'url' => route('ponek.index'),
                 'active' => false
             ],
             [
@@ -127,10 +127,10 @@ class NodController extends Controller
             ],
         ];
 
-        return view('nod.edit', [
-            'nods' => $nod,
+        return view('ponek.edit', [
+            'poneks' => $ponek,
             'breadcrumbItems' => $breadcrumbsItems,
-            'pageTitle' => 'Edit Nod'
+            'pageTitle' => 'Edit Ponek'
         ]);
     }
 
@@ -138,10 +138,10 @@ class NodController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Nod  $nod
+     * @param  \App\Models\Ponek  $ponek
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Nod $nod)
+    public function update(Request $request, Ponek $ponek)
     {
         $request->validate([
             'employee_name' => 'required|string|max:255',
@@ -149,23 +149,23 @@ class NodController extends Controller
             'shift' => 'required|string|max:255',
         ]);
 
-        $nod->employee_name = $request->employee_name;
-        $nod->date = $request->date;
-        $nod->shift = $request->shift;
-        $nod->save();
+        $ponek->employee_name = $request->employee_name;
+        $ponek->date = $request->date;
+        $ponek->shift = $request->shift;
+        $ponek->save();
 
-        return redirect()->route('nod.index')->with('success', 'Nod updated successfully!');
+        return redirect()->route('ponek.index')->with('success', 'Ponek updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Nod  $nod
+     * @param  \App\Models\Ponek  $ponek
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Nod $nod)
+    public function destroy(Ponek $ponek)
     {
-        $nod->delete();
+        $ponek->delete();
 
         return response()->noContent();
     }
@@ -212,7 +212,7 @@ class NodController extends Controller
             $month = Carbon::parse($dateMonth)->month;
 
             if ($today === $month) {
-                Nod::whereMonth('date', $today)->delete();
+                Ponek::whereMonth('date', $today)->delete();
             }
 
             // Melakukan iterasi melalui baris data
@@ -234,7 +234,7 @@ class NodController extends Controller
                     $formattedDate = convertDate($date);
 
                     // Memproses data Anda di sini
-                    $nurse = new Nod();
+                    $nurse = new Ponek();
                     $nurse->employee_id = $employeeId;
                     $nurse->employee_name = $employeeName;
                     $nurse->date = $formattedDate;
@@ -264,7 +264,7 @@ class NodController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = storage_path('app/templates/template_nod.xlsx');
+        $filePath = storage_path('app/templates/template_ponek.xlsx');
 
         if (File::exists($filePath)) {
             return response()->download($filePath);

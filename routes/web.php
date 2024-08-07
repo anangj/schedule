@@ -32,6 +32,7 @@ use App\Http\Controllers\MasterNurseController;
 use App\Http\Controllers\MasterPonekController;
 use App\Http\Controllers\MasterShiftController;
 use App\Http\Controllers\NodController;
+use App\Http\Controllers\PonekController;
 use App\Http\Controllers\ScheduleDokterController;
 
 require __DIR__ . '/auth.php';
@@ -124,6 +125,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     //Marketing
     Route::resource('marketing', MarketingController::class);
+
+    // Ponek
+    Route::get('ponek/download-template', [PonekController::class, 'downloadTemplate'])->name('ponek.downloadTemplate');
+    Route::resource('ponek', PonekController::class);
+    Route::post('/ponek/upload-excel', [PonekController::class, 'storeExcel'])->name('ponek.uploadExcel');
     
 
 
