@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('schedule-dokters', ScheduleDokterController::class);
 
     // Doctor Specialist
+    Route::get('doctorSpecialist/download-template', [DoctorSpecialistController::class, 'downloadTemplate'])->name('doctorSpecialist.downloadTemplate');
     Route::resource('doctorSpecialist', DoctorSpecialistController::class);
     Route::post('doctorSpecialist/upload-excel', [DoctorSpecialistController::class, 'storeExcel'])->name('doctorSpecialist.uploadExcel');
 
