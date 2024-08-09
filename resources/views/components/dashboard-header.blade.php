@@ -31,7 +31,7 @@
             <!-- end horizontal nav -->
 
             <div class="nav-tools flex items-center lg:space-x-5 space-x-3 rtl:space-x-reverse leading-0">
-                <x-nav-lang-dropdown />
+                {{-- <x-nav-lang-dropdown /> --}}
                 <x-dark-light />
                 <x-gray-scale />
                 {{-- <x-nav-message-dropdown />
