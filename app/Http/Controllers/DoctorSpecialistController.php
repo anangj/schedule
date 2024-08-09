@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\DoctorSpecialist;
+use Illuminate\Support\Facades\File;
 
 
 class DoctorSpecialistController extends Controller
@@ -204,5 +205,16 @@ class DoctorSpecialistController extends Controller
             }
         }
         return null; // Menangani jika baris header tidak ditemukan
+    }
+
+    public function downloadTemplate()
+    {
+        $filePath = storage_path('app/templates/template_dokter_spesialis.xlsx');
+
+        if (File::exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'Template file not found.');
+        }
     }
 }
