@@ -5,30 +5,13 @@
                 <div class="ml-5 sm:mr-36 flex-shrink-0 w-1/4 sm:w-1/4">
                     <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" class="w-3/4">
                 </div>
-                {{-- <div id="header-text" class="text-center sm:text-left flex-1 font-bold text-2xl sm:text-4xl text-responsive text-blue-900">
-                    PETUGAS KAMI HARI INI
-                </div> --}}
                 <h1 class="basis-1/2 font-bold" style="color: #003974">Petugas Kami Hari Ini</h1>
                 <div id="clock" class="font-bold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right mr-5"></div>
             </div>
         </div>
-        {{-- <div class="card w-full mt-2">
-            <div class="flex flex-wrap items-center w-full">
-                <div class="ml-16 mr-8 sm:mr-48 flex-shrink-0 w-1/4 sm:w-1/4">
-                </div>
-                <div id="header-text" class="text-left sm:text-left flex-1 font-bold text-2xl sm:text-4xl text-responsive text-blue-900">
-                    {{ $today }}
-                </div>
-                <div id="clock" class="font-bold text-2xl sm:text-4xl w-1/4 sm:w-1/4 text-right">
-                </div>
-            </div>
-        </div> --}}
         <div class="card mt-3 ml-5 mr-5 text-center items-center text-3xl py-2 text-white"
             style="background-color: #003974">{{ $today }} - {{ $shift }}
         </div>
-        {{-- <div class="card mt-3 mx-5 text-center items-center text-xl sm:text-3xl py-2 text-blue-900">
-            {{ $today }}
-        </div> --}}
 
         <!-- Carousel for Schedules and Personnel -->
         @php

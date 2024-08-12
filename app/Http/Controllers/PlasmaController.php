@@ -81,11 +81,13 @@ class PlasmaController extends Controller
                 'category',
                 'speciality_name',
                 DB::raw('GROUP_CONCAT(employee_name SEPARATOR "||") as doctors'),
-                DB::raw('GROUP_CONCAT(image_url SEPARATOR "||") as image_url')
+                DB::raw('GROUP_CONCAT(image_url SEPARATOR "||") as image_url'),
+                DB::raw('count(*) as total')
             )
             ->where('row_num', '<=', 2)
             ->groupBy('category', 'speciality_name')
             ->orderBy('category')
+            ->orderBy('total', 'desc')
             ->orderBy('speciality_name')
             ->get();
         
@@ -217,11 +219,11 @@ class PlasmaController extends Controller
         $columns = [[], [], [], []]; // Initialize four columns
         
         // Add doctors and NODs to the first column
-        foreach ($doctors as $doctor) {
-            $columns[0][] = $doctor;
-        }
         foreach ($nods as $nod) {
             $columns[0][] = $nod;
+        }
+        foreach ($doctors as $doctor) {
+            $columns[0][] = $doctor;
         }
         
         // Add nurses to the second column, handle overflow into the third column if needed
