@@ -5,7 +5,7 @@
             <div class="md:flex justify-between items-center mb-6">
                 <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
                 <div class="flex flex-wrap ">
-                    <form action="{{ route('master-dokters.storeJson') }}" method="POST" enctype="multipart/form-data">
+                    {{-- <form action="{{ route('master-dokters.storeJson') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="json_file" required>
                         <button type="submit"
@@ -14,12 +14,12 @@
                                 <span>Upload Dokter</span>
                             </span>
                         </button>
-                    </form>
-                    <button class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1 ">
+                    </form> --}}
+                    <a href="{{ route('master-dokters.create') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
                         <span class="flex items-center">
                             <span>Tambah Dokter</span>
                         </span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

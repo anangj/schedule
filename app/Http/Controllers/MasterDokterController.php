@@ -45,7 +45,22 @@ class MasterDokterController extends Controller
      */
     public function create()
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Tambah Dokter',
+                'url' => route('master-dokters.create'),
+                'active' => false
+            ],
+            [
+                'name' => 'List',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+        return view('master-dokter.create', [
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Tambah Dokter'
+        ]);
     }
 
     /**
@@ -56,8 +71,35 @@ class MasterDokterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $request->validate([
+            'id_tera' => 'nullable|string',
+            'nama_dokter' => 'required|string|max:255',
+            'poli' => 'required|string|max:255',
+            'spesialis' => 'required|string|max:255',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('images/dokter', 'public');
+        } else {
+            $imagePath = null;
+        }
+
+        // Create a new doctor record
+        MasterDokter::create([
+            'id_tera' => $request->input('id_tera'),
+            'nama_dokter' => $request->input('nama_dokter'),
+            'poli' => $request->input('poli'),
+            'spesialis' => $request->input('spesialis'),
+            'image_url' => $imagePath,
+        ]);
+
+        // Redirect to the doctor index page with a success message
+        return redirect()->route('master-dokters.index')->with('success', 'Doctor created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -165,10 +207,23 @@ class MasterDokterController extends Controller
      * @param  \App\Models\MasterDokter  $masterDokter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MasterDokter $masterDokter)
+    public function destroy($id)
     {
-        //
+        // Find the doctor by ID
+        $doctor = MasterDokter::findOrFail($id);
+
+        // Delete the doctor's image if it exists
+        if ($doctor->image_url) {
+            Storage::disk('public')->delete($doctor->image_url);
+        }
+
+        // Delete the doctor record
+        $doctor->delete();
+
+        // Redirect back with a success message
+        return redirect()->route('master-dokters.index')->with('success', 'Doctor deleted successfully.');
     }
+
 
     public function storeJson(Request $request)
     {
