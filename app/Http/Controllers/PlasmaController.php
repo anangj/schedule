@@ -121,6 +121,7 @@ class PlasmaController extends Controller
         $nurses = [];
         $drivers = [];
         $nod = [];
+        $poneks = [];
         // $kp = [];
 
         // Query for doctors office
@@ -182,8 +183,17 @@ class PlasmaController extends Controller
             $merged = $nurses;
         }
 
-
-
+        // Ponek
+        if ($time >= '07:00' && $time < '13:28') {
+            $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op1%' ");
+            $shift = 'PAGI';
+        } else if ($time >= '13:30' && $time < '20:58') {
+            $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op2%' ");
+            $shift = 'SIANG';
+        } else if ($time >= '21:00') {
+            $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%') ");
+            $shift = 'MALAM';
+        }
 
         // Driver
         if ($time >= '07:00' && $time < '13:28') {
@@ -210,6 +220,10 @@ class PlasmaController extends Controller
         
         $nurses = collect($merged)->map(function ($nurse) {
             return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
+        });
+
+        $poneks = collect($poneks)->map(function ($ponek) {
+            return ['type' => 'ponek', 'data' => $ponek, 'title' => 'PONEK'];
         });
         
         $drivers = collect($drivers)->map(function ($driver) {
@@ -240,6 +254,10 @@ class PlasmaController extends Controller
         
         // Add drivers to the third column if the second column has no overflow, otherwise to the fourth column
         $driverColumn = count($columns[2]) > 0 ? 3 : 2;
+        foreach ($poneks as $ponek) {
+            $columns[$driverColumn][] = $ponek;
+        }
+        // dd($poneks);
         foreach ($drivers as $driver) {
             $columns[$driverColumn][] = $driver;
         }

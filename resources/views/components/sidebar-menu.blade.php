@@ -161,10 +161,26 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('master-ponek.index') }}" class="navItem {{ (request()->is('master-poneks*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Master Ponek') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('nurses.index') }}" class="navItem {{ (request()->is('nurses*')) ? 'active' : '' }}">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
                             <span>{{ __('Upload Jadwal Nurse') }}</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('ponek.index') }}" class="navItem {{ (request()->is('poneks*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
+                            <span>{{ __('Upload Jadwal Ponek') }}</span>
                         </span>
                     </a>
                 </li>
