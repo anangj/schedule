@@ -264,7 +264,7 @@ class PonekController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = storage_path('app/templates/template_ponek.xlsx');
+        $filePath = storage_path('template/template_ponek.xlsx');
 
         if (File::exists($filePath)) {
             return response()->download($filePath);
