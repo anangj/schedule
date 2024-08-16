@@ -74,6 +74,15 @@
                                             $imageUrl = isset($item['data']->image_url) && $item['data']->image_url ? asset('storage/' . $item['data']->image_url) : asset('images/avatar/av-1.svg');
                                         @endphp
                                         <img src="{{ $imageUrl }}" alt="img" class="w-32 h-32 object-cover rounded-full">
+
+                                        @if(str_contains($item['data']->shift, 'PJ') || str_contains($item['data']->shift, 'KP'))
+                                            <!-- Star icon in the bottom left corner -->
+                                            <div class="absolute bottom-0 left-0 bg-white rounded-full text-xs p-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 17.27l6.18 3.73-1.64-7.19 5.46-4.73-7.26-.61L12 2 9.26 8.47l-7.26.61 5.46 4.73-1.64 7.19L12 17.27z"/>
+                                                </svg>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="ml-6 text-lg font-bold">{{ $item['data']->employee_name }}</div>
                                 </div>
