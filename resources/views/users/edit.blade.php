@@ -10,7 +10,7 @@
         <form method="POST" action="{{ route('users.update',$user) }}" class="max-w-4xl m-auto">
             @csrf
             @method('PUT')
-            <div class="bg-white dark:bg-slate-800 rounded-md p-5 pb-6">
+            <div class="p-5 pb-6 bg-white rounded-md dark:bg-slate-800">
 
                 <div class="grid sm:grid-cols-1 gap-x-8 gap-y-4">
 
@@ -39,24 +39,24 @@
                     </div>
 
                     {{--Role input start--}}
-                    <div class="input-area">
-                        <label for="role" class="form-label">{{ __('Role') }}</label>
-                        <select name="role" class="form-control">
-                            <option value="" selected disabled>
-                                {{ __('Select Role') }}
-                            </option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}" @selected($user->hasRole($role->name))>
-                                    {{ $role->name }}
+                        <div class="input-area">
+                            <label for="role" class="form-label">{{ __('Role') }}</label>
+                            <select name="role" class="form-control" @if(!Auth::user()->hasRole('super-admin')) disabled @endif>
+                                <option value="" selected disabled>
+                                    {{ __('Select Role') }}
                                 </option>
-                            @endforeach
-                        </select>
-                        <iconify-icon class="absolute right-3 bottom-3 text-xl dark:text-white z-10"
-                                      icon="material-symbols:keyboard-arrow-down-rounded"></iconify-icon>
-                    </div>
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}" @selected($user->hasRole($role->name))>
+                                        {{ $role->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <iconify-icon class="absolute z-10 text-xl right-3 bottom-3 dark:text-white"
+                                        icon="material-symbols:keyboard-arrow-down-rounded"></iconify-icon>
+                        </div>
                     {{--Role input end--}}
                 </div>
-                <button type="submit" class="btn inline-flex justify-center btn-dark mt-4 w-full">
+                <button type="submit" class="inline-flex justify-center w-full mt-4 btn btn-dark">
                     {{ __('Save Changes') }}
                 </button>
             </div>

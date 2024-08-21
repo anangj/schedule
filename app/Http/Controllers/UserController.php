@@ -29,26 +29,33 @@ class UserController extends Controller
      *
      */
     public function index(Request $request)
-    {
-        $breadcrumbsItems = [
-            [
-                'name' => 'Settings',
-                'url' => '/general-settings',
-                'active' => false
-            ],
-            [
-                'name' => 'Users',
-                'url' => route('users.index'),
-                'active' => true
-            ],
-        ];
+{
+    $breadcrumbsItems = [
+        [
+            'name' => 'Settings',
+            'url' => '/general-settings',
+            'active' => false
+        ],
+        [
+            'name' => 'Users',
+            'url' => route('users.index'),
+            'active' => true
+        ],
+    ];
 
-        $q = $request->get('q');
-        $perPage = $request->get('per_page', 10);
-        $sort = $request->get('sort');
+    $q = $request->get('q');
+    $perPage = $request->get('per_page', 10);
+    $sort = $request->get('sort');
 
-        $users = QueryBuilder::for(User::class)
-            ->allowedSorts(['name', 'email','phone', 'post_code', 'city', 'country'])
+    // Check if the logged-in user is a super-admin
+    $user = auth()->user();
+
+    $query = QueryBuilder::for(User::class)
+        ->allowedSorts(['name', 'email', 'phone', 'post_code', 'city', 'country']);
+
+    if ($user->hasRole('super-admin')) {
+        // Jika super-admin, lakukan query seperti sebelumnya
+        $users = $query
             ->where('name', 'like', "%$q%")
             ->orWhere('email', 'like', "%$q%")
             ->withoutAuthUser()
@@ -56,13 +63,56 @@ class UserController extends Controller
             ->latest()
             ->paginate($perPage)
             ->appends(['per_page' => $perPage, 'q' => $q, 'sort' => $sort]);
-
-        return view('users.index', [
-            'users' => $users,
-            'breadcrumbItems' => $breadcrumbsItems,
-            'pageTitle' => 'Users'
-        ]);
+    } else {
+        // Jika bukan super-admin, tampilkan hanya data user yang sedang login (diri sendiri)
+        $users = $query
+            ->where('id', $user->id) // Filter berdasarkan ID user yang sedang login
+            ->paginate($perPage)
+            ->appends(['per_page' => $perPage, 'q' => $q, 'sort' => $sort]);
     }
+
+    return view('users.index', [
+        'users' => $users,
+        'breadcrumbItems' => $breadcrumbsItems,
+        'pageTitle' => 'Users'
+    ]);
+}
+
+    // public function index(Request $request)
+    // {
+    //     $breadcrumbsItems = [
+    //         [
+    //             'name' => 'Settings',
+    //             'url' => '/general-settings',
+    //             'active' => false
+    //         ],
+    //         [
+    //             'name' => 'Users',
+    //             'url' => route('users.index'),
+    //             'active' => true
+    //         ],
+    //     ];
+
+    //     $q = $request->get('q');
+    //     $perPage = $request->get('per_page', 10);
+    //     $sort = $request->get('sort');
+
+    //     $users = QueryBuilder::for(User::class)
+    //         ->allowedSorts(['name', 'email','phone', 'post_code', 'city', 'country'])
+    //         ->where('name', 'like', "%$q%")
+    //         ->orWhere('email', 'like', "%$q%")
+    //         ->withoutAuthUser()
+    //         ->withoutSuperAdmin()
+    //         ->latest()
+    //         ->paginate($perPage)
+    //         ->appends(['per_page' => $perPage, 'q' => $q, 'sort' => $sort]);
+
+    //     return view('users.index', [
+    //         'users' => $users,
+    //         'breadcrumbItems' => $breadcrumbsItems,
+    //         'pageTitle' => 'Users'
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.
