@@ -1,9 +1,9 @@
 <x-app-layout>
      <div class="space-y-8">
-        <div class="block sm:flex items-center justify-between mb-6">
+        <div class="items-center justify-between block mb-6 sm:flex">
             <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
             <div class="flex justify-end">
-                <a href="{{ route('doctorSpecialist.downloadTemplate') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
+                <a href="{{ route('doctorSpecialist.downloadTemplate') }}" class="inline-flex justify-center m-1 btn btn-dark dark:bg-slate-700 dark:text-slate-300">
                     <span class="flex items-center">
                         <span>Template</span>
                     </span>
@@ -15,40 +15,43 @@
                     <button type="submit"
                         class="btn leading-0 inline-flex justify-center bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-300 !font-normal">
                         <span class="flex items-center">
-                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2 font-light"
+                            <iconify-icon class="text-xl font-light ltr:mr-2 rtl:ml-2"
                                 icon="heroicons-outline:upload"></iconify-icon>
                             <span>Upload</span>
                         </span>
                     </button>
                 </form>
-                <div id="progressContainer" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-75 z-50">
-                    <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
+                <div id="progressContainer" class="fixed inset-0 z-50 flex flex-col items-center justify-center hidden bg-gray-100 bg-opacity-75">
+                    <div class="w-32 h-32 mb-4 ease-linear border-8 border-t-8 border-gray-200 rounded-full loader"></div>
                     <p class="text-lg font-semibold text-gray-700">Loading...</p>
                 </div>
             </div>
         </div>
-        
-        <div class=" space-y-5">
+
+        <div class="space-y-5 ">
             <div class="card">
-                <div class="card-body px-6 pb-6">
-                    <div class="overflow-x-auto -mx-6 dashcode-data-table">
-                        <span class=" col-span-8  hidden"></span>
-                        <span class="  col-span-4 hidden"></span>
+                <div class="px-6 pb-6 card-body">
+                    <div class="-mx-6 overflow-x-auto dashcode-data-table">
+                        <span class="hidden col-span-8 "></span>
+                        <span class="hidden col-span-4 "></span>
                         <div class="inline-block min-w-full align-middle">
                             <div class="overflow-hidden ">
                                 <table
-                                    class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
+                                    class="min-w-full divide-y table-fixed divide-slate-100 dark:divide-slate-700 data-table">
                                     <thead class=" bg-slate-200 dark:bg-slate-700">
                                         <tr>
-                                            <th scope="col" class=" table-th ">
+                                            <th scope="col" class=" table-th">
                                                 Nama
                                             </th>
-                                            <th scope="col" class=" table-th ">
+                                            <th scope="col" class=" table-th">
                                                 Tanggal
                                             </th>
-                                            <th scope="col" class=" table-th ">
-                                              Shift
-                                          </th>
+                                            <th scope="col" class=" table-th">
+                                                Shift
+                                            </th>
+                                            <th scope="col" class=" table-th">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody
@@ -58,22 +61,32 @@
                                                 <td class="table-td">{{ $item->employee_name }}</td>
                                                 <td class="table-td ">{{ $item->date }}</td>
                                                 <td class="table-td">{{ $item->shift }}</td>
-                                                {{-- <td class="table-td ">
+                                                <td class="table-td ">
                                                     <div class="flex space-x-3 rtl:space-x-reverse">
                                                         <button class="action-btn" type="button">
-                                                            <a href="{{ route('doctors.show', $item['id']) }}"
+                                                            <a href="{{ route('doctorSpecialist.show', $item['id']) }}"
                                                                 class="action-btn">
                                                                 <iconify-icon icon="heroicons:eye"></iconify-icon>
                                                             </a>
                                                         </button>
                                                         <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
+                                                            <a href="{{ route('doctorSpecialist.edit', $item['id']) }}"><iconify-icon
+                                                                    icon="heroicons:pencil-square"></iconify-icon></a>
                                                         </button>
-                                                        <button class="action-btn" type="button">
-                                                            <iconify-icon icon="heroicons:trash"></iconify-icon>
-                                                        </button>
+                                                        <form id="deleteForm{{ $item['id'] }}" method="POST"
+                                                            action="{{ route('doctorSpecialist.destroy', $item['id']) }}"
+                                                            class="cursor-pointer">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a class="action-btn"
+                                                                onclick="sweetAlertDelete(event, 'deleteForm{{ $item['id'] }}')"
+                                                                type="submit">
+                                                                <iconify-icon
+                                                                    icon="fluent:delete-24-regular"></iconify-icon>
+                                                            </a>
+                                                        </form>
                                                     </div>
-                                                </td> --}}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -107,6 +120,23 @@
                     search: "Search:",
                 },
             });
+        </script>
+        <script>
+            function sweetAlertDelete(event, formId) {
+                event.preventDefault();
+                let form = document.getElementById(formId);
+                Swal.fire({
+                    title: '@lang('Are you sure ? ')',
+                    icon: 'question',
+                    showDenyButton: true,
+                    confirmButtonText: '@lang('Delete ')',
+                    denyButtonText: '@lang(' Cancel ')',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            }
         </script>
         <script>
             document.getElementById('uploadForm').addEventListener('submit', function (e) {

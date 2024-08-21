@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\DoctorSpecialist;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\DoctorUpdateRequest;
 
 
 class DoctorSpecialistController extends Controller
@@ -40,7 +41,7 @@ class DoctorSpecialistController extends Controller
         $doctors = DoctorSpecialist::whereMonth('date', $currentMonth)
         ->whereYear('date', $currentYear)
         ->get();
-        
+
         // dd($doctors);
         return view('doctor-specialist.index', [
             'doctors' => $doctors,
@@ -78,7 +79,10 @@ class DoctorSpecialistController extends Controller
      */
     public function show($id)
     {
-        //
+        $doctorsData = DoctorSpecialist::find($id);
+        $doctors = $doctorsData;
+
+        return view('doctor-specialist.show', compact('doctors'));
     }
 
     /**
@@ -87,9 +91,26 @@ class DoctorSpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(DoctorSpecialist $doctorSpecialist)
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Doctor',
+                'url' => route('doctorSpecialist.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Edit',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+
+        return view('doctor-specialist.edit', [
+            'doctors' => $doctorSpecialist,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Edit Doctor'
+        ]);
     }
 
     /**
@@ -99,9 +120,14 @@ class DoctorSpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DoctorUpdateRequest $request, DoctorSpecialist $doctorSpecialist)
     {
-        //
+        $doctorSpecialist->update([
+            'shift' => $request->validated('shift'),
+            'date' => $request->validated('date')
+        ]);
+
+        return to_route('doctorSpecialist.index')->with('message', 'Doctor updates Successfully!');
     }
 
     /**
@@ -110,9 +136,11 @@ class DoctorSpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DoctorSpecialist $doctorSpecialist)
     {
-        //
+        $doctorSpecialist->delete();
+
+        return response()->noContent();
     }
 
     public function storeExcel(Request $request)
@@ -178,7 +206,7 @@ class DoctorSpecialistController extends Controller
 
                     // Mengubah format tanggal
                     $formattedDate = convertDate($date);
-                    
+
                     // Memproses data Anda di sini
                     $specialist = new DoctorSpecialist();
                     $specialist->employee_id = (string) $employeeId;

@@ -1,24 +1,24 @@
 <x-app-layout>
     <div class="space-y-8">
-        <div class="block sm:flex items-center justify-between mb-6">
+        <div class="items-center justify-between block mb-6 sm:flex">
             {{-- Breadcrumb --}}
             <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbItems" />
 
             <div class="text-end">
                 <a class="btn inline-flex justify-center btn-dark rounded-[25px] items-center !p-2 !px-3" href="{{ route('doctors.index') }}">
-                    <iconify-icon class="text-lg mr-1" icon="ic:outline-arrow-back"></iconify-icon>
+                    <iconify-icon class="mr-1 text-lg" icon="ic:outline-arrow-back"></iconify-icon>
                     </iconify-icon>
                     {{ __('Back') }}
                 </a>
             </div>
         </div>
-        <div class="rounded-md overflow-hidden">
-            <div class="bg-white dark:bg-slate-800 px-5 py-7">
+        <div class="overflow-hidden rounded-md">
+            <div class="px-5 bg-white dark:bg-slate-800 py-7">
                 <form method="POST" action="{{ route('doctor.update', $doctors)}}">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="employee_name">Nama Pegawai</label>
+                        <label for="employee_name">Nama Dokter</label>
                         <input type="text" id="employee_name" class="form-control" value="{{ $doctors->employee_name }}"
                             readonly>
                     </div>
