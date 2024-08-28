@@ -130,7 +130,7 @@
                         </span>
                     </a>
                 </li>
-                <li class="{{ (\Request::route()->getName() == 'lobbies*') ? 'active' : '' }}">
+                {{-- <li class="{{ (\Request::route()->getName() == 'lobbies*') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="navItem">
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="mdi:projector-screen-variant"></iconify-icon>
@@ -143,7 +143,7 @@
                             <a href="{{ route('lobby.index') }}" class="{{ (\Request::route()->getName() == 'lobby.index') ? 'active' : '' }}">{{ __('Videotron') }}</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <!-- Settings -->
                 <li>
                     <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
