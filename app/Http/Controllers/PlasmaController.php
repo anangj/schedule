@@ -110,7 +110,7 @@ class PlasmaController extends Controller
         $ps = 'PS';
         $pj1 = 'OP-1-pj';
         $pj2 = 'OP-2-pj';
-        $pj3 = 'OP-2-pj';
+        $pj3 = 'OP-3-pj';
         $ls1 = 'OP-1-ls';
         $ls2 = 'OP-2-ls';
         $ls3 = 'OP-3-ls';
@@ -132,13 +132,13 @@ class PlasmaController extends Controller
 
         // Doctors
         if ($time >= '07:00' && $time < '13:28') {
-            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$p%' OR shift LIKE '%$kp1%' OR shift = '$ps')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$p%' OR shift like '%$op1%' OR shift LIKE '%$kp1%' OR shift = '$ps')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$s%' OR shift = '$ps')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$s%' OR shift like '%$op2%' OR shift = '$ps')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$m%')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$m%' OR shift like '%$op3%')");
             $shift = 'MALAM';
         }
 
@@ -156,7 +156,7 @@ class PlasmaController extends Controller
             $nod = DB::select("SELECT n.employee_name, n.date, n.shift , mn.image_url FROM nods n left join master_nods mn on n.employee_id = mn.employee_id  WHERE date = '$date' AND shift like '%$op2%'");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $nod = DB::select("SELECT n.employee_name, n.date, n.shift , mn.image_url FROM nods n left join master_nods mn on n.employee_id = mn.employee_id  WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%')");
+            $nod = DB::select("SELECT n.employee_name, n.date, n.shift , mn.image_url FROM nods n left join master_nods mn on n.employee_id = mn.employee_id  WHERE date = '$date' AND (shift LIKE '%$op3%')");
             $shift = 'MALAM';
         }
 
@@ -173,7 +173,7 @@ class PlasmaController extends Controller
             $nurses = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op2%' group by n.id");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $nurses = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%') group by n.id");
+            $nurses = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from nurses n left join master_nurses mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%') group by n.id");
             $shift = 'MALAM';
         }
 
@@ -192,19 +192,19 @@ class PlasmaController extends Controller
             $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op2%' ");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%' OR shift LIKE '%$middle3%') ");
+            $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%') ");
             $shift = 'MALAM';
         }
 
         // Driver
         if ($time >= '07:00' && $time < '13:28') {
-            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op1%')");
+            $drivers = DB::select("SELECT d.employee_name, d.date, d.shift, md.image_url FROM drivers d left join master_drivers md on d.employee_id = md.employee_id WHERE date = '$date' AND (shift LIKE '%$op1%')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op2%')");
+            $drivers = DB::select("SELECT d.employee_name, d.date, d.shift, md.image_url FROM drivers d left join master_drivers md on d.employee_id = md.employee_id WHERE date = '$date' AND (shift LIKE '%$op2%')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $drivers = DB::select("SELECT employee_name, date, shift FROM drivers WHERE date = '$date' AND (shift LIKE '%$op3%')");
+            $drivers = DB::select("SELECT d.employee_name, d.date, d.shift, md.image_url FROM drivers d left join master_drivers md on d.employee_id = md.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%')");
             $shift = 'MALAM';
         }
         /// end petugas igd
