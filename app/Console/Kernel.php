@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->job(new \App\Jobs\SyncDoctorSchedules())->weeklyOn(2, '09:15')
+        $schedule->job(new \App\Jobs\SyncDoctorSchedules())->weeklyOn(0, '00:15')
         ->onSuccess(function () {
             Log::info('UpdateTableFromApiJob executed successfully at midnight.');
         })
