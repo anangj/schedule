@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +17,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->job(new \App\Jobs\SyncDoctorSchedules())->weeklyOn('tuesday', '09:15')
+        ->onSuccess(function () {
+            Log::info('UpdateTableFromApiJob executed successfully at midnight.');
+        })
+        ->onFailure(function () {
+            Log::error('UpdateTableFromApiJob failed to execute.');
+        });
     }
 
     /**
