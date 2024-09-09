@@ -55,6 +55,9 @@ class SyncDoctorSchedules implements ShouldQueue
                 // Insert Data into schedule_dokters
                 foreach ($doctorData['schedule'] as $schedule) {
                     if ($schedule !== null) {
+
+                        $cleanedPoli = trim(str_replace('POLIKLINIK', '', $doctorData['poli']));
+
                         ScheduleDokter::updateOrCreate(
                             [
                                 'doctor_id' => $doctor->id,
@@ -63,6 +66,9 @@ class SyncDoctorSchedules implements ShouldQueue
                                 'start_minute' => $schedule['start_minute'],
                                 'end_hour' => $schedule['end_hour'],
                                 'end_minute' => $schedule['end_minute'],
+                            ],
+                            [
+                                'poli' => $cleanedPoli,
                             ]
                         );
                     }
