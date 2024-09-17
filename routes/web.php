@@ -21,6 +21,7 @@ use App\Http\Controllers\DoctorSpecialistController;
 use App\Http\Controllers\NurseController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\LobbyController;
 use App\Http\Controllers\PlasmaController;
 use App\Http\Controllers\PlasmaSpecialistController;
 use App\Http\Controllers\MarketingController;
@@ -43,6 +44,7 @@ Route::get('/', function () {
 // Plasma
 Route::get('plasma', [PlasmaController::class, 'index'])->name('plasma');
 Route::get('plasma2', [PlasmaAioController::class, 'index'])->name('plasma2');
+Route::get('lobby', [LobbyController::class, 'index'])->name('lobby');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // Dashboards
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard.index');
@@ -131,9 +133,4 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('ponek/download-template', [PonekController::class, 'downloadTemplate'])->name('ponek.downloadTemplate');
     Route::resource('ponek', PonekController::class);
     Route::post('/ponek/upload-excel', [PonekController::class, 'storeExcel'])->name('ponek.uploadExcel');
-    
-
-
-    // Plasma Specialist
-    Route::get('plasmaSpecialist', [PlasmaSpecialistController::class, 'index'])->name('plasmaSpecialist');
 });
