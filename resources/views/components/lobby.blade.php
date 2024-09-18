@@ -37,10 +37,40 @@
             right: 0;
             background: linear-gradient(135deg, #003974, #008060);
             color: white;
-            padding: 20px;
             text-align: center;
             font-size: 18px;
             font-weight: bold;
+            height: 100px;
+        }
+
+        .footer .left-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .footer .left-column .address {
+            font-size: 20px; /* Smaller font for the address */
+            margin-top: 5px; /* Add spacing between the main text and the address */
+        }
+
+        .footer .right-column {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer .right-column .info-container {
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+        }
+
+        .footer .right-column .info-container p {
+            margin-right: 10px; /* Add some space between the text and the image */
+        }
+
+        .footer .right-column .info-container img.small {
+            width: 80px; /* Adjust size of the QR code */
         }
 
         .header p {
@@ -58,7 +88,7 @@
         .footer p {
             text-align: center;
 
-            padding: 10px 0;
+            /* padding: 10px 0; */
             /* background: linear-gradient(135deg, #003974, #008060); */
             color: white;
             font-size: 24px;

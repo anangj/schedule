@@ -467,6 +467,26 @@
                     </a>
                 </li>
             @endif
+            @can('menu lobby')
+                <li>
+                    <a href="{{ route('lobby.index') }}" class="navItem {{ (request()->is('lobbys*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="maki:doctor"></iconify-icon>
+                            <span>{{ __('Lobby') }}</span>
+                        </span>
+                    </a>
+                </li>
+            @endcan
+            @can('menu schedule')
+                <li>
+                    <a href="{{ route('schedule-dokters.index') }}" class="navItem {{ (request()->is('schedule-dokterss*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
+                            <span>{{ __('Schedule') }}</span>
+                        </span>
+                    </a>
+                </li>
+            @endcan
         </ul>
     </div>
 </div>

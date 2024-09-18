@@ -1,95 +1,70 @@
 <x-app-layout>
     <div>
-        <div class="space-y-8">
+        <div class=" space-y-8">
             <div class="md:flex justify-between items-center mb-6">
                 <x-breadcrumb :pageTitle="$pageTitle" :breadcrumbItems="$breadcrumbsItems" />
-                <div class="flex flex-wrap ">
-                    <a href="{{ route('schedule-dokters.create') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
+                <div class="flex flex-wrap">
+                    <a href="{{ route('lobby.create') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
                         <span class="flex items-center">
-                            <span>Tambah Schedule</span>
+                            <span>Tambah Konten</span>
                         </span>
                     </a>
                 </div>
             </div>
         </div>
-        @if (session('message'))
-            <x-alert :message="session('message')" :type="'success'" />
-        @endif
         <div class="space-y-5">
-
             <div class="card">
                 <div class="card-body px-6 pb-6">
                     <div class="overflow-x-auto -mx-6 dashcode-data-table">
                         <span class=" col-span-8  hidden"></span>
                         <span class="  col-span-4 hidden"></span>
                         <div class="inline-block min-w-full align-middle">
-                            <div class="overflow-hidden">
-                                <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
+                            <div class="overflow-hidden ">
+                                <table
+                                    class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
                                     <thead class=" bg-slate-200 dark:bg-slate-700">
                                         <tr>
-                                            {{-- <th scope="col" class=" table-th ">
-                                                Photo
-                                            </th> --}}
+                                            
                                             <th scope="col" class=" table-th ">
-                                                Nama Dokter
+                                                Nama Event
                                             </th>
                                             <th scope="col" class=" table-th ">
-                                                Days
+                                                Mulai Event
                                             </th>
                                             <th scope="col" class=" table-th ">
-                                                Start Time
+                                                Selesai Event
                                             </th>
                                             <th scope="col" class=" table-th ">
-                                                End Time
-                                            </th>
-                                            <th scope="col" class=" table-th ">
-                                                Appointment
-                                            </th>
-                                            <th scope="col" class=" table-th ">
-                                                Spesialis
+                                                Status
                                             </th>
                                             <th scope="col" class=" table-th ">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+                                    <tbody
+                                        class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                         @foreach ($data as $item)
                                             <tr>
-                                                <td class="table-td ">
-                                                    <div
-                                                        class="flex space-x-3 items-center text-left rtl:space-x-reverse">
-                                                        <div class="flex-none">
-                                                            <div class="h-12 w-12 rounded-full text-sm flex flex-col items-center justify-center font-medium -tracking-[1px]">
-                                                                <img src="{{ asset('storage/' . $item->masterDokter->image_url) }}" class="rounded-full">
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="flex-1 font-medium text-sm leading-4 whitespace-nowrap">
-                                                            {{ $item->masterDokter->nama_dokter }}
-                                                        </div>
-                                                    </div>
-
-                                                </td>
-                                                <td class="table-td ">{{ $item->weekday }}</td>
-                                                <td class="table-td ">{{ str_pad($item->start_hour, 2, '0', STR_PAD_LEFT) }}:{{ str_pad($item->start_minute, 2, '0', STR_PAD_LEFT) }}</td>
-                                                <td class="table-td ">{{ str_pad($item->end_hour, 2, '0', STR_PAD_LEFT) }}:{{ str_pad($item->end_minute, 2, '0', STR_PAD_LEFT) }}</td>
-                                                <td class="table-td ">{{ $item->appointment ? 'Yes' : 'No' }}</td>
-                                                <td class="table-td ">{{ $item->masterDokter->spesialis }}</td>
+                                                <td class="table-td "> {{$item->event_name}} </td>
+                                                {{-- <td class="table-td ">{{ $item->poli }}</td> --}}
+                                                <td class="table-td ">{{ $item->start_date }}</td>
+                                                <td class="table-td ">{{ $item->end_date }}</td>
+                                                <td class="table-td ">{{ $item->status }}</td>
                                                 <td class="table-td ">
                                                     <div class="flex space-x-3 rtl:space-x-reverse">
                                                         <button class="action-btn" type="button">
-                                                            <a href="{{ route('schedule-dokters.show', $item->id) }}"
+                                                            <a href="{{ route('lobby.show', $item->id) }}"
                                                                 class="action-btn">
                                                                 <iconify-icon icon="heroicons:eye"></iconify-icon>
                                                             </a>
                                                         </button>
                                                         <button class="action-btn" type="button">
-                                                            <a href="{{ route('schedule-dokters.edit', $item->id) }}"><iconify-icon
+                                                            <a href="{{ route('lobby.edit', $item->id) }}"><iconify-icon
                                                                     icon="heroicons:pencil-square"></iconify-icon></a>
                                                         </button>
                                                         <form id="deleteForm{{ $item->id }}" method="POST"
-                                                            action="{{ route('schedule-dokters.destroy', $item->id) }}"
+                                                            action="{{ route('lobby.destroy', $item->id) }}"
                                                             class="cursor-pointer">
                                                             @csrf
                                                             @method('DELETE')
@@ -104,6 +79,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
@@ -161,4 +137,3 @@
         </script>
     @endpush
 </x-app-layout>
-

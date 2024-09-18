@@ -13,7 +13,7 @@
                         @foreach ($chunkedDoctors as $doctor)
                             <div class="doctor-card-wrapper">
                                 @php
-                                    $imageUrl = isset($doctor['image_url']) && $doctor['image_url'] ? asset('storage/' . $doctor['image_url']) : asset('images/avatar/av-1.svg');
+                                    $imageUrl = isset($doctor['image_url']) && $doctor['image_url'] ? asset('storage/' . $doctor['image_url']) : asset('images/avatar/av-7.svg');
                                 @endphp
                                 <img class="doctor-photo" src="{{ $imageUrl }}" alt="Doctor Photo">
                                 <div class="doctor-card">
@@ -62,6 +62,26 @@
             </div>
 
             <div class="footer">
+                <!-- Left Column: Text with Address -->
+                <div class="left-column">
+                    <div>
+                        <p>CIPUTRA HOSPITAL | CITRA GARDEN CITY</p>
+                        <p class="address">Jl. Boulevard Raya No.1, Kalideres, Kota Jakarta Barat, Daerah Khusus Jakarta 11830</p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Text and QR Code in One Row -->
+                <div class="right-column">
+                    <div class="info-container">
+                        <p>Informasi dan Pendaftaran</p>
+                        <img src="{{ asset('images/logo/qr-lobby.png') }}" alt="QR Code" class="small">
+                    </div>
+                </div>
+            </div>
+
+
+
+            {{-- <div class="footer">
                 <p>CIPUTRA HOSPITAL | CITRA GARDEN CITY</p>
                 <div class="footer-content">
                     <div class="footer-text">
@@ -71,7 +91,7 @@
                     <img src="{{ asset('images/logo/qr-lobby.png') }}" alt="bg-logo" class="small">
 
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
@@ -84,7 +104,7 @@
             autoplayHoverPause: true,
             lazyLoad: true,
             loop: true,
-            nav: true,
+            nav: false,
             items: 1, // Display one "slide" (grid of 9 cards) at a time
             dots: false, // Enable dots for navigation
         });

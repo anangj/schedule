@@ -133,4 +133,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('ponek/download-template', [PonekController::class, 'downloadTemplate'])->name('ponek.downloadTemplate');
     Route::resource('ponek', PonekController::class);
     Route::post('/ponek/upload-excel', [PonekController::class, 'storeExcel'])->name('ponek.uploadExcel');
+
+    //Lobby
+    Route::resource('lobby', LobbyController::class);
 });
