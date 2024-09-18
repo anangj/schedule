@@ -52,8 +52,8 @@ class NurseController extends Controller
     } 
 
     // Filter by Shift
-    if ($request->filled('shift')) {
-        $data->where('shift', $request->input('shift'));
+    if ($request->filled('name_shift')) {
+        $data->where('shift', $request->input('name_shift'));
     }
 
     // Get the filtered results
