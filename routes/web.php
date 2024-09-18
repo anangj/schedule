@@ -114,6 +114,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('nurses/download-template', [NurseController::class, 'downloadTemplate'])->name('nurses.downloadTemplate');
     Route::resource('nurses', NurseController::class);
     Route::post('/nurses/upload-excel', [NurseController::class, 'storeExcel'])->name('nurses.uploadExcel');
+    Route::match(['get', 'post'], 'nurses', [NurseController::class, 'index'])->name('nurses.index');
 
     // Schedule
     Route::resource('schedules', ScheduleController::class);
