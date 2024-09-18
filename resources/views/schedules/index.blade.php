@@ -18,6 +18,53 @@
         <div class="space-y-5">
 
             <div class="card">
+                <div class="card-header noborder -mb-6">
+                    <!-- Dropdown Filter Button -->
+                    <div class="mb-6">
+                        <button id="filterToggle" class="btn btn-dark">Filter Options</button>
+                    </div>
+                    <!-- Filter Form (Hidden by Default) -->
+                    <div id="filterForm" class="card mb-6 p-5 hidden">
+                        <form method="POST" action="{{ route('schedule-dokters.index') }}">
+                            @csrf
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Filter by Doctor Name -->
+                                <div>
+                                    <label for="doctor_name">Doctor Name</label>
+                                    <input type="text" name="doctor_name" id="doctor_name" class="form-control" value="{{ request('doctor_name') }}">
+                                </div>
+
+                                <!-- Filter by Specialization -->
+                                <div>
+                                    <label for="specialization">Specialization</label>
+                                    <input type="text" name="specialization" id="specialization" class="form-control" value="{{ request('specialization') }}">
+                                </div>
+
+                                <!-- Filter by Day -->
+                                <div>
+                                    <label for="weekday">Day</label>
+                                    <select name="weekday" id="weekday" class="form-control">
+                                        <option value="">All Days</option>
+                                        @php
+                                            $weekdays = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU'];
+                                        @endphp
+                                        @foreach ($weekdays as $day)
+                                            <option value="{{ $day }}" {{ request('weekday') == $day ? 'selected' : '' }}>
+                                                {{ ucfirst($day) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-dark">Filter</button>
+                                <a href="{{ route('schedule-dokters.index') }}" class="btn btn-light">Reset</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="card-body px-6 pb-6">
                     <div class="overflow-x-auto -mx-6 dashcode-data-table">
                         <span class=" col-span-8  hidden"></span>
@@ -31,7 +78,7 @@
                                                 Photo
                                             </th> --}}
                                             <th scope="col" class=" table-th ">
-                                                Nama Dokter
+                                                Doctor Name
                                             </th>
                                             <th scope="col" class=" table-th ">
                                                 Days
@@ -46,7 +93,7 @@
                                                 Appointment
                                             </th>
                                             <th scope="col" class=" table-th ">
-                                                Spesialis
+                                                Specialization
                                             </th>
                                             <th scope="col" class=" table-th ">
                                                 Action
@@ -157,6 +204,12 @@
                 var imageUrl = button.data('image'); // Extract info from data-* attributes
                 var modal = $(this);
                 modal.find('.modal-body #previewImage').attr('src', imageUrl);
+            });
+        </script>
+        <script>
+            document.getElementById('filterToggle').addEventListener('click', function() {
+                var filterForm = document.getElementById('filterForm');
+                filterForm.classList.toggle('hidden');
             });
         </script>
     @endpush

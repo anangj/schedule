@@ -14,7 +14,7 @@ class ScheduleDokterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $breadcrumbsItems = [
             [
@@ -32,12 +32,31 @@ class ScheduleDokterController extends Controller
         $schedules = ScheduleDokter::with('masterDokter')
         ->whereHas('masterDokter', function($query) {
             $query->where('isLobby', '=', 1);
-        })
-        ->get();
+        });
 
-        // dd($schedules[0]);
+        // Apply filters based on request parameters
+        if ($request->filled('doctor_name')) {
+            $schedules->whereHas('masterDokter', function ($q) use ($request) {
+                $q->where('nama_dokter', 'like', '%' . $request->input('doctor_name') . '%');
+            });
+        }
+
+        if ($request->filled('specialization')) {
+            $schedules->whereHas('masterDokter', function ($q) use ($request) {
+                $q->where('spesialis', 'like', '%' . $request->input('specialization') . '%');
+            });
+        }
+
+        if ($request->filled('weekday')) {
+            $schedules->where('weekday', $request->input('weekday'));
+        }
+
+        // Get the filtered results
+        $data = $schedules->get();
+
+        // dd($data[0]);
         return view('schedules.index', [
-            'data' => $schedules,
+            'data' => $data,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Schedule Doctor'
         ]);
@@ -50,7 +69,27 @@ class ScheduleDokterController extends Controller
      */
     public function create()
     {
-        //
+        $breadcrumbsItems = [
+            [
+                'name' => 'Schedule Dokter',
+                'url' => route('schedule-dokters.index'),
+                'active' => false
+            ],
+            [
+                'name' => 'Create',
+                'url' => '#',
+                'active' => true
+            ],
+        ];
+        // Get all doctors for the select input
+        $doctors = MasterDokter::where('isLobby', 1)->get();
+
+        // Pass the doctors to the view
+        return view('schedules.create', [
+            'doctors' => $doctors,
+            'breadcrumbItems' => $breadcrumbsItems,
+            'pageTitle' => 'Create Schedule'
+        ]);
     }
 
     /**
@@ -61,7 +100,36 @@ class ScheduleDokterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        // Validate the incoming request
+        $request->validate([
+            'doctor_id' => 'required|exists:master_dokters,id',
+            'weekday' => 'required|string',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'appointment' => 'nullable|boolean',
+        ]);
+
+        // dd($request);
+
+        // Extract hour and minute from 'start_time' and 'end_time'
+        $startTime = explode(':', $request->start_time);
+        $endTime = explode(':', $request->end_time);
+
+        // Create a new schedule
+        ScheduleDokter::create([
+            'doctor_id' => $request->doctor_id,
+            'weekday' => $request->weekday,
+            'start_hour' => $startTime[0],
+            'start_minute' => $startTime[1],
+            'end_hour' => $endTime[0],
+            'end_minute' => $endTime[1],
+            'appointment' => $request->has('appointment') ? 1 : 0,
+        ]);
+
+        // Redirect to the schedules index with a success message
+        return redirect()->route('schedule-dokters.index')->with('message', 'Schedule created successfully.');
+
     }
 
     /**

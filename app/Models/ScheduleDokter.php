@@ -9,7 +9,7 @@ class ScheduleDokter extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['poli','doctor_id','weekday','start_hour','end_hour','start_minute','end_minute','status'];
+    protected $fillable = ['poli','doctor_id','weekday','start_hour','end_hour','start_minute','end_minute','status', 'appointment'];
 
     public function masterDokter()
     {

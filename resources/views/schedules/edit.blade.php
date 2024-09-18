@@ -61,34 +61,6 @@
                             {{ $data->appointment ? 'checked' : '' }}>
                     </div>
 
-                    {{-- Loop through the schedules for editing --}}
-                    {{-- @foreach ($data as $index => $schedule)
-                        <div class="form-group mb-4">
-                            <label for="weekday">Day</label>
-                            <input type="text" id="weekday" class="form-control" value="{{ $schedule->weekday }}" readonly>
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label for="start_time_{{ $index }}">Start Time</label>
-                            <input type="time" name="schedules[{{ $index }}][start_time]" id="start_time_{{ $index }}" class="form-control"
-                                value="{{ str_pad($schedule->start_hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad($schedule->start_minute, 2, '0', STR_PAD_LEFT) }}">
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label for="end_time_{{ $index }}">End Time</label>
-                            <input type="time" name="schedules[{{ $index }}][end_time]" id="end_time_{{ $index }}" class="form-control"
-                                value="{{ str_pad($schedule->end_hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad($schedule->end_minute, 2, '0', STR_PAD_LEFT) }}">
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label for="appointment_{{ $index }}">Appointment</label>
-                            <input type="checkbox" name="schedules[{{ $index }}][appointment]" id="appointment_{{ $index }}" class="form-checkbox"
-                                {{ $schedule->appointment ? 'checked' : '' }}>
-                        </div>
-
-                        <input type="hidden" name="schedules[{{ $index }}][id]" value="{{ $schedule->id }}">
-                    @endforeach --}}
-
                     <div class="flex items-center justify-end mt-4">
                         <button type="submit" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1 mt-4 !px-3 !py-2">
                             <span class="flex items-center">
