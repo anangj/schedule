@@ -51,6 +51,11 @@ class NurseController extends Controller
         $data->whereDate('date', $request->input('date'));
     } 
 
+    // Filter by Shift
+    if ($request->filled('shift')) {
+        $data->where('shift', $request->input('shift'));
+    }
+
     // Get the filtered results
     $data = $data->get();
 

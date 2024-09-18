@@ -29,7 +29,7 @@
         </div>
 
         <!-- Filter Notification -->
-        @if (request()->filled('employee_name') || request()->filled('date'))
+        @if (request()->filled('employee_name') || request()->filled('date') || request()->filled('shift'))
             <div class="mb-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
                 <p><strong>Notice:</strong> The results are currently filtered.</p>
                 <a href="{{ route('nurses.index') }}" class="text-blue-500 underline">Clear Filters</a>
@@ -65,6 +65,19 @@
                                 <div>
                                     <label for="date">Date</label>
                                     <input type="date" name="date" id="date" class="form-control" value="{{ request('date') }}">
+                                </div>
+
+                                <!-- Filter by Shift -->
+                                <div>
+                                    <label for="shift">Nurse Name</label>
+                                    <select name="shift" id="shift" class="form-control">
+                                        <option value="">Select a Nurse</option>
+                                        @foreach ($shift as $item)
+                                            <option value="{{ $item->name_shift }}" {{ request('name_shift') == $item->name_shift ? 'selected' : '' }}>
+                                                {{ $item->name_shift }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                     
