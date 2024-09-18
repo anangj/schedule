@@ -6,6 +6,8 @@ use App\Http\Requests\NurseStoreRequest;
 use App\Http\Requests\NurseUpdateRequest;
 use App\Http\Resources\NurseCollection;
 use App\Http\Resources\NurseResource;
+use App\Models\MasterNurse;
+use App\Models\MasterShift;
 use App\Models\Nurse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,35 +22,46 @@ class NurseController extends Controller
      * @return \App\Http\Resources\NurseCollection
      */
     public function index(Request $request)
-    {
-        $breadcrumbsItems = [
-            [
-                'name' => 'Nurse',
-                'url' => route('nurses.index'),
-                'active' => false
-            ],
-            [
-                'name' => 'List',
-                'url' => '#',
-                'active' => true
-            ],
-        ];
+{
+    $breadcrumbsItems = [
+        [
+            'name' => 'Nurse',
+            'url' => route('nurses.index'),
+            'active' => false
+        ],
+        [
+            'name' => 'List',
+            'url' => '#',
+            'active' => true
+        ],
+    ];
 
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+    // Start building the query
+    $shift = MasterShift::select('name_shift','code_shift')->get();
+    $nurses = MasterNurse::select('employee_name')->get();
+    $data = Nurse::query();
 
-        $nurses = Nurse::whereMonth('date', $currentMonth)
-        ->whereYear('date', $currentYear)
-        ->get();
-
-        return view('nurses.index', [
-            'nurses' => $nurses,
-            'breadcrumbsItems' => $breadcrumbsItems,
-            'pageTitle' => 'Nurse'
-        ]);
-
-        // return new NurseCollection($nurses);
+    // Filter by Nurse Name
+    if ($request->filled('employee_name')) {
+        $data->where('employee_name', 'like', '%' . $request->input('employee_name') . '%');
     }
+
+    // Filter by Date (if a specific date is provided)
+    if ($request->filled('date')) {
+        $data->whereDate('date', $request->input('date'));
+    } 
+
+    // Get the filtered results
+    $data = $data->get();
+
+    return view('nurses.index', [
+        'nurses' => $data,
+        'listNurses' => $nurses,
+        'shift' => $shift,
+        'breadcrumbsItems' => $breadcrumbsItems,
+        'pageTitle' => 'Nurse'
+    ]);
+}
 
     /**
      * @param \App\Http\Requests\NurseControllerStoreRequest $request
