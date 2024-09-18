@@ -132,13 +132,13 @@ class PlasmaController extends Controller
 
         // Doctors
         if ($time >= '07:00' && $time < '13:28') {
-            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$p%' OR shift like '%$op1%' OR shift LIKE '%$kp1%' OR shift = '$ps')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift like '%$op1%')");
             $shift = 'PAGI';
         } else if ($time >= '13:30' && $time < '20:58') {
-            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$s%' OR shift like '%$op2%' OR shift = '$ps')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND ( shift like '%$op2%' OR shift = '$ls1')");
             $shift = 'SIANG';
         } else if ($time >= '21:00') {
-            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND (shift LIKE '%$m%' OR shift like '%$op3%')");
+            $doctors = DB::select("SELECT d.employee_name , d.`date` , d.shift , md.image_url  from doctors d left join master_dokters md on d.employee_id = md.id_tera WHERE date = '$date' AND ( shift like '%$op3%' or shift like '%$ls2%')");
             $shift = 'MALAM';
         }
 
