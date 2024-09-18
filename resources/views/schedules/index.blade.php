@@ -30,14 +30,28 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <!-- Filter by Doctor Name -->
                                 <div>
-                                    <label for="doctor_name">Doctor Name</label>
-                                    <input type="text" name="doctor_name" id="doctor_name" class="form-control" value="{{ request('doctor_name') }}">
+                                    <label for="doctor_name">Doctor</label>
+                                    <select name="doctor_name" id="doctor_name" class="form-control">
+                                        <option value="">Select a Doctor</option>
+                                        @foreach ($doctors as $doctor)
+                                            <option value="{{ $doctor->nama_dokter }}" {{ request('doctor_name') == $doctor->nama_dokter ? 'selected' : '' }}>
+                                                {{ $doctor->nama_dokter }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
-                                <!-- Filter by Specialization -->
+                                 <!-- Filter by Specialization (Select Dropdown) -->
                                 <div>
                                     <label for="specialization">Specialization</label>
-                                    <input type="text" name="specialization" id="specialization" class="form-control" value="{{ request('specialization') }}">
+                                    <select name="specialization" id="specialization" class="form-control">
+                                        <option value="">Select Specialization</option>
+                                        @foreach ($specializations as $specialization)
+                                            <option value="{{ $specialization->name }}" {{ request('specialization') == $specialization->name ? 'selected' : '' }}>
+                                                {{ $specialization->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <!-- Filter by Day -->

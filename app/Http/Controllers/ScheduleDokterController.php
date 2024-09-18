@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ScheduleDokter;
 use App\Models\MasterDokter;
+use App\Models\MasterSpesialis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +35,9 @@ class ScheduleDokterController extends Controller
             $query->where('isLobby', '=', 1);
         });
 
-        // Apply filters based on request parameters
+        $specialization = MasterSpesialis::get();
+        $doctor = MasterDokter::where('isLobby', 1)->select('id','nama_dokter')->get();
+
         if ($request->filled('doctor_name')) {
             $schedules->whereHas('masterDokter', function ($q) use ($request) {
                 $q->where('nama_dokter', 'like', '%' . $request->input('doctor_name') . '%');
@@ -54,9 +57,10 @@ class ScheduleDokterController extends Controller
         // Get the filtered results
         $data = $schedules->get();
 
-        // dd($data[0]);
         return view('schedules.index', [
             'data' => $data,
+            'specializations' => $specialization,
+            'doctors' => $doctor,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Schedule Doctor'
         ]);
