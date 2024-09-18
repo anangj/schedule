@@ -15,6 +15,13 @@
         @if (session('message'))
             <x-alert :message="session('message')" :type="'success'" />
         @endif
+        <!-- Filter Notification -->
+        @if (request()->filled('employee_name') || request()->filled('date'))
+            <div class="mb-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
+                <p><strong>Notice:</strong> The results are currently filtered.</p>
+                <a href="{{ route('nurses.index') }}" class="text-blue-500 underline">Clear Filters</a>
+            </div>
+        @endif
         <div class="space-y-5">
 
             <div class="card">
