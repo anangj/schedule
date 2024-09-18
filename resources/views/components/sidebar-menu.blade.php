@@ -21,14 +21,6 @@
     <div class="sidebar-menus bg-white dark:bg-slate-800 py-2 px-4 h-[calc(100%-80px)] z-50" id="sidebar_menus">
         <ul class="sidebar-menu">
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('super-admin'))
-                {{-- <li>
-                    <a href="{{ route('articles.index') }}" class="navItem {{ (request()->is('articles*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class="nav-icon" icon="heroicons-outline:home"></iconify-icon>
-                            <span>{{ __('Article') }}</span>
-                        </span>
-                    </a>
-                </li> --}}
                 <li>
                     <a href="{{ route('dashboard.index') }}" class="navItem {{ (request()->is('dashboard*')) ? 'active' : '' }}">
                         <span class="flex items-center">
@@ -130,29 +122,6 @@
                         </span>
                     </a>
                 </li>
-                {{-- <li class="{{ (\Request::route()->getName() == 'lobbies*') ? 'active' : '' }}">
-                    <a href="javascript:void(0)" class="navItem">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="mdi:projector-screen-variant"></iconify-icon>
-                            <span>{{ __('Lobby') }}</span>
-                        </span>
-                        <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li>
-                            <a href="{{ route('lobby.index') }}" class="{{ (\Request::route()->getName() == 'lobby.index') ? 'active' : '' }}">{{ __('Videotron') }}</a>
-                        </li>
-                    </ul>
-                </li> --}}
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
-                        </span>
-                    </a>
-                </li>
             @endif
             @if (Auth::user()->hasRole('marketing'))
                 <li>
@@ -163,33 +132,8 @@
                         </span>
                     </a>
                 </li>
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
-                        </span>
-                    </a>
-                </li>
             @endif
             @if (Auth::user()->hasRole('igd'))
-                {{-- <li>
-                    <a href="{{ route('master-nurses.index') }}" class="navItem {{ (request()->is('master-nurses*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
-                            <span>{{ __('Master Nurse') }}</span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('master-ponek.index') }}" class="navItem {{ (request()->is('master-poneks*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="tabler:nurse"></iconify-icon>
-                            <span>{{ __('Master Ponek') }}</span>
-                        </span>
-                    </a>
-                </li> --}}
                 <li class="{{ (\Request::route()->getName() == 'masters*') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="navItem">
                         <span class="flex items-center">
@@ -272,15 +216,6 @@
                         </span>
                     </a>
                 </li>
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
-                        </span>
-                    </a>
-                </li>
             @endif
             @if (Auth::user()->hasRole('hr'))
                 <li>
@@ -316,15 +251,6 @@
                         </span>
                     </a>
                 </li>
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
-                        </span>
-                    </a>
-                </li>
             @endif
             @if (Auth::user()->hasRole('nod'))
                 <li>
@@ -348,15 +274,6 @@
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
                             <span>{{ __('Plasma') }}</span>
-                        </span>
-                    </a>
-                </li>
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
                         </span>
                     </a>
                 </li>
@@ -386,15 +303,6 @@
                         </span>
                     </a>
                 </li>
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
-                        </span>
-                    </a>
-                </li>
             @endif
             @if (Auth::user()->hasRole('dokter'))
                 <li>
@@ -418,15 +326,6 @@
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
                             <span>{{ __('Plasma') }}</span>
-                        </span>
-                    </a>
-                </li>
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
                         </span>
                     </a>
                 </li>
@@ -457,15 +356,6 @@
                     </a>
                 </li>
 
-                <!-- Settings -->
-                <li>
-                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
-                            <span>{{ __('Settings') }}</span>
-                        </span>
-                    </a>
-                </li>
             @endif
             @can('menu lobby')
                 <li>
@@ -483,6 +373,17 @@
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
                             <span>{{ __('Schedule') }}</span>
+                        </span>
+                    </a>
+                </li>
+            @endcan
+            @can('user index')
+                <!-- Settings -->
+                <li>
+                    <a href="{{ route('general-settings.show') }}" class="navItem {{ (request()->is('general-settings*')) || (request()->is('users*')) || (request()->is('roles*')) || (request()->is('profiles*')) || (request()->is('permissions*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:settings-outline"></iconify-icon>
+                            <span>{{ __('Settings') }}</span>
                         </span>
                     </a>
                 </li>
