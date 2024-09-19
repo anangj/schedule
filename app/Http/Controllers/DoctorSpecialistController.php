@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DoctorSpecialist;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\DoctorUpdateRequest;
+use App\Models\MasterShift;
 
 
 class DoctorSpecialistController extends Controller
@@ -18,7 +19,7 @@ class DoctorSpecialistController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $breadcrumbsItems = [
             [
@@ -33,18 +34,31 @@ class DoctorSpecialistController extends Controller
             ],
         ];
 
-        $date = Carbon::now()->subMonths(2)->format('Y-m-d');
+        // $date = Carbon::now()->subMonths(2)->format('Y-m-d');
+        $shift = MasterShift::select('name_shift','code_shift')->get();
+        $listDokter = DoctorSpecialist::select('employee_name')->distinct()->get();
 
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+        $data = DoctorSpecialist::query();
 
-        $doctors = DoctorSpecialist::whereMonth('date', $currentMonth)
-        ->whereYear('date', $currentYear)
-        ->get();
+        if ($request->filled('employee_name')) {
+            $data->where('employee_name', 'like', '%' . $request->input('employee_name') . '%');
+        }
+
+        if ($request->filled('date')) {
+            $data->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->filled('name_shift')) {
+            $data->where('shift', $request->input('name_shift'));
+        }
+
+        $doctors = $data->get();
 
         // dd($doctors);
         return view('doctor-specialist.index', [
             'doctors' => $doctors,
+            'shift' => $shift,
+            'listDokter' => $listDokter,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Doctor Specialist'
         ]);

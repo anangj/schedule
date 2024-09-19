@@ -17,7 +17,8 @@ class DoctorSpecialist extends Model
         'employee_id',  
         'employee_name',
         'shift',
-        'date'
+        'date',
+        'shift_id'
     ];
 
     /**
@@ -28,4 +29,9 @@ class DoctorSpecialist extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function shift()
+    {
+        return $this->belongsTo(MasterShift::class, 'shift_id');
+    }
 }

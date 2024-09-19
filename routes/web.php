@@ -104,6 +104,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Doctor Specialist
     Route::get('doctorSpecialist/download-template', [DoctorSpecialistController::class, 'downloadTemplate'])->name('doctorSpecialist.downloadTemplate');
     Route::resource('doctorSpecialist', DoctorSpecialistController::class);
+    Route::match(['get', 'post'], 'doctorSpecialist', [DoctorSpecialistController::class, 'index'])->name('doctorSpecialist.index');
     Route::post('doctorSpecialist/upload-excel', [DoctorSpecialistController::class, 'storeExcel'])->name('doctorSpecialist.uploadExcel');
 
     // Nod
