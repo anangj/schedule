@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterShift;
 use App\Models\Nod;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -15,7 +16,7 @@ class NodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $breadcrumbsItems = [
             [
@@ -30,15 +31,29 @@ class NodController extends Controller
             ],
         ];
 
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+        $shift = MasterShift::select('name_shift','code_shift')->get();
+        $listNod =  Nod::select('employee_name')->distinct()->get();
 
-        $nods = Nod::whereMonth('date', $currentMonth)
-        ->whereYear('date', $currentYear)
-        ->get();
+        $data = Nod::query();
+
+        if ($request->filled('employee_name')) {
+            $data->where('employee_name', 'like', '%' . $request->input('employee_name') . '%');
+        }
+
+        if ($request->filled('date')) {
+            $data->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->filled('name_shift')) {
+            $data->where('shift', $request->input('name_shift'));
+        }
+
+        $nods = $data->get();
 
         return view('nod.index', [
             'nods' => $nods,
+            'shift' => $shift,
+            'listNod' => $listNod,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Nod'
         ]);

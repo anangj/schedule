@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Nod
     Route::get('nod/download-template', [NodController::class, 'downloadTemplate'])->name('nod.downloadTemplate');
     Route::resource('nod', NodController::class);
+    Route::match(['get', 'post'], 'nod', [NodController::class, 'index'])->name('nod.index');
     Route::post('/nod/upload-excel', [NodController::class, 'storeExcel'])->name('nod.uploadExcel');
 
     // Nurse
