@@ -4,26 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-// use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-// jika ingin menggunakan mongo, ganti extends ke Eloquent
+
 
 class Doctor extends Model
 {
-    protected $connection = 'mysql';
-    // protected $collection = 'doctors';
-    
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    // protected $fillable = [
-    //     'doctor_id', 'doctor_personal', 'doctor_contact', 'doctor_job', 'hospital', 'schedule'
-    // ];
-
-    protected $fillable = ['employee_id', 'employee_name', 'shift', 'date'];
+    protected $fillable = ['employee_id', 'employee_name', 'shift', 'date', 'shift_id'];
 
     /**
      * The attributes that should be cast to native types.
@@ -37,5 +23,10 @@ class Doctor extends Model
     public function schedules()
     {
         return $this->hasMany(ScheduleDokter::class, 'doctor_id');
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(MasterShift::class, 'shift_id');
     }
 }

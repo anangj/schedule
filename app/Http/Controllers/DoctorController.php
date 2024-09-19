@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DoctorStoreRequest;
 use App\Http\Requests\DoctorUpdateRequest;
-use App\Http\Resources\DoctorCollection;
-use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
-use App\Models\DoctorSchedule;
 use App\Models\MasterDokter;
 use App\Models\Schedule;
+use App\Models\MasterShift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\DB;
-use MongoDB\BSON\ObjectId;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Carbon;
 
@@ -38,19 +33,33 @@ class DoctorController extends Controller
             ],
         ];
 
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+        $shift = MasterShift::select('name_shift','code_shift')->get();
+        $listDokter = Doctor::select('employee_name')->distinct()->get();
 
-        $doctors = Doctor::whereMonth('date', $currentMonth)
-            ->whereYear('date', $currentYear)
-            ->get();
+        $data = Doctor::query();
+
+        if ($request->filled('employee_name')) {
+            $data->where('employee_name', 'like', '%' . $request->input('employee_name') . '%');
+        }
+
+        if ($request->filled('date')) {
+            $data->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->filled('name_shift')) {
+            $data->where('shift', $request->input('name_shift'));
+        }
+
+        $doctors = $data->get();
 
         return view('doctors.index', [
-            'doctors' => $doctors, 'breadcrumbsItems' => $breadcrumbsItems,
+            'doctors' => $doctors, 
+            'shift' => $shift,
+            'listDokter' => $listDokter,
+            'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Doctor'
         ]);
 
-        // return new DoctorCollection($doctors);
     }
 
     public function create()
@@ -64,23 +73,7 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        $doctor = new Doctor();
 
-        $doctor->doctor_id = $request['doctor_id'];
-
-        $doctor->doctor_personal = [
-            'doctor_name' => $request['namaDokter'],
-            'id_card' => $request['idCard'],
-            'doctor_title' => $request['titleDokter'],
-            'speciality_name' => $request['specialities'],
-            'medical_education' => $request['medicalEducation'],
-            'medical_degree' => $request['medicalDegree'],
-            'ceritification' => [
-                'certification_name' => $request['certification']
-            ]
-        ];
-
-        var_dump($doctor->doctor_personal);
     }
 
     /**
@@ -92,7 +85,7 @@ class DoctorController extends Controller
     {
         $doctorsData = Doctor::find($id);
         $doctors = $doctorsData;
-        // var_dump($doctors);
+
         return view('doctors.show', compact('doctors'));
     }
 
@@ -150,9 +143,6 @@ class DoctorController extends Controller
 
     public function storeExcel(Request $request)
     {
-
-
-
         $today = Carbon::now()->month;
 
         try {
@@ -263,7 +253,6 @@ class DoctorController extends Controller
         $json = File::get($request->file('json_file'));
         $datas = json_decode($json, true);
 
-
         foreach ($datas as $data) {
             $doctor = new MasterDokter();
             $doctor->doctor_id = $data['doctor_id'];
@@ -284,32 +273,5 @@ class DoctorController extends Controller
                 }
             }
         }
-
-        // foreach ($data as $item) {
-        //     $doctor = Doctor::create([
-        //         'doctor_id' => $item->doctor_id,
-        //         'doctor_name' => $item->nama_doctor,
-        //         'poli' => $item->poli,
-        //         'specialist' => $item->specialist
-        //     ]);
-
-        //     // Periksa jika 'schedule' ada dan adalah array
-        //     if (!empty($item['schedule']) && is_array($item['schedule'])) {
-        //         foreach ($item['schedule'] as $schedule) {
-        //             // Pastikan schedule bukan null dan adalah array
-        //             if (is_array($schedule)) {
-        //                 $doctor->schedules()->create([
-        //                     'weekday' => $schedule['weekday'] ?? 'Unknown Day',  // Gunakan nilai default jika null
-        //                     'start_hour' => $schedule['start_hour'] ?? 0,  // Gunakan nilai default jika null
-        //                     'start_minute' => $schedule['start_minute'] ?? 0,  // Gunakan nilai default jika null
-        //                     'end_hour' => $schedule['end_hour'] ?? 0,  // Gunakan nilai default jika null
-        //                     'end_minute' => $schedule['end_minute'] ?? 0,  // Gunakan nilai default jika null
-        //                 ]);
-        //             }
-        //         }
-        //     }
-        // }
-
-        // return back()->with('success', 'Doctors added successfully from JSON.');
     }
 }

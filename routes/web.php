@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Doctor
     Route::get('doctors/download-template', [DoctorController::class, 'downloadTemplate'])->name('doctors.downloadTemplate');
     Route::resource('doctors', DoctorController::class);
+    Route::match(['get', 'post'], 'doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::post('/doctors/upload-excel', [DoctorController::class, 'storeExcel'])->name('doctors.uploadExcel');
     Route::post('/doctors/upload-json', [DoctorController::class, 'storeJson'])->name('doctors.storeJson');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
