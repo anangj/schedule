@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterShift;
 use App\Models\Ponek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -15,7 +16,7 @@ class PonekController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $breadcrumbsItems = [
             [
@@ -30,15 +31,29 @@ class PonekController extends Controller
             ],
         ];
 
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+        $shift = MasterShift::select('name_shift','code_shift')->get();
+        $listPonek = Ponek::select('employee_name')->distinct()->get();
 
-        $Poneks = Ponek::whereMonth('date', $currentMonth)
-        ->whereYear('date', $currentYear)
-        ->get();
+        $data = Ponek::query();
+
+        if ($request->filled('employee_name')) {
+            $data->where('employee_name', 'like', '%' . $request->input('employee_name') . '%');
+        }
+
+        if ($request->filled('date')) {
+            $data->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->filled('name_shift')) {
+            $data->where('shift', $request->input('name_shift'));
+        }
+
+        $poneks = $data->get();
 
         return view('ponek.index', [
-            'poneks' => $Poneks,
+            'poneks' => $poneks,
+            'shift' => $shift,
+            'listPonek' => $listPonek,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Ponek'
         ]);
