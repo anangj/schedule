@@ -220,6 +220,12 @@
                 xhr.send(formData);
             });
         </script>
+        <script>
+            document.getElementById('filterToggle').addEventListener('click', function() {
+                var filterForm = document.getElementById('filterForm');
+                filterForm.classList.toggle('hidden');
+            });
+        </script>
     @endpush
     @push('styles')
         <style>
