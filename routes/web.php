@@ -129,6 +129,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Driver
     Route::get('drivers/download-template', [DriverController::class, 'downloadTemplate'])->name('drivers.downloadTemplate');
     Route::resource('drivers', DriverController::class);
+    Route::match(['get', 'post'], 'drivers', [DriverController::class, 'index'])->name('drivers.index');
     Route::post('/drivers/upload-excel', [DriverController::class, 'storeExcel'])->name('drivers.uploadExcel');
 
     //Marketing

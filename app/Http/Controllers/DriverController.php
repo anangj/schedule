@@ -6,6 +6,7 @@ use App\Http\Requests\DriverUpdateRequest;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use app\Models\Driver;
+use App\Models\MasterShift;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;;
@@ -33,15 +34,29 @@ class DriverController extends Controller
             ],
         ];
 
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
+        $shift = MasterShift::select('name_shift','code_shift')->get();
+        $listDriver = Driver::select('employee_name')->distinct()->get();
 
-        $drivers = Driver::whereMonth('date', $currentMonth)
-            ->whereYear('date', $currentYear)
-            ->get();
+        $data = Driver::query();
+
+        if ($request->filled('employee_name')) {
+            $data->where('employee_name', 'like', '%' . $request->input('employee_name') . '%');
+        }
+
+        if ($request->filled('date')) {
+            $data->whereDate('date', $request->input('date'));
+        }
+
+        if ($request->filled('name_shift')) {
+            $data->where('shift', $request->input('name_shift'));
+        }
+
+        $drivers = $data->get();
 
         return view('drivers.index', [
             'drivers' => $drivers,
+            'shift' => $shift,
+            'listDriver' => $listDriver,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'Driver'
         ]);

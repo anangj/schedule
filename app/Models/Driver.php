@@ -18,7 +18,8 @@ class Driver extends Model
         'employee_id',
         'employee_name',
         'shift',
-        'date'
+        'date',
+        'shift_id'
     ];
 
     /**
@@ -29,4 +30,9 @@ class Driver extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function shift()
+    {
+        return $this->belongsTo(MasterShift::class, 'shift_id');
+    }
 }

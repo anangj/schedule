@@ -30,6 +30,57 @@
 
         <div class=" space-y-5">
             <div class="card">
+                <div class="card-header noborder -mb-6">
+                    <!-- Dropdown Filter Button -->
+                    <div class="mb-6">
+                        <button id="filterToggle" class="btn btn-dark">Filter Options</button>
+                    </div>
+                    <!-- Filter Form (Hidden by Default) -->
+                    <div id="filterForm" class="card mb-6 p-5 hidden">
+                        <form method="POST" action="{{ route('drivers.index') }}">
+                            @csrf
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Filter by Nurse Name -->
+                                <div>
+                                    <label for="employee_name">Driver Name</label>
+                                    <select name="employee_name" id="employee_name" class="form-control">
+                                        <option value="">Select a Driver</option>
+                                        @foreach ($listDriver as $item)
+                                            <option value="{{ $item->employee_name }}" {{ request('employee_name') == $item->employee_name ? 'selected' : '' }}>
+                                                {{ $item->employee_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                    
+                                <!-- Filter by Date -->
+                                <div>
+                                    <label for="date">Date</label>
+                                    <input type="date" name="date" id="date" class="form-control" value="{{ request('date') }}">
+                                </div>
+
+                                <!-- Filter by Shift -->
+                                <div>
+                                    <label for="name_shift">Shift Name</label>
+                                    <select name="name_shift" id="name_shift" class="form-control">
+                                        <option value="">Select a Shift</option>
+                                        @foreach ($shift as $item)
+                                            <option value="{{ $item->name_shift }}" {{ request('name_shift') == $item->name_shift ? 'selected' : '' }}>
+                                                {{ $item->name_shift }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                    
+                            <!-- Submit Button -->
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-dark">Filter</button>
+                                <a href="{{ route('drivers.index') }}" class="btn btn-light">Reset</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="card-body px-6 pb-6">
                     <div class="overflow-x-auto -mx-6 dashcode-data-table">
                         {{-- <span class=" col-span-8  hidden"></span>
@@ -170,6 +221,12 @@
                 });
 
                 xhr.send(formData);
+            });
+        </script>
+        <script>
+            document.getElementById('filterToggle').addEventListener('click', function() {
+                var filterForm = document.getElementById('filterForm');
+                filterForm.classList.toggle('hidden');
             });
         </script>
     @endpush
