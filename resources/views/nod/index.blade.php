@@ -37,7 +37,7 @@
                     </div>
                     <!-- Filter Form (Hidden by Default) -->
                     <div id="filterForm" class="card mb-6 p-5 hidden">
-                        <form method="POST" action="{{ route('doctors.index') }}">
+                        <form method="POST" action="{{ route('nod.index') }}">
                             @csrf
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <!-- Filter by Nurse Name -->
@@ -76,7 +76,7 @@
                             <!-- Submit Button -->
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-dark">Filter</button>
-                                <a href="{{ route('doctors.index') }}" class="btn btn-light">Reset</a>
+                                <a href="{{ route('nod.index') }}" class="btn btn-light">Reset</a>
                             </div>
                         </form>
                     </div>
