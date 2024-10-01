@@ -184,6 +184,11 @@ class PlasmaController extends Controller
             $merged = $nurses;
         }
 
+        // QUERY FOR KP
+        if ($time >= '07:00' && $time <= '16:00') {
+            $kpPonek = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift like '%$kp1%' or shift like '%$kp2%') group by n.id ");
+        }
+
         // Ponek
         if ($time >= '07:00' && $time < '13:28') {
             $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND shift like '%$op1%' ");
@@ -194,6 +199,12 @@ class PlasmaController extends Controller
         } else if ($time >= '21:00') {
             $poneks = DB::select("SELECT n.employee_name , n.date, n.shift ,mn.image_url  from poneks n left join master_poneks mn on n.employee_id = mn.employee_id WHERE date = '$date' AND (shift LIKE '%$op3%') ");
             $shift = 'MALAM';
+        }
+
+        if ($time >= '07:00' && $time <= '16:00') {
+            $mergedPonek = array_merge($kpPonek,$poneks);
+        } else {
+            $mergedPonek = $poneks;
         }
 
         // Driver
@@ -223,7 +234,7 @@ class PlasmaController extends Controller
             return ['type' => 'nurse', 'data' => $nurse, 'title' => 'NURSE'];
         });
 
-        $poneks = collect($poneks)->map(function ($ponek) {
+        $poneks = collect($mergedPonek)->map(function ($ponek) {
             return ['type' => 'ponek', 'data' => $ponek, 'title' => 'PONEK'];
         });
 
