@@ -46,9 +46,9 @@ class PlasmaController extends Controller
                 'SPESIALIS SARAF',
                 'SPESIALIS KEBIDANAN DAN KANDUNGAN',
                 'SPESIALIS KULIT DAN KELAMIN',
-                'SPESIALIS ANASTESI',
-                'SPESIALIS ANASTESI KONSULTAN INTENSIF CARE',
-                'SPESIALIS ANASTESI KONSULTAN KARDIOVASKULAR']
+                'SPESIALIS ANESTESI',
+                'SPESIALIS ANESTESI KONSULTAN INTENSIF CARE',
+                'SPESIALIS ANESTESI KONSULTAN KARDIOVASKULAR']
         ];
 
         // Create a new query with the category column
