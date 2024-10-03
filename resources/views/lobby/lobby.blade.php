@@ -78,20 +78,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-            {{-- <div class="footer">
-                <p>CIPUTRA HOSPITAL | CITRA GARDEN CITY</p>
-                <div class="footer-content">
-                    <div class="footer-text">
-                        <p>Informasi dan Pendaftaran</p>
-                    </div>
-                    <div></div>
-                    <img src="{{ asset('images/logo/qr-lobby.png') }}" alt="bg-logo" class="small">
-
-                </div>
-            </div> --}}
         </div>
     </div>
 

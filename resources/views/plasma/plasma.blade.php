@@ -5,12 +5,12 @@
                 <div class="flex-shrink-0 w-1/4 ml-5 sm:mr-36 sm:w-1/4">
                     <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="Logo" class="w-3/4">
                 </div>
-                <h1 class="font-bold basis-1/2" style="color: #003974">Petugas Kami Hari Ini</h1>
+                <h1 class="font-bold basis-1/2" style="color: #464960">Petugas Kami Hari Ini</h1>
                 <div id="clock" class="w-1/4 mr-5 text-2xl font-bold text-right sm:text-4xl sm:w-1/4"></div>
             </div>
         </div>
         <div class="items-center py-2 mt-3 ml-5 mr-5 text-3xl text-center text-white card"
-            style="background-color: #003974">{{ $today }} - {{ $shift }}
+            style="background-color: #464960">{{ $today }} - {{ $shift }}
         </div>
 
         <!-- Carousel for Schedules and Personnel -->
@@ -63,7 +63,7 @@
                             @endphp
                             @foreach ($column as $item)
                                 @if (!in_array($item['title'], $displayedTitles))
-                                    <div class="mt-3 text-xl font-bold" style="color: #008060">{{ $item['title'] }}</div>
+                                    <div class="mt-3 text-xl font-bold" style="color: #464960">{{ $item['title'] }}</div>
                                     @php
                                         $displayedTitles[] = $item['title'];
                                     @endphp

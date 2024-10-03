@@ -23,7 +23,7 @@
             <div class="main-text">
                 <marquee direction="" onmouseover="this.stop();" onmouseout="this.start();">
                     <div class="holder">
-                        <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">DOKTER </div>
+                        <div class="mt-3 ml-5 text-xl font-bold" style="color: #464960">DOKTER </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
                             @foreach ($doctors as $doctor)
                                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
@@ -35,7 +35,7 @@
                             @endforeach
                         </div>
 
-                        <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">PERAWAT </div>
+                        <div class="mt-3 ml-5 text-xl font-bold" style="color: #464960">PERAWAT </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
                             @foreach ($nurses as $nurse)
                                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
@@ -52,7 +52,7 @@
                             @endforeach
                         </div>
 
-                        <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">DRIVER</div>
+                        <div class="mt-3 ml-5 text-xl font-bold" style="color: #464960">DRIVER</div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
                             @foreach ($drivers as $driver)
                                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">
@@ -70,9 +70,9 @@
 
 
 
-        
 
-        {{-- <div class="mt-3 ml-5 text-xl font-bold" style="color: #008060">NURSE ON DUTY </div> --}}
+
+        {{-- <div class="mt-3 ml-5 text-xl font-bold" style="color: #464960">NURSE ON DUTY </div> --}}
         {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-5 mt-2">
             @foreach ($schedules as $schedule)
                 <div class="grid grid-cols-7 gap-1 bg-white p-4 rounded shadow">

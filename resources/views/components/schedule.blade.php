@@ -50,7 +50,7 @@
         }
 
         .shift {
-            background-color: #008060;
+            background-color: #464960;
             color: white;
             font-size: 16px;
         }
