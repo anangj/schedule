@@ -35,7 +35,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #003974, #008060);
+            /* background: linear-gradient(135deg, #003974, #008060); */
+            background-color: #464960;
             color: white;
             text-align: center;
             font-size: 18px;
@@ -77,7 +78,8 @@
             text-align: center;
 
             padding: 20px 0;
-            background: linear-gradient(135deg, #003974, #008060);
+            /* background: linear-gradient(135deg, #003974, #008060); */
+            background-color: #464960;
             color: white;
             font-size: 34px;
             font-weight: bold;
