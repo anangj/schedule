@@ -39,21 +39,40 @@ class LobbyController extends Controller
         $data = $doctors->map(function ($doctor) {
 
             $nama_dokter = $doctor->nama_dokter;
+            $spesialis = $doctor->spesialis;
+            // dd($doctor);
             $formatted_name = preg_replace('/(.*), (.*), (dr.|drg)/', '$3 $1, $2', $nama_dokter);
 
-            // Group schedules by weekday
-            $grouped_schedules = $doctor->schedule->groupBy('weekday')->map(function ($daySchedules) {
-                return $daySchedules->map(function ($schedule) {
-                    return [
-                        'start_hour' => $schedule->start_hour,
-                        'start_minute' => $schedule->start_minute,
-                        'end_hour' => $schedule->end_hour,
-                        'end_minute' => $schedule->end_minute,
-                        'status' => $schedule->status,
-                        'appointment' => $schedule->appointment,
-                    ];
+            $grouped_schedules = [];
+
+            if ($spesialis === 'Anastesi') {
+                $grouped_schedules = $doctor->schedule->groupBy('weekday')->map(function ($daySchedules) {
+                    return $daySchedules->map(function ($schedule) {
+                        return [
+                            'start_hour' => '0',
+                            'start_minute' => '0',
+                            'end_hour' => '0',
+                            'end_minute' => '0',
+                            'status' => $schedule->status,
+                            'appointment' => 1,
+                        ];
+                    });
                 });
-            });
+            } else {
+                // Group schedules by weekday
+                $grouped_schedules = $doctor->schedule->groupBy('weekday')->map(function ($daySchedules) {
+                    return $daySchedules->map(function ($schedule) {
+                        return [
+                            'start_hour' => $schedule->start_hour,
+                            'start_minute' => $schedule->start_minute,
+                            'end_hour' => $schedule->end_hour,
+                            'end_minute' => $schedule->end_minute,
+                            'status' => $schedule->status,
+                            'appointment' => $schedule->appointment,
+                        ];
+                    });
+                });
+            }
 
             return [
                 // 'nama_dokter' => $formatted_name,

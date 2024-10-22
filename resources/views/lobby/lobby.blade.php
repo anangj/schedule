@@ -24,7 +24,7 @@
                                             $ordered_weekdays = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU'];
                                             $has_appointment = false;
                                         @endphp
-
+                                
                                         @foreach ($ordered_weekdays as $weekday)
                                             <p class="schedule-item">
                                                 <strong class="weekday">{{ \Illuminate\Support\Str::ucfirst($weekday) }}:</strong>
@@ -35,26 +35,31 @@
                                                                 if ($schedule['appointment']) {
                                                                     $has_appointment = true;
                                                                 }
-                                                                $time_str = str_pad($schedule['start_hour'], 2, '0', STR_PAD_LEFT) . ':' .
-                                                                            str_pad($schedule['start_minute'], 2, '0', STR_PAD_LEFT) . ' - ' .
-                                                                            str_pad($schedule['end_hour'], 2, '0', STR_PAD_LEFT) . ':' .
-                                                                            str_pad($schedule['end_minute'], 2, '0', STR_PAD_LEFT);
-                                                                return $schedule['appointment'] ? $time_str . ' *' : $time_str;
+                                                                if ($schedule['start_hour'] === '0') {
+                                                                    return $schedule['appointment'] ? '<span style="color: red;">*</span>' : '<span>*</span>';
+                                                                } else {
+                                                                    $time_str = str_pad($schedule['start_hour'], 2, '0', STR_PAD_LEFT) . ':' .
+                                                                                str_pad($schedule['start_minute'], 2, '0', STR_PAD_LEFT) . ' - ' .
+                                                                                str_pad($schedule['end_hour'], 2, '0', STR_PAD_LEFT) . ':' .
+                                                                                str_pad($schedule['end_minute'], 2, '0', STR_PAD_LEFT);
+                                                                    return $schedule['appointment'] ? $time_str . ' <span style="color: red;">*</span>' : $time_str;
+                                                                }
                                                             });
                                                         @endphp
-                                                        {{ $schedule_times->implode(' | ') }}
+                                                        {!! $schedule_times->implode(' | ') !!}
                                                     @else
                                                         -
                                                     @endif
                                                 </span>
                                             </p>
                                         @endforeach
-
+                                
                                         @if ($has_appointment)
                                             <p style="color: red"><small><em>* Appointment</em></small></p>
                                         @endif
                                     </div>
                                 </div>
+                                
                             </div>
                         @endforeach
                     </div>
