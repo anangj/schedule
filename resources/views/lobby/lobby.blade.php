@@ -1,5 +1,5 @@
 <x-lobby>
-    <div class="h-full bg-center bg-cover" style="background-image: url({{ asset('images/logo/bg-logo.svg') }})">
+    {{-- <div class="h-full bg-center bg-cover" style="background-image: url({{ asset('images/logo/bg-logo.svg') }})"> --}}
         <div class="body">
             <div class="header">
                 <p>JADWAL PRAKTEK DOKTER</p>

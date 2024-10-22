@@ -26,11 +26,11 @@
 
         .header {
             display: grid;
-            grid-template-columns: 7fr 3fr;
+            grid-template-columns: 12fr 3fr;
         }
         .footer {
             display: grid;
-            grid-template-columns: 7fr 4fr;
+            grid-template-columns: 12fr 4fr;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -83,8 +83,10 @@
             color: white;
             font-size: 34px;
             font-weight: bold;
-            margin-bottom: 10px;
-            border-radius: 10px;
+            margin-bottom: 4px;
+            /* border-radius: 10px; */
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         .footer p {
@@ -143,7 +145,10 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(4, auto);
-            gap: 2px;
+            /* gap: 32px; */
+            row-gap: 8px;
+            column-gap: 32px;
+            width: 100%;
         }
 
         .doctor-card-wrapper {
@@ -151,11 +156,12 @@
             align-items: center;
             background-color: transparent;
             border-radius: 8px;
-            padding: 4px;
+            padding: 2px;
         }
 
         .doctor-photo {
-            height: 100px;
+            height: 200px;
+            width: 200px;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -187,7 +193,9 @@
             /* font-size: clamp(16px, 4vw, 22px); Resize between 16px and 22px based on viewport */
             color: #000;
             font-weight: 700;
-            margin-bottom: 10px;
+            text-decoration: underline;
+            margin-left: 6px;
+            /* margin-bottom: 10px; */
             overflow-wrap: break-word; /* Break long words if necessary */
             white-space: normal; /* Allow text to wrap */
         }
@@ -203,7 +211,7 @@
             background-color: #fff;
             color: white;
             padding-bottom: 4px;
-            padding-top: 4px;
+            /* padding-top: 4px; */
             border-radius: 8px;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -435,7 +443,7 @@
     @vite(['resources/css/app.scss', 'resources/js/custom/store.js'])
 </head>
 
-<body class="font-inter"">
+<body class="font-inter">
     {{-- <div class=" app-wrapper">
     <div class="page-content">
         <div class="transition-all duration-150 container-fluid">
