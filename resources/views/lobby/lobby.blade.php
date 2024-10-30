@@ -122,7 +122,7 @@
                 promoVideo.play(); // Play the video
                 promoVideo.style.display = 'block'; // Ensure the video is displayed
                 body.style.display = 'none'; // Hide the carousel while video plays
-            }, 120000); // 5 minutes in milliseconds
+            }, 300000); // 5 minutes in milliseconds
         });
     </script>
 @endpush
