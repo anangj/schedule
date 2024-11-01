@@ -1,12 +1,12 @@
 <x-lobby>
-    <div class="video">
+    {{-- <div class="video">
         <video id="promoVideo" width="100%" style="height: 1100px;" controls autoplay muted>
-            <source src="{{ asset('storage/lobby/lobby.mp4') }}" type="video/mp4">
+            <source src="{{ asset('storage/igd/plasma_igd.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-    </div>
+    </div> --}}
 
-    <div class="body" id="body" style="display: none;"> <!-- Initially hidden -->
+    <div class="body" id="body" style="display: block;"> <!-- Initially hidden -->
         <div class="header">
             <p>JADWAL PRAKTEK DOKTER</p>
             <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="bg-logo">
