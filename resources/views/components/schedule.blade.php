@@ -8,11 +8,22 @@
     <x-favicon />
     <title>{{ config('app.name', 'Schedule') }}</title>
     <style>
+        /* body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        } */
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
+            transform: scale(0.8);
+            transform-origin: top left;
+            /* Optional: Adjust width to prevent horizontal scroll after scaling */
+            width: 125%;
         }
 
         .header {
@@ -60,7 +71,7 @@
     @vite(['resources/css/app.scss', 'resources/js/custom/store.js'])
 </head>
 
-<body class="font-inter"">
+<body class="font-inter">
     {{-- <div class="app-wrapper">
         <div class="page-content">
             <div class="transition-all duration-150 container-fluid">
