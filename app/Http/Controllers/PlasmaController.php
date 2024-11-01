@@ -30,6 +30,7 @@ class PlasmaController extends Controller
                 'SPESIALIS PENYAKIT DALAM KONSULTAN GASTRO ENTRO HEPATOLOGI',
                 'SPESIALIS PENYAKIT DALAM',
                 'SPESIALIS JANTUNG DAN PEMBULUH DARAH',
+                'SPESIALIS SARAF',
                 'SPESIALIS PARU',
                 'SPESIALIS ANAK',
                 'SPESIALIS THT'],
@@ -43,12 +44,12 @@ class PlasmaController extends Controller
                 'SPESIALIS BEDAH PLASTIK'],
             'slide 3' => ['SPESIALIS MATA',
                 'SPESIALIS AKUPUNTUR',
-                'SPESIALIS SARAF',
                 'SPESIALIS KEBIDANAN DAN KANDUNGAN',
                 'SPESIALIS KULIT DAN KELAMIN',
                 'SPESIALIS ANESTESI',
                 'SPESIALIS ANESTESI KONSULTAN INTENSIF CARE',
-                'SPESIALIS ANESTESI KONSULTAN KARDIOVASKULAR']
+                'SPESIALIS ANESTESI KONSULTAN KARDIOVASKULAR',
+                'SPESIALIS BEDAH PLASTIK DAN REKONSTRUKSI ESTETIK']
         ];
 
         // Create a new query with the category column
