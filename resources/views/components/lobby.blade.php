@@ -102,7 +102,7 @@
         }
         .footer img.small {
             width: 100px;
-            height: auto;
+            height: 60px;
             margin-left: 10px;
         }
 
@@ -160,7 +160,7 @@
         }
 
         .doctor-photo {
-            height: 200px;
+            height: 160px;
             width: 200px;
             border-radius: 50%;
             object-fit: cover;
@@ -253,191 +253,75 @@
                 /* Rows will adjust automatically */
             }
         }
-    </style>
 
-    {{-- <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden; /* Prevent scrolling */
-            box-sizing: border-box;
-        }
+        @media screen and (max-width: 1152px) {
+            .header {
+                display: grid;
+                grid-template-columns: 5fr 3fr;
+            }
 
-        .container {
-            width: 100%;
-            max-width: 1392px;
-            margin: auto;
-            padding: 20px;
-            height: 100%;
-        }
+            .header p {
+                text-align: center;
+                padding: 30px 0;
+                /* background: linear-gradient(135deg, #003974, #008060); */
+                background-color: #464960;
+                color: white;
+                font-size: 34px;
+                font-weight: bold;
+                margin-bottom: 4px;
+                /* border-radius: 10px; */
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+            
+            .header .img {
+                align-items: center;
+            }
+        
+            .footer {
+                position: relative;
+            }
 
-        .header {
-            display: grid;
-            grid-template-columns: 7fr 3fr;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .footer {
-            display: grid;
-            grid-template-columns: 7fr 4fr;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #003974, #008060);
-            color: white;
-            text-align: center;
-            font-size: clamp(16px, 1.5vw, 18px); /* Responsive font size */
-            font-weight: bold;
-            height: 100px;
-            max-height: 15vh; /* Adjust to a max height of 15% of the viewport height */
-        }
-
-        .footer .left-column {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 10px;
-        }
-
-        .footer .left-column .address {
-            font-size: clamp(14px, 1.5vw, 16px); /* Responsive font size */
-            margin-top: 5px;
-        }
-
-        .footer .right-column {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .footer .right-column .info-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .footer .right-column .info-container p {
-            margin-right: 10px;
-        }
-
-        .footer .right-column .info-container img.small {
-            width: 80px;
-            height: auto;
-        }
-
-        .header p {
-            text-align: center;
-            padding: 20px 0;
-            background: linear-gradient(135deg, #003974, #008060);
-            color: white;
-            font-size: clamp(20px, 2vw, 24px); /* Responsive font size */
-            font-weight: bold;
-            margin: 0;
-            border-radius: 10px;
-        }
-
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            max-width: 100%;
-            height: calc(100vh - 200px); /* Adjust grid height to fill available space */
-        }
-
-        .doctor-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(4, auto);
-            gap: 2px;
-        }
-
-        .doctor-card-wrapper {
-            display: flex;
-            align-items: center;
-            background-color: transparent;
-            border-radius: 8px;
-            padding: 4px;
-        }
-
-        .doctor-photo {
-            height: clamp(80px, 10vw, 100px); /* Responsive image size */
-            width: clamp(80px, 10vw, 100px); /* Keep image aspect ratio */
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .doctor-card {
-            flex-grow: 1;
-            background-color: #fff;
-            border-radius: 20px;
-            padding: 10px;
-        }
-
-        .spesialis {
-            font-size: clamp(14px, 1.5vw, 18px); /* Responsive font size */
-            font-weight: bold;
-            background-color: #008464960060;
-            color: white;
-            border-radius: 5px;
-            padding: 5px;
-            margin-bottom: 10px;
-            overflow-wrap: break-word;
-        }
-
-        .doctor {
-            font-size: clamp(16px, 2vw, 20px); /* Responsive font size */
-            color: #000;
-            font-weight: 700;
-            margin-bottom: 10px;
-            overflow-wrap: break-word;
-        }
-
-        .schedule {
-            background-color: #fff;
-            color: black;
-            padding: 5px;
-            border-radius: 8px;
-        }
-
-        .schedule p {
-            font-size: clamp(12px, 1vw, 16px); /* Responsive font size */
-            padding-left: 6px;
-        }
-
-        .schedule-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .weekday {
-            width: 100px;
-            text-align: left;
-        }
-
-        .time {
-            flex-grow: 1;
-            text-align: left;
-        }
-
-        /* Responsive adjustments */
-        @media screen and (max-width: 1024px) {
             .schedule-grid {
+                display: grid;
                 grid-template-columns: repeat(2, 1fr);
+                /* Three columns */
+                grid-template-rows: repeat(2, auto);
+                /* Four rows */
+                gap: 2px;
+                /* Space between columns and rows */
+            }
+
+            .doctor-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                /* grid-template-rows: repeat(2, auto); */
+                /* gap: 32px; */
+                row-gap: 8px;
+                column-gap: 32px;
+                width: 100%;
+            }
+
+            .doctor-photo {
+                height: 100px;
+                width: 100px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .spesialis {
+                font-size: clamp(14px, 4vw, 18px); /* Resize between 14px and 18px based on viewport */
+                font-weight: bold;
+                background-color: #464960;
+                color: white;
+                border-radius: 5px;
+                /* padding: 5px; */
+                margin-bottom: 5px;
+                /* overflow-wrap: break-word; */
+                white-space: normal; /* Allow text to wrap */
             }
         }
-
-        @media screen and (max-width: 768px) {
-            .schedule-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style> --}}
+    </style>
 
     {{-- Scripts --}}
     @vite(['resources/css/app.scss', 'resources/js/custom/store.js'])
