@@ -163,7 +163,7 @@
             height: 160px;
             width: 200px;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: inherit;
         }
 
         .doctor-card {
