@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppsController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\WidgetsController;
 use App\Http\Controllers\SetLocaleController;
 use App\Http\Controllers\ComponentsController;
+use App\Http\Controllers\ContentEventController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DatabaseBackupController;
 use App\Http\Controllers\GeneralSettingController;
@@ -28,6 +30,7 @@ use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PlasmaAioController;
 use App\Http\Controllers\MasterDokterController;
 use App\Http\Controllers\MasterDriverController;
+use App\Http\Controllers\MasterEventController;
 use App\Http\Controllers\MasterNodController;
 use App\Http\Controllers\MasterNurseController;
 use App\Http\Controllers\MasterPonekController;
@@ -143,4 +146,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     //Lobby
     Route::resource('lobby', LobbyController::class);
+
+    //CMS
+    // Route::resource('articles', ArticleController::class);
+    Route::resource('events', MasterEventController::class);
+    Route::resource('contents', ContentEventController::class);
 });

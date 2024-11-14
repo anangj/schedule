@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentEvent;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Schedule;
 use App\Models\Driver;
 use App\Models\Doctor;
+use App\Models\MasterEvent;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class PlasmaController extends Controller
@@ -119,6 +122,7 @@ class PlasmaController extends Controller
         $middle3 = 'middle-3';
         $shift = '';
         $today = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
+        $dataToday = Carbon::now()->format('Y-m-d');
         $doctors = [];
         $nurses = [];
         $drivers = [];
@@ -275,7 +279,21 @@ class PlasmaController extends Controller
             $columns[$driverColumn][] = $driver;
         }
 
-        return view('plasma.plasma', compact('schedules', 'columns', 'shift', 'today'));
+        // Fetch master events that are active, have a specific position, and have not ended yet.
+        $masterEvents = MasterEvent::where('isActive', true)
+                        ->where('position_id', 1)
+                        ->where('end_date', '>=', $dataToday)
+                        ->get();
+
+        // Extract IDs from the master events collection.
+        $masterEventIds = $masterEvents->pluck('id')->toArray();
+
+        // Fetch content events where the master_event_id is in the list of master event IDs collected above.
+        $contentEvents = ContentEvent::whereIn('master_event_id', $masterEventIds)->get();
+
+        // dd($contentEvents);
+
+        return view('plasma.plasma', compact('schedules', 'columns', 'shift', 'today', 'contentEvents'));
 
 
     }

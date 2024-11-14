@@ -18,8 +18,8 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
+            /* margin: 0; */
+            /* padding: 20px; */
             transform: scale(0.8);
             transform-origin: top left;
             /* Optional: Adjust width to prevent horizontal scroll after scaling */

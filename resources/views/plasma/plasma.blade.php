@@ -1,5 +1,17 @@
 <x-schedule>
-    <div class="body">
+    <div class="videos" style="width: 100%">
+        @foreach ($contentEvents as $item)
+            @if(Storage::exists($item->url))
+                <video class="promoVideo" width="100%" style="height: 100%; display: none;" controls autoplay muted>
+                    <source src="{{ Storage::url($item->url) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            @else
+                <p>Video not available.</p>
+            @endif
+        @endforeach
+    </div>
+    <div class="body" id="body" style="display: none; padding: 20px">
         {{-- <div class="h-full bg-center bg-cover" style="background-image: url({{ asset('images/logo/bg-logo.svg') }});"> --}}
             <div class="w-full card">
                 <div class="flex items-center w-full">
@@ -19,11 +31,10 @@
                 // Group the schedules by category
                 $groupedSchedules = $schedules->groupBy('category');
             @endphp
-    
+                
             <div class="-mt-6 slider carousel-interval owl-carousel">
                 @foreach ($groupedSchedules as $category => $schedules)
                     <div class="item">
-                        {{-- <h3 class="mb-4 text-xl font-bold">{{ $category }}</h3> --}}
                         @foreach ($schedules->chunk(8) as $scheduleChunk)
                             <div class="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2 md:grid-cols-4">
                                 @foreach ($scheduleChunk as $item)
@@ -159,6 +170,38 @@
             scheduleRefresh();
             setInterval(updateClock, 1000);
             updateClock();
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const videos = document.querySelectorAll('.promoVideo');
+                const carousel = document.getElementById('body');
+                let currentVideo = 0;
+    
+                function playNextVideo() {
+                    if (currentVideo < videos.length) {
+                        videos[currentVideo].style.display = 'block';
+                        videos[currentVideo].play();
+                        videos[currentVideo].onended = function() {
+                            this.style.display = 'none'; // Hide current video
+                            currentVideo++;
+                            playNextVideo(); // Recursively play the next video
+                        };
+                    } else {
+                        showCarousel();
+                    }
+                }
+    
+                function showCarousel() {
+                    carousel.style.display = 'block'; // Display the carousel
+                    setTimeout(function() {
+                        carousel.style.display = 'none'; // Hide the carousel after 12 minutes
+                        currentVideo = 0; // Reset video index
+                        playNextVideo(); // Start playing videos again
+                    }, 600000); // 12 minutes in milliseconds
+                }
+    
+                playNextVideo(); // Start playing videos
+            });
         </script>
     @endpush
 </x-schedule>

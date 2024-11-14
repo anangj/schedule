@@ -1,12 +1,18 @@
 <x-lobby>
-    {{-- <div class="video">
-        <video id="promoVideo" width="100%" style="height: 1100px;" controls autoplay muted>
-            <source src="{{ asset('storage/igd/plasma_igd.mp4') }}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div> --}}
+    <div class="videos" style="width: 100%">
+        @foreach ($contentEvents as $item)
+            @if(Storage::exists($item->url))
+                <video class="promoVideo" width="100%" style="height: 1120px; display: none;" controls autoplay muted>
+                    <source src="{{ Storage::url($item->url) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            @else
+                <p>Video not available.</p>
+            @endif
+        @endforeach
+    </div>
 
-    <div class="body" id="body" style="display: block;"> <!-- Initially hidden -->
+    <div class="body" id="body" style="display: none;"> <!-- Initially hidden -->
         <div class="header">
             <p>JADWAL PRAKTEK DOKTER</p>
             <img src="{{ asset('images/logo/logo-hospital-general.png') }}" alt="bg-logo">
@@ -102,7 +108,7 @@
             dots: false, // Enable dots for navigation
         });
     </script>
-    <script type="module">
+    {{-- <script type="module">
         document.addEventListener("DOMContentLoaded", function() {
             const promoVideo = document.getElementById('promoVideo');
             const body = document.getElementById('body');
@@ -123,6 +129,38 @@
                 promoVideo.style.display = 'block'; // Ensure the video is displayed
                 body.style.display = 'none'; // Hide the carousel while video plays
             }, 120000); // 5 minutes in milliseconds
+        });
+    </script> --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const videos = document.querySelectorAll('.promoVideo');
+            const carousel = document.getElementById('body');
+            let currentVideo = 0;
+
+            function playNextVideo() {
+                if (currentVideo < videos.length) {
+                    videos[currentVideo].style.display = 'block';
+                    videos[currentVideo].play();
+                    videos[currentVideo].onended = function() {
+                        this.style.display = 'none'; // Hide current video
+                        currentVideo++;
+                        playNextVideo(); // Recursively play the next video
+                    };
+                } else {
+                    showCarousel();
+                }
+            }
+
+            function showCarousel() {
+                carousel.style.display = 'block'; // Display the carousel
+                setTimeout(function() {
+                    carousel.style.display = 'none'; // Hide the carousel after 12 minutes
+                    currentVideo = 0; // Reset video index
+                    playNextVideo(); // Start playing videos again
+                }, 60000); // 12 minutes in milliseconds
+            }
+
+            playNextVideo(); // Start playing videos
         });
     </script>
 @endpush

@@ -6,6 +6,9 @@ use App\Models\lobby;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\MasterDokter;
+use App\Models\MasterEvent;
+use App\Models\ContentEvent;
+use Illuminate\Support\Carbon;
 
 class LobbyController extends Controller
 {
@@ -16,6 +19,7 @@ class LobbyController extends Controller
      */
     public function index()
     {
+        $dataToday = Carbon::now()->format('Y-m-d');
         $breadcrumbsItems = [
             [
                 'name' => 'Konten',
@@ -86,10 +90,23 @@ class LobbyController extends Controller
         });
         // dd($data);
 
+        // Fetch master events that are active, have a specific position, and have not ended yet.
+        $masterEvents = MasterEvent::where('isActive', true)
+                        ->where('position_id', 2)
+                        ->where('end_date', '>=', $dataToday)
+                        ->get();
+
+        // Extract IDs from the master events collection.
+        $masterEventIds = $masterEvents->pluck('id')->toArray();
+
+        // Fetch content events where the master_event_id is in the list of master event IDs collected above.
+        $contentEvents = ContentEvent::whereIn('master_event_id', $masterEventIds)->get();
+
         return view('lobby.lobby', [
             'data' => $data,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'List Konten',
+            'contentEvents' => $contentEvents
         ]);
     }
 

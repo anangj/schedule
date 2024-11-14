@@ -123,16 +123,6 @@
                     </a>
                 </li>
             @endif
-            @if (Auth::user()->hasRole('marketing'))
-                <li>
-                    <a href="{{ route('marketing.index') }}" class="navItem {{ (request()->is('marketing*')) ? 'active' : '' }}">
-                        <span class="flex items-center">
-                            <iconify-icon class=" nav-icon" icon="nimbus:marketing"></iconify-icon>
-                            <span>{{ __('Marketing') }}</span>
-                        </span>
-                    </a>
-                </li>
-            @endif
             @if (Auth::user()->hasRole('igd'))
                 <li class="{{ (\Request::route()->getName() == 'masters*') ? 'active' : '' }}">
                     <a href="javascript:void(0)" class="navItem">
@@ -373,6 +363,16 @@
                         <span class="flex items-center">
                             <iconify-icon class=" nav-icon" icon="uil:schedule"></iconify-icon>
                             <span>{{ __('Schedule') }}</span>
+                        </span>
+                    </a>
+                </li>
+            @endcan
+            @can('menu marketing')
+                <li>
+                    <a href="{{ route('events.index') }}" class="navItem {{ (request()->is('events*')) ? 'active' : '' }}">
+                        <span class="flex items-center">
+                            <iconify-icon class=" nav-icon" icon="material-symbols:event"></iconify-icon>
+                            <span>{{ __('Event') }}</span>
                         </span>
                     </a>
                 </li>
