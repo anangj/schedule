@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master_events', function (Blueprint $table) {
+        Schema::create('event_positions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('position_id');
-            $table->string('name');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->string('position_name');
+            $table->string('floor');
             $table->boolean('isActive');
-            $table->string('content_order');
-            $table->foreign('position_id')->references('id')->on('event_positions')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_events');
+        Schema::dropIfExists('event_positions');
     }
 };
