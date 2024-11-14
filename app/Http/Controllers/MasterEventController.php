@@ -82,7 +82,6 @@ class MasterEventController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         // Validate the incoming request data
         $request->validate([
             'position_id' => 'required|exists:event_positions,id', // Validate position_id exists in event_positions
