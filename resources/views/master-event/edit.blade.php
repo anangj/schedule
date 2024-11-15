@@ -26,7 +26,7 @@
                     <label for="position_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Position') }}</label>
                     <select name="position_id" id="position_id" class="form-control mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-slate-700 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @foreach ($allPositions as $position)
-                            <option value="{{ $position->id }}" {{ $position->id == $event->position_id ? 'selected' : '' }}>
+                            <option value="{{ $position->id }}" {{ $position->id == $event->positions_id ? 'selected' : '' }}>
                                 {{ $position->position_name }}
                             </option>
                         @endforeach

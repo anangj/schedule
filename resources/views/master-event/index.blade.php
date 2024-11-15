@@ -6,7 +6,7 @@
                 <div class="flex flex-wrap ">
                     <a href="{{ route('events.create') }}" class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1">
                         <span class="flex items-center">
-                            <span>Tambah Event</span>
+                            <span>Add Event</span>
                         </span>
                     </a>
                 </div>

@@ -97,7 +97,7 @@
                     </div>
                 @endif
 
-                @if (Auth::user()->hasRole('driver') || Auth::user()->hasRole('spesialis') || Auth::user()->hasRole('igd') || Auth::user()->hasRole('nod') || Auth::user()->hasRole('dokter') || Auth::user()->hasRole('hr'))
+                @if (Auth::user()->hasRole('driver') || Auth::user()->hasRole('spesialis') || Auth::user()->hasRole('igd') || Auth::user()->hasRole('nod') || Auth::user()->hasRole('marketing') || Auth::user()->hasRole('dokter') || Auth::user()->hasRole('hr'))
                 <div class="card">
                     <div class="p-6 card-body">
                         <div class="space-y-6">
