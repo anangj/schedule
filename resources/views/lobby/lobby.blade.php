@@ -2,7 +2,7 @@
     <div class="videos" style="width: 100%">
         @foreach ($contentEvents as $item)
             @if(Storage::exists($item->url))
-                <video class="promoVideo" width="100%" style="height: 1120px; display: none;" controls autoplay muted>
+                <video class="promoVideo" width="100%" style="height: 1080px; display: none;" controls autoplay muted>
                     <source src="{{ Storage::url($item->url) }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
