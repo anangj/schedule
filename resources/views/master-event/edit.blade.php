@@ -86,13 +86,13 @@
 
                 {{-- Order Input --}}
                 <div class="mb-4">
-                    <label for="order"
+                    <label for="content_order"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Order') }}</label>
-                    <input type="number" name="order" id="order" value="{{ old('order', $event->order) }}"
+                    <input type="number" name="content_order" id="content_order" value="{{ old('content_order', $event->content_order) }}"
                         min="1"
                         class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-slate-700 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         required>
-                    @error('order')
+                    @error('content_order')
                         <span class="text-red-600 text-sm">{{ $message }}</span>
                     @enderror
                 </div>

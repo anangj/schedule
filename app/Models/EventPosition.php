@@ -13,6 +13,6 @@ class EventPosition extends Model
 
 
     public function masterEvent() {
-        return $this->hasMany(MasterEvent::class, 'position_id', 'id');
+        return $this->hasOne(MasterEvent::class);
     }
 }

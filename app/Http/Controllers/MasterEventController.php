@@ -195,13 +195,14 @@ class MasterEventController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request);
         $request->validate([
             'position_id' => 'required|exists:event_positions,id', // Validate position_id exists in event_positions
             'name' => 'required|string|max:255', // Adjust max length as needed
             'start_date' => 'required|date_format:Y-m-d',
             'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date', // Ensure end_date is after or equal to start_date
             'isActive' => 'required|boolean', // Ensure isActive is a boolean
-            'order' => 'required|integer|min:1', // Ensure order is a positive integer
+            'content_order' => 'required|integer|min:1', // Ensure order is a positive integer
         ]);
 
         $masterEvent = MasterEvent::findOrFail($id);
@@ -210,7 +211,7 @@ class MasterEventController extends Controller
         $masterEvent->start_date = $request->start_date;
         $masterEvent->end_date = $request->end_date;
         $masterEvent->isActive = $request->isActive;
-        $masterEvent->order = $request->order;
+        $masterEvent->content_order = $request->content_order;
         $masterEvent->save();
 
         return redirect()->route('events.index')->with('message', 'Event updated successfully.');

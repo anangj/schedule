@@ -9,14 +9,14 @@ class MasterEvent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['position_id','name', 'start_date', 'end_date', 'isActive', 'content_order'];
+    protected $fillable = ['positions_id','name', 'start_date', 'end_date', 'isActive', 'content_order'];
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
     public function positions() {
-        return $this->hasMany(EventPosition::class, 'id'); 
+        return $this->belongsTo(EventPosition::class); 
     }
 
     public function contentEvent() {

@@ -281,7 +281,7 @@ class PlasmaController extends Controller
 
         // Fetch master events that are active, have a specific position, and have not ended yet.
         $masterEvents = MasterEvent::where('isActive', true)
-                        ->where('position_id', 1)
+                        ->where('positions_id', 1)
                         ->where('end_date', '>=', $dataToday)
                         ->get();
 

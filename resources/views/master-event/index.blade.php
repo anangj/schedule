@@ -25,6 +25,7 @@
                                     <thead class="bg-slate-200 dark:bg-slate-700">
                                         <tr>
                                             <th scope="col" class="table-th">Name</th>
+                                            <th scope="col" class="table-th">Position</th>
                                             <th scope="col" class="table-th">Start Date</th>
                                             <th scope="col" class="table-th">End Date</th>
                                             <th scope="col" class="table-th">Status</th>
@@ -37,6 +38,7 @@
                                         @foreach ($data as $item)
                                             <tr>
                                                 <td class="table-td">{{$item->name}}</td>
+                                                <td class="table-td">{{$item->positions->position_name}}</td>
                                                 <td class="table-td">{{$item->start_date}}</td>
                                                 <td class="table-td">{{$item->end_date}}</td>
                                                 <td class="table-td">{{$item->isActive}}</td>
