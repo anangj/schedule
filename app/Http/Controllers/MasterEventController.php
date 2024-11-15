@@ -102,7 +102,7 @@ class MasterEventController extends Controller
             // dd($filePath);
             // Create a new master event
             $masterEvent =  MasterEvent::create([
-                'position_id' => $request->position_id,
+                'positions_id' => $request->position_id,
                 'name' => $request->name,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
@@ -172,7 +172,7 @@ class MasterEventController extends Controller
         ];
 
         $masterEvent = MasterEvent::findOrFail($id);
-        $positions = EventPosition::where('id', $masterEvent->position_id)->get();
+        $positions = EventPosition::where('id', $masterEvent->positions_id)->get();
         $allPositions = EventPosition::all();
 
         // dd($positions);
@@ -206,7 +206,7 @@ class MasterEventController extends Controller
         ]);
 
         $masterEvent = MasterEvent::findOrFail($id);
-        $masterEvent->position_id = $request->position_id;
+        $masterEvent->positions_id = $request->position_id;
         $masterEvent->name = $request->name;
         $masterEvent->start_date = $request->start_date;
         $masterEvent->end_date = $request->end_date;
