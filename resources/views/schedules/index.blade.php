@@ -16,20 +16,20 @@
             <x-alert :message="session('message')" :type="'success'" />
         @endif
         <!-- Filter Notification -->
-        @if (request()->filled('doctor_name') || request()->filled('specialization') || request()->filled('weekday'))
+        {{-- @if (request()->filled('doctor_name') || request()->filled('specialization') || request()->filled('weekday'))
             <div class="mb-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
                 <p><strong>Notice:</strong> The results are currently filtered.</p>
                 <a href="{{ route('schedule-dokters.index') }}" class="text-blue-500 underline">Clear Filters</a>
             </div>
-        @endif
+        @endif --}}
         <div class="space-y-5">
 
             <div class="card">
                 <div class="card-header noborder -mb-6">
                     <!-- Dropdown Filter Button -->
-                    <div class="mb-6">
+                    {{-- <div class="mb-6">
                         <button id="filterToggle" class="btn btn-dark">Filter Options</button>
-                    </div>
+                    </div> --}}
                     <!-- Filter Form (Hidden by Default) -->
                     <div id="filterForm" class="card mb-6 p-5 hidden">
                         <form method="POST" action="{{ route('schedule-dokters.index') }}">
@@ -227,12 +227,12 @@
                 modal.find('.modal-body #previewImage').attr('src', imageUrl);
             });
         </script>
-        <script>
+        {{-- <script>
             document.getElementById('filterToggle').addEventListener('click', function() {
                 var filterForm = document.getElementById('filterForm');
                 filterForm.classList.toggle('hidden');
             });
-        </script>
+        </script> --}}
     @endpush
 </x-app-layout>
 

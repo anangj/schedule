@@ -102,7 +102,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Schedule Doctor
     Route::resource('schedule-dokters', ScheduleDokterController::class);
-    Route::match(['get', 'post'], 'schedule-dokters', [ScheduleDokterController::class, 'index'])->name('schedule-dokters.index');
+    // Route::match(['get', 'post'], 'schedule-dokters', [ScheduleDokterController::class, 'index'])->name('schedule-dokters.index');
 
     // Doctor Specialist
     Route::get('doctorSpecialist/download-template', [DoctorSpecialistController::class, 'downloadTemplate'])->name('doctorSpecialist.downloadTemplate');
