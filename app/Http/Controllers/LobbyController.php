@@ -138,22 +138,26 @@ class LobbyController extends Controller
         // dd($data);
 
         // Fetch master events that are active, have a specific position, and have not ended yet.
-        $masterEvents = MasterEvent::where('isActive', true)
+        $masterEvents = MasterEvent::with('contentEvent')->where('isActive', true)
                         ->where('positions_id', 2)
                         ->where('end_date', '>=', $dataToday)
+                        ->orderBy('content_order')
                         ->get();
+                        // dd($masterEvents);
 
         // Extract IDs from the master events collection.
-        $masterEventIds = $masterEvents->pluck('id')->toArray();
+        // $masterEventIds = $masterEvents->pluck('id')->toArray();
+        // dd($masterEventIds);
 
         // Fetch content events where the master_event_id is in the list of master event IDs collected above.
-        $contentEvents = ContentEvent::whereIn('master_event_id', $masterEventIds)->get();
+        // $contentEvents = ContentEvent::whereIn('master_event_id', $masterEventIds)->get();
+        // dd($contentEvents);
 
         return view('lobby.lobby', [
             'data' => $data,
             'breadcrumbsItems' => $breadcrumbsItems,
             'pageTitle' => 'List Konten',
-            'contentEvents' => $contentEvents
+            'contentEvents' => $masterEvents
         ]);
     }
 

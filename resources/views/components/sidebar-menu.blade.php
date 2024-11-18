@@ -347,7 +347,7 @@
                 </li>
 
             @endif
-            @can('menu lobby')
+            {{-- @can('menu lobby')
                 <li>
                     <a href="{{ route('lobby.index') }}" class="navItem {{ (request()->is('lobbys*')) ? 'active' : '' }}">
                         <span class="flex items-center">
@@ -356,7 +356,7 @@
                         </span>
                     </a>
                 </li>
-            @endcan
+            @endcan --}}
             @can('menu schedule')
                 <li>
                     <a href="{{ route('schedule-dokters.index') }}" class="navItem {{ (request()->is('schedule-dokterss*')) ? 'active' : '' }}">

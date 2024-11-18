@@ -1,9 +1,9 @@
 <x-lobby>
     <div class="videos" style="width: 100%">
         @foreach ($contentEvents as $item)
-            @if(Storage::exists($item->url))
+            @if(Storage::exists($item->contentEvent->url))
                 <video class="promoVideo" width="100%" style="height: 1080px; display: none;" controls autoplay muted>
-                    <source src="{{ Storage::url($item->url) }}" type="video/mp4">
+                    <source src="{{ Storage::url($item->contentEvent->url) }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             @else
