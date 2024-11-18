@@ -197,7 +197,7 @@
                         carousel.style.display = 'none'; // Hide the carousel after 12 minutes
                         currentVideo = 0; // Reset video index
                         playNextVideo(); // Start playing videos again
-                    }, 600000); // 12 minutes in milliseconds
+                    }, 300000); // 5 minutes in milliseconds
                 }
     
                 playNextVideo(); // Start playing videos
