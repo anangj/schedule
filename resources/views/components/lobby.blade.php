@@ -178,13 +178,14 @@
             font-weight: 700;
         } */
         .spesialis {
-            font-size: clamp(14px, 4vw, 18px); /* Resize between 14px and 18px based on viewport */
+            /* font-size: clamp(14px, 4vw, 18px);  */
+            font-size: 20px;
             font-weight: bold;
             background-color: #464960;
             color: white;
             border-radius: 5px;
-            padding: 5px;
-            margin-bottom: 10px;
+            /* padding: 5px; */
+            margin-bottom: 4px;
             overflow-wrap: break-word; /* Break long words if necessary */
             white-space: normal; /* Allow text to wrap */
         }
@@ -193,6 +194,7 @@
             /* font-size: clamp(16px, 4vw, 22px); Resize between 16px and 22px based on viewport */
             color: #000;
             font-weight: 700;
+            font-size: 22px;
             text-decoration: underline;
             margin-left: 6px;
             /* margin-bottom: 10px; */
@@ -219,7 +221,7 @@
         }
 
         .schedule p {
-            font-size: 16px;
+            font-size: 15px;
             padding-left: 6px;
         }
 

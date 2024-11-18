@@ -36,58 +36,105 @@ class LobbyController extends Controller
         $doctors = MasterDokter::with(['schedule' => function ($query) {
         }])
         ->where('isLobby' , '=', 1)
+        ->orderBy('slide_lobby')
         ->orderBy('spesialis')
         ->get();
         // dd($doctors);
-
-        $data = $doctors->map(function ($doctor) {
-
-            $nama_dokter = $doctor->nama_dokter;
-            $spesialis = $doctor->spesialis;
-            // dd($doctor);
-            $formatted_name = preg_replace('/(.*), (.*), (dr.|drg)/', '$3 $1, $2', $nama_dokter);
-
-            $grouped_schedules = [];
-
-            if ($spesialis === 'Anastesi') {
-                $grouped_schedules = $doctor->schedule->groupBy('weekday')->map(function ($daySchedules) {
-                    return $daySchedules->map(function ($schedule) {
-                        return [
-                            'start_hour' => '0',
-                            'start_minute' => '0',
-                            'end_hour' => '0',
-                            'end_minute' => '0',
-                            'status' => $schedule->status,
-                            'appointment' => 1,
-                        ];
+        $data = $doctors->groupBy('slide_lobby')->map(function ($group) {
+            return $group->map(function ($doctor) {
+                $nama_dokter = $doctor->nama_dokter;
+                $spesialis = $doctor->spesialis;
+        
+                $formatted_name = preg_replace('/(.*), (.*), (dr.|drg)/', '$3 $1, $2', $nama_dokter);
+        
+                $grouped_schedules = $doctor->schedule->groupBy('weekday')->map(function ($daySchedules) use ($spesialis) {
+                    return $daySchedules->map(function ($schedule) use ($spesialis) {
+                        if ($spesialis === 'Anastesi') {
+                            return [
+                                'start_hour' => '0',
+                                'start_minute' => '0',
+                                'end_hour' => '0',
+                                'end_minute' => '0',
+                                'status' => $schedule->status,
+                                'appointment' => 1,
+                            ];
+                        } else {
+                            return [
+                                'start_hour' => $schedule->start_hour,
+                                'start_minute' => $schedule->start_minute,
+                                'end_hour' => $schedule->end_hour,
+                                'end_minute' => $schedule->end_minute,
+                                'status' => $schedule->status,
+                                'appointment' => $schedule->appointment,
+                            ];
+                        }
                     });
                 });
-            } else {
-                // Group schedules by weekday
-                $grouped_schedules = $doctor->schedule->groupBy('weekday')->map(function ($daySchedules) {
-                    return $daySchedules->map(function ($schedule) {
-                        return [
-                            'start_hour' => $schedule->start_hour,
-                            'start_minute' => $schedule->start_minute,
-                            'end_hour' => $schedule->end_hour,
-                            'end_minute' => $schedule->end_minute,
-                            'status' => $schedule->status,
-                            'appointment' => $schedule->appointment,
-                        ];
-                    });
-                });
-            }
-
-            return [
-                // 'nama_dokter' => $formatted_name,
-                'nama_dokter' => $doctor->nama_dokter,
-                'poli' => $doctor->poli,
-                'spesialis' => $doctor->spesialis,
-                'image_url' => $doctor->image_url,
-                'id_tera' => $doctor->id_tera,
-                'schedules' => $grouped_schedules
-            ];
+        
+                return [
+                    'nama_dokter' => $doctor->nama_dokter,
+                    'poli' => $doctor->poli,
+                    'spesialis' => $doctor->spesialis,
+                    'image_url' => $doctor->image_url,
+                    'id_tera' => $doctor->id_tera,
+                    'slide_lobby' => $doctor->slide_lobby,
+                    'schedules' => $grouped_schedules,
+                ];
+            });
         });
+        
+        // $data = $doctors->groupBy('slide_lobby')->map(function ($doctor) {
+        //     // dd($doctor);
+        //     $doctor->map(function ($item) {
+        //         $nama_dokter = $item->nama_dokter;
+        //         $spesialis = $item->spesialis;
+        //         // dd($item->nama_dokter);
+        //         $formatted_name = preg_replace('/(.*), (.*), (dr.|drg)/', '$3 $1, $2', $nama_dokter);
+    
+        //         $grouped_schedules = [];
+    
+        //         if ($spesialis === 'Anastesi') {
+        //             $grouped_schedules = $item->schedule->groupBy('weekday')->map(function ($daySchedules) {
+        //                 return $daySchedules->map(function ($schedule) {
+        //                     return [
+        //                         'start_hour' => '0',
+        //                         'start_minute' => '0',
+        //                         'end_hour' => '0',
+        //                         'end_minute' => '0',
+        //                         'status' => $schedule->status,
+        //                         'appointment' => 1,
+        //                     ];
+        //                 });
+        //             });
+        //         } else {
+        //             // Group schedules by weekday
+        //             $grouped_schedules = $item->schedule->groupBy('weekday')->map(function ($daySchedules) {
+        //                 return $daySchedules->map(function ($schedule) {
+        //                     return [
+        //                         'start_hour' => $schedule->start_hour,
+        //                         'start_minute' => $schedule->start_minute,
+        //                         'end_hour' => $schedule->end_hour,
+        //                         'end_minute' => $schedule->end_minute,
+        //                         'status' => $schedule->status,
+        //                         'appointment' => $schedule->appointment,
+        //                     ];
+        //                 });
+        //             });
+        //         }
+   
+        //         return [
+        //             // 'nama_dokter' => $formatted_name,
+        //             'nama_dokter' => $item->nama_dokter,
+        //             'poli' => $item->poli,
+        //             'spesialis' => $item->spesialis,
+        //             'image_url' => $item->image_url,
+        //             'id_tera' => $item->id_tera,
+        //             'slide_lobby' => $item->slide_lobby,
+        //             'schedules' => $grouped_schedules
+        //         ];
+        //     });
+            
+        // });
         // dd($data);
 
         // Fetch master events that are active, have a specific position, and have not ended yet.
