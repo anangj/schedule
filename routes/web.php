@@ -47,10 +47,10 @@ Route::get('/', function () {
 // Plasma
 Route::get('plasma', [PlasmaController::class, 'index'])->name('plasma');
 Route::get('plasma2', [PlasmaAioController::class, 'index'])->name('plasma2');
+Route::get('lobby', [LobbyController::class, 'index'])->name('lobby');
 
 //Lobby
 Route::resource('lobby', LobbyController::class);
-Route::get('lobby', [LobbyController::class, 'index'])->name('lobby');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // Dashboards
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard.index');
